@@ -1,0 +1,50 @@
+﻿html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    height: 100%;
+    color: black;
+    margin: 0px;
+}
+
+#master-container {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow: hidden;
+    z-index: -1;
+}
+
+#viewport {
+    width: 640px;
+    height: 100%;
+    min-height: 640px;
+    overflow: visible;
+    background: black;
+}
+
+#glCanvas {
+    width: 640px;
+    height: 640px;
+}
+
+/*****************/
+/* GENERIC */
+/*****************/
+
+.center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.transition150 {
+    -webkit-transition: all 150ms linear;
+    -moz-transition: all 150ms linear;
+    -ms-transition: all 150ms linear;
+    -o-transition: all 150ms linear;
+    transition: all 150ms linear;
+}

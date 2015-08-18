@@ -1,0 +1,107 @@
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Windows shortcuts
+*.lnk
+
+# =========================
+# Operating System Files
+# =========================
+
+# OSX
+# =========================
+
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# Files that might appear on external disk
+.Spotlight-V100
+.Trashes
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+CompJS_Framework/bin
+CompJS_Framework/CompJS_Framework/bin
+CompJS_Framework/CompJS_Framework/obj
+CompJS_Framework/ICompJS_Repo/bin
+CompJS_Framework/ICompJS_Repo/obj
+CompJS_Framework/Centipede_Repo/bin
+CompJS_Framework/Centipede_Repo/obj
+CompJS_Framework/CompJS_Services/bin
+CompJS_Framework/CompJS_Services/obj
+CompJS_Framework/CentipedeDb/bin
+CompJS_Framework/CentipedeDb/obj
+CompJS_Framework/packages/EntityFramework.5.0.0/Content
+CompJS_Framework/packages/EntityFramework.5.0.0/lib
+CompJS_Framework/packages/EntityFramework.5.0.0/tools
+CompJS_Framework/packages/EntityFramework.6.1.3/Content
+CompJS_Framework/packages/EntityFramework.6.1.3/lib
+CompJS_Framework/packages/EntityFramework.6.1.3/tools
+CompJS_Framework/packages/jQuery.1.8.2/Content
+CompJS_Framework/packages/jQuery.1.8.2/Tools
+CompJS_Framework/packages/jQuery.UI.Combined.1.8.24/Content
+CompJS_Framework/packages/jQuery.UI.Combined.1.8.24/Tools
+CompJS_Framework/packages/jQuery.Validation.1.10.0/Content
+CompJS_Framework/packages/knockoutjs.2.2.0/Content
+CompJS_Framework/packages/Microsoft.AspNet.Mvc.4.0.20710.0/lib
+CompJS_Framework/packages/Microsoft.AspNet.Mvc.5.2.3/Content
+CompJS_Framework/packages/Microsoft.AspNet.Mvc.5.2.3/lib
+CompJS_Framework/packages/Microsoft.AspNet.Mvc.FixedDisplayModes.1.0.0/lib
+CompJS_Framework/packages/Microsoft.AspNet.Providers.Core.1.2/lib
+CompJS_Framework/packages/Microsoft.AspNet.Providers.LocalDB.1.1/content
+CompJS_Framework/packages/Microsoft.AspNet.Providers.LocalDB.1.1/tools
+CompJS_Framework/packages/Microsoft.AspNet.Razor.2.0.20715.0/lib
+CompJS_Framework/packages/Microsoft.AspNet.Razor.3.2.3/lib
+CompJS_Framework/packages/Microsoft.AspNet.Web.Optimization.1.0.0/lib
+CompJS_Framework/packages/Microsoft.AspNet.WebApi.Client.5.2.3/lib
+CompJS_Framework/packages/Microsoft.AspNet.WebApi.Core.5.2.3/Content
+CompJS_Framework/packages/Microsoft.AspNet.WebApi.Core.5.2.3/lib
+CompJS_Framework/packages/Microsoft.AspNet.WebApi.HelpPage.4.0.0/content
+CompJS_Framework/packages/Microsoft.AspNet.WebApi.OData.4.0.0/lib
+CompJS_Framework/packages/Microsoft.AspNet.WebApi.Tracing.4.0.0/lib
+CompJS_Framework/packages/Microsoft.AspNet.WebApi.Tracing.5.2.3/lib
+CompJS_Framework/packages/Microsoft.AspNet.WebApi.WebHost.5.2.3/lib
+CompJS_Framework/packages/Microsoft.AspNet.WebPages.2.0.20710.0/lib
+CompJS_Framework/packages/Microsoft.AspNet.WebPages.3.2.3/Content
+CompJS_Framework/packages/Microsoft.AspNet.WebPages.3.2.3/lib
+CompJS_Framework/packages/Microsoft.Bcl.1.1.10/lib
+CompJS_Framework/packages/Microsoft.Bcl.Build.1.0.14/content
+CompJS_Framework/packages/Microsoft.Bcl.Build.1.0.14/tools
+CompJS_Framework/packages/Microsoft.Data.Edm.5.2.0/lib
+CompJS_Framework/packages/Microsoft.Data.OData.5.2.0/lib
+CompJS_Framework/packages/Microsoft.jQuery.Unobtrusive.Ajax.2.0.30116.0/Content
+CompJS_Framework/packages/Microsoft.jQuery.Unobtrusive.Validation.2.0.30116.0/Content
+CompJS_Framework/packages/Microsoft.Net.Http.2.2.29/lib
+CompJS_Framework/packages/Microsoft.Web.Infrastructure.1.0.0.0/lib
+CompJS_Framework/packages/Modernizr.2.6.2/Content
+CompJS_Framework/packages/Modernizr.2.6.2/Tools
+CompJS_Framework/packages/Newtonsoft.Json.4.5.11/lib
+CompJS_Framework/packages/Newtonsoft.Json.7.0.1/lib
+CompJS_Framework/packages/Newtonsoft.Json.7.0.1/tools
+CompJS_Framework/packages/System.Spatial.5.2.0/lib
+CompJS_Framework/packages/WebGrease.1.3.0/lib
+CompJS_Framework/packages/WebGrease.1.3.0/tools
+CompJS_Framework/ICompJS_Repo/obj/Release/ICompJS_Repo.pdb
+CompJS_Framework/ICompJS_Repo/obj/Debug/ICompJS_Repo.pdb
+CompJS_Framework/ICompJS_Repo/bin/Release/ICompJS_Repo.dll
