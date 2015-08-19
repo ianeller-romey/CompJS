@@ -5,7 +5,7 @@ var PhysEngine = function () {
 
     var physTypeDefinitions = [];
     var collisionTypeDefinitions = [];
-    var physCompDefinition = [];
+    var physCompDefinitions = [];
     var physCompInstances = [];
 
     var buildPhysTypeDefinitions = function (data) {
@@ -27,10 +27,10 @@ var PhysEngine = function () {
             if (physType == "Circle") {
                 boundingData = new BoundingCircle(JSON.parse(x.boundingData));
             }
-            else if (physType == "Rect") {
-                throw "Not implemented yet.";
+            else if (physType == "AABB") {
+                boundingData = new BoundingAABB(JSON.parse(x.boundingData));
             }
-            physCompDefinition[x.id] = {
+            physCompDefinitions[x.id] = {
                 physTypeId: x.physTypeId,
                 collisionTypeId: x.collisionTypeId,
                 boundingData: boundingData
@@ -64,22 +64,10 @@ var PhysEngine = function () {
         return ;
     };
 
-    var createPhysCompInstance = function (entity, physCompId) {
-        var instance = {
-            instanceId: entity.instanceId,
-            entityName: entity.name,
-            transformation: entity.transformation,
-            physComp: physCompDefinition[physCompId],
-            colliders: []
-        };
-        physCompInstances.push(instance);
-        messengerEngine.queueForPosting("createdPhysicsInstance", instance);
-    };
-
     this.update = function (delta) {
         for (var i = 0; i < physCompInstances.length; ++i) {
             var instance = physCompInstances[i];
-            instance.colliders = [];
+            instance.physComp.colliders = [];
 
             var collisionTypeDefinition = collisionTypeDefinitions[instance.physComp.collisionTypeId];
             if (collisionTypeDefinition != "Static") {
@@ -91,7 +79,7 @@ var PhysEngine = function () {
                 var newBounding = instance.physComp.boundingData.clone();
                 newBounding.setPosition(newPosition);
 
-                var hasCollider = false;
+                var hasNonGhostCollider = false;
                 for (var j = 0; j < physCompInstances.length; ++j) {
                     if (j == i) {
                         continue;
@@ -101,18 +89,33 @@ var PhysEngine = function () {
                     var otherBounding = otherInstance.physComp.boundingData.clone();
                     otherBounding.setPosition(otherInstance.transformation.position);
 
+                    // TODO: Tidy up math in collision functions, because right now it is bad and duplicated
                     if (physTypeDefinitions[otherInstance.physComp.physTypeId] == "Circle") {
                         if (newBounding.collideWithBoundingCircle(otherBounding)) {
-                            hasCollider = true;
-                            instance.colliders.push(otherInstance.entityName);
+                            if (!hasNonGhostCollider && collisionTypeDefinitions[otherInstance.physComp.collisionTypeId] != "Ghost") {
+                                hasNonGhostCollider = true;
+                            }
+                            instance.physComp.colliders.push({
+                                instanceId: otherInstance.instanceId,
+                                entityName: otherInstance.entityName
+                            });
                         }
                     }
-                    else if (physTypeDefinitions[otherInstance.physComp.physTypeId] == "Rect") {
-                        throw "Not implemented yet.";
+                    else if (physTypeDefinitions[otherInstance.physComp.physTypeId] == "AABB") {
+                        if (newBounding.collideWithBoundingAABB(otherBounding)) {
+                            if (!hasNonGhostCollider && collisionTypeDefinitions[otherInstance.physComp.collisionTypeId] != "Ghost") {
+                                hasNonGhostCollider = true;
+                            }
+                            instance.physComp.colliders.push({
+                                instanceId: otherInstance.instanceId,
+                                entityName: otherInstance.entityName
+                            });
+                        }
                     }
+                    // TODO: OBB
                 }
 
-                if (!hasCollider || collisionTypeDefinition == "Ghost") {
+                if (!hasNonGhostCollider || collisionTypeDefinition == "Ghost") {
                     instance.transformation.position.x = newPosition.x;
                     instance.transformation.position.y = newPosition.y;
                 }
@@ -120,5 +123,33 @@ var PhysEngine = function () {
         }
     };
 
+    var createPhysCompInstance = function (entity, physCompId) {
+        var physCompDefinition = physCompDefinitions[physCompId];
+        var instance = {
+            instanceId: entity.instanceId,
+            entityName: entity.name,
+            transformation: entity.transformation,
+            physComp: {
+                physTypeId: physCompDefinition.physTypeId,
+                collisionTypeId: physCompDefinition.collisionTypeId,
+                boundingData: physCompDefinition.boundingData,
+                colliders: []
+            }
+        };
+        physCompInstances.push(instance);
+        messengerEngine.queueForPosting("createdPhysicsInstance", instance.physComp, instance.instanceId);
+    };
+
+    var removePhysCompInstanceFromMessage = function (instanceId) {
+        for (var i = 0; i < physCompInstances.length; ++i) {
+            var instance = physCompInstances[i];
+            if (instance.instanceId == instanceId) {
+                physCompInstances.splice(i, 1);
+                break;
+            }
+        }
+    };
+
     messengerEngine.register("createPhysics", this, createPhysCompInstance);
+    messengerEngine.register("removeEntityInstance", this, removePhysCompInstanceFromMessage);
 };

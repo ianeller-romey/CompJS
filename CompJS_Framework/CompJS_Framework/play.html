@@ -6,6 +6,7 @@
     <script src="lib/engines/messenger-engine.js"></script>
     <script src="lib/engines/services-engine.js"></script>
     <script src="lib/entities/bounding-circle.js"></script>
+    <script src="lib/entities/bounding-aabb.js"></script>
     <script src="lib/entities/entity.js"></script>
     <script src="lib/engines/bhv-engine.js"></script>
     <script src="lib/engines/gfx-engine.js"></script>
@@ -14,17 +15,43 @@
     <script src="lib/engines/input-manager.js"></script>
     <script src="lib/driver.js"></script>
     <script src="lib/cheats.js"></script>
-    <script id="shader-fs" type="x-shader/x-fragment">
+    <script id="shader-fs-texture" type="x-shader/x-fragment">
         precision mediump float;
 
         // our texture
         uniform sampler2D u_image;
 
-        // the texCoords passed in from the vertex shader.
+        // the texCoords passed in from the vertex shader
         varying vec2 v_texCoord;
 
         void main() {
            gl_FragColor = texture2D(u_image, v_texCoord);
+        }
+    </script>
+    <script id="shader-fs-emboss" type="x-shader/x-fragment">
+        precision mediump float;
+ 
+        // our texture
+        uniform sampler2D u_image;
+        
+        // the texCoords passed in from the vertex shader
+        varying vec2 v_texCoord;
+ 
+        void main()
+        {
+          vec2 onePixel = vec2(1.0 / 480.0, 1.0 / 320.0);
+ 
+          vec2 texCoord = v_texCoord;
+ 
+          vec4 color;
+          color.rgb = vec3(0.5);
+          color -= texture2D(u_image, texCoord - onePixel) * 5.0;
+          color += texture2D(u_image, texCoord + onePixel) * 5.0;
+          color.rgb = vec3((color.r + color.g + color.b) / 3.0);
+
+          vec4 tex = texture2D(u_image, v_texCoord);
+
+          gl_FragColor = vec4(color.rgb, tex.a);
         }
     </script>
     <script id="shader-vs" type="x-shader/x-vertex">

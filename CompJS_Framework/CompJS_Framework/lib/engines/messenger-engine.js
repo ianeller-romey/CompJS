@@ -22,7 +22,7 @@ var MessengerEngine = function () {
 
     this.register = function (messageType, object, funct) {
         if (!validMessageType(messageType)) {
-            throw "Cannot register for a messageType that does not exist.";
+            messageTypes.push(messageType);
         }
 
         if (messageRegistration[messageType] === undefined) {
@@ -37,12 +37,12 @@ var MessengerEngine = function () {
 
     this.unregister = function (messageType, funct) {
         if (!validMessageType(messageType)) {
-            throw "Cannot register for a messageType that does not exist.";
+            throw "Cannot unregister from a messageType that does not exist.";
         }
 
         var messageTypeRegistration = messageRegistration[messageType];
         var messageRegisterer = messageTypeRegistration.firstOrNull(function (x) {
-            return x.funct === funct;
+            return x.toCall === funct;
         });
         if (messageRegisterer != null) {
             var index = messageTypeRegistration.indexOf(messageRegisterer);
@@ -53,6 +53,10 @@ var MessengerEngine = function () {
     };
 
     this.postImmediate = function (messageType) {
+        if (!validMessageType(messageType)) {
+            throw "Cannot post a message for a messageType that doesn't exist.";
+        }
+
         var messageTypeRegistration = messageRegistration[messageType];
         var params = Array.prototype.slice.call(arguments, 1);
         messageTypeRegistration.forEach(function (x) {
@@ -94,8 +98,12 @@ globalMessengerEngine.addMessageType("createdBehaviorInstance");
 globalMessengerEngine.addMessageType("setBehaviorConstructor");
 
 globalMessengerEngine.addMessageType("createGraphics");
+globalMessengerEngine.addMessageType("setShaderProgram");
 globalMessengerEngine.addMessageType("createdGraphicsInstance");
 globalMessengerEngine.addMessageType("setInstanceAnimationState");
 
 globalMessengerEngine.addMessageType("createPhysics");
 globalMessengerEngine.addMessageType("createdPhysicsInstance");
+
+globalMessengerEngine.addMessageType("createEntityInstance");
+globalMessengerEngine.addMessageType("removeEntityInstance");

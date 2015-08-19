@@ -58,11 +58,16 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="lib\behaviors\behavior-player.js" />
+    <Content Include="lib\behaviors\behavior-player-bullet.js" />
+    <Content Include="lib\behaviors\behavior-mushroom-manager.js" />
+    <Content Include="lib\behaviors\behavior-mushroom.js" />
+    <Content Include="lib\behaviors\behavior-spider.js" />
     <Content Include="lib\engines\bhv-engine.js" />
     <Content Include="lib\cheats.js" />
     <Content Include="lib\engines\input-manager.js" />
     <Content Include="lib\engines\entity-manager.js" />
     <Content Include="lib\entities\bounding-circle.js" />
+    <Content Include="lib\entities\bounding-aabb.js" />
     <Content Include="lib\entities\entity.js" />
     <Content Include="lib\engines\gfx-engine.js" />
     <Content Include="lib\engines\messenger-engine.js" />

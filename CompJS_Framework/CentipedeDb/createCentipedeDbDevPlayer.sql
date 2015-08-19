@@ -24,10 +24,10 @@ END
 
 GO
 
-IF NOT EXISTS (SELECT [Id] FROM [compjs].[PhysTypes] WHERE [Name] = 'Rect')
+IF NOT EXISTS (SELECT [Id] FROM [compjs].[PhysTypes] WHERE [Name] = 'AABB')
 BEGIN
 	EXEC [dev].[dev_CreatePhysType]
-		@name = 'Rect'
+		@name = 'AABB'
 END
 
 GO
@@ -73,6 +73,15 @@ IF NOT EXISTS (SELECT [Id] FROM [compjs].[Entities] WHERE [Name] = 'Mushroom')
 BEGIN
 	EXEC @id = [dev].[dev_CreateEntity]
 		@name = 'Mushroom'
+		
+	IF NOT EXISTS (SELECT [Id] FROM [compjs].[BhvComps] WHERE [EntityId] = @id)
+	BEGIN
+		EXEC @compId = [dev].[dev_CreateBhvComp]
+			@entityId = @id,
+			@stateFile = 'http://arcade/compjs/centipede/lib/behaviors/behavior-mushroom.js',
+			@behaviorConstructor = 'BehaviorMushroom'
+			
+	END
 		
 	IF NOT EXISTS (SELECT [Id] FROM [compjs].[GfxComps] WHERE [EntityId] = @id)
 	BEGIN
@@ -167,12 +176,36 @@ ELSE
 	SELECT @id = [Id] FROM [compjs].[Entities] WHERE [Name] = 'Mushroom'
 END
 
-SELECT @levelId = [Id] FROM [game].[Levels] WHERE [Id] = 0
-EXEC [dev].[dev_CreateLevelLayout]
-@levelId = @levelId,
-@entityId = @id,
-@x = 10.0,
-@y = 10.0
+GO
+
+DECLARE @id int
+DECLARE @compId int
+DECLARE @altId int
+DECLARE @altAltId int
+DECLARE @levelId int
+DECLARE @levelLayoutId int
+DECLARE @name varchar(256)
+
+IF NOT EXISTS (SELECT [Id] FROM [compjs].[Entities] WHERE [Name] = 'MushroomManager')
+BEGIN
+	EXEC @id = [dev].[dev_CreateEntity]
+		@name = 'MushroomManager'
+		
+	IF NOT EXISTS (SELECT [Id] FROM [compjs].[BhvComps] WHERE [EntityId] = @id)
+	BEGIN
+		EXEC @compId = [dev].[dev_CreateBhvComp]
+			@entityId = @id,
+			@stateFile = 'http://arcade/compjs/centipede/lib/behaviors/behavior-mushroom-manager.js',
+			@behaviorConstructor = 'BehaviorMushroomManager'
+			
+	END
+		
+ELSE
+	SELECT @id = [Id] FROM [compjs].[Entities] WHERE [Name] = 'MushroomManager'
+END
+
+EXEC [dev].[dev_CreateEntitiesOnAllLevels]
+@entityId = @id
 
 GO
 
@@ -245,5 +278,71 @@ SELECT @levelId = [Id] FROM [game].[Levels] WHERE [Id] = 0
 EXEC [dev].[dev_CreateLevelLayout]
 @levelId = @levelId,
 @entityId = @id,
-@x = 80.0,
-@y = 40.0
+@x = 512.0,
+@y = 950.0
+
+GO
+
+DECLARE @id int
+DECLARE @compId int
+DECLARE @altId int
+DECLARE @altAltId int
+DECLARE @levelId int
+DECLARE @levelLayoutId int
+DECLARE @name varchar(256)
+
+IF NOT EXISTS (SELECT [Id] FROM [compjs].[Entities] WHERE [Name] = 'PlayerBullet')
+BEGIN
+	EXEC @id = [dev].[dev_CreateEntity]
+		@name = 'PlayerBullet'
+		
+	IF NOT EXISTS (SELECT [Id] FROM [compjs].[BhvComps] WHERE [EntityId] = @id)
+	BEGIN
+		EXEC @compId = [dev].[dev_CreateBhvComp]
+			@entityId = @id,
+			@stateFile = 'http://arcade/compjs/centipede/lib/behaviors/behavior-player-bullet.js',
+			@behaviorConstructor = 'BehaviorPlayerBullet'
+			
+	END
+		
+	IF NOT EXISTS (SELECT [Id] FROM [compjs].[GfxComps] WHERE [EntityId] = @id)
+	BEGIN
+		EXEC @compId = [dev].[dev_CreateGfxComp]
+			@entityId = @id
+	
+		EXEC @altId = [dev].[dev_CreateAnimationState]
+			@gfxCompID = @compId,
+			@state = 0
+			
+		EXEC @altAltId = [dev].[dev_CreateAnimationFrameFromPixels]
+			@animationStateId = @altId,
+			@frame = 0,
+			@duration = null,
+			@texture = 'http://arcade/compjs/centipede/images/textures.png',
+			@width = 12.0,
+			@height = 28.0,
+			@pixCoordTL = 0.0,
+			@pixCoordTR = 128.0,
+			@pixCoordBR = 14.0,
+			@pixCoordBL = 122.0,
+			@textureWidth = 256.0
+			
+	END
+		
+	IF NOT EXISTS (SELECT [Id] FROM [compjs].[PhysComps] WHERE [EntityId] = @id)
+	BEGIN
+		SELECT @altId = [Id] FROM [compjs].[PhysTypes] WHERE [Name] = 'AABB'
+		SELECT @altAltId = [Id] FROM [compjs].[CollisionTypes] WHERE [Name] = 'Ghost'
+	
+		EXEC @compId = [dev].[dev_CreatePhysCompWithAABBBoundingData]
+			@entityId = @id,
+			@physTypeId = @altId,
+			@collisionTypeId = @altAltId,
+			@originX = 6.0,
+			@originY = 14.0,
+			@halfWidth = 6.0,
+			@halfHeight = 14.0
+	
+	END
+	
+END

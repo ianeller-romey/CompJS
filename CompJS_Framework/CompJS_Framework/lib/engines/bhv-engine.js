@@ -35,9 +35,9 @@ var BhvEngine = function (headElem) {
         });
     };
 
-    this.update = function () {
+    this.update = function (delta) {
         for (var i = 0; i < bhvCompInstances.length; ++i) {
-            bhvCompInstances[i].bhvComp.update();
+            bhvCompInstances[i].bhvComp.update(delta);
         }
     };
 
@@ -47,7 +47,7 @@ var BhvEngine = function (headElem) {
             bhvComp: new bhvConstructors[bhvCompDefinitions[bhvCompId].behaviorConstructor](entity)
         };
         bhvCompInstances.push(instance);
-        messengerEngine.queueForPosting("createdBehaviorInstance", instance);
+        messengerEngine.queueForPosting("createdBehaviorInstance", instance.bhvComp, instance.instanceId);
     };
 
     var setBehaviorConstructor = function (constructorName, constructorFunction) {
@@ -56,6 +56,17 @@ var BhvEngine = function (headElem) {
         }
     };
 
+    var removeBhvCompInstanceFromMessage = function (instanceId) {
+        for (var i = 0; i < bhvCompInstances.length; ++i) {
+            var instance = bhvCompInstances[i];
+            if (instance.instanceId == instanceId) {
+                bhvCompInstances.splice(i, 1);
+                break;
+            }
+        }
+    };
+
     messengerEngine.register("createBehavior", this, createBhvCompInstance);
     messengerEngine.register("setBehaviorConstructor", this, setBehaviorConstructor);
+    messengerEngine.register("removeEntityInstance", this, removeBhvCompInstanceFromMessage);
 };

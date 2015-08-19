@@ -153,11 +153,8 @@ IF NOT EXISTS (SELECT 1 FROM [sys].[tables] t
 BEGIN
 	CREATE TABLE [game].[EntitiesOnAllLevels] (
 		[Id] int PRIMARY KEY CLUSTERED IDENTITY,
-		[EntityId] int FOREIGN KEY REFERENCES [compjs].[Entities]([Id]),
-		[LevelId] int FOREIGN KEY REFERENCES [game].[Levels]([Id])
+		[EntityId] int FOREIGN KEY REFERENCES [compjs].[Entities]([Id])
 	)
-	CREATE NONCLUSTERED INDEX IX__EntitiesOnAllLevels__LevelId ON [game].[EntitiesOnAllLevels]([LevelId])
-	INCLUDE([EntityId])
 	DBCC CHECKIDENT ('[game].[EntitiesOnAllLevels]', RESEED, 0)
 END
 

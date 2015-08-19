@@ -2,146 +2,94 @@
 var InputManager = function () {
     var messengerEngine = globalMessengerEngine;
 
-    var arrowLeft = 37;
-    var arrowUp = 38;
-    var arrowRight = 39;
-    var arrowDown = 40;
+    this.keys = {
+        arrowLeft: 37,
+        arrowUp: 38,
+        arrowRight: 39,
+        arrowDown: 40,
+        w: 87,
+        a: 65,
+        s: 83,
+        d: 68,
+        space: 32,
+        enter: 13
+    };
 
-    var arrowLeftPressed = false;
-    var arrowUpPressed = false;
-    var arrowRightPressed = false;
-    var arrowDownPressed = false;
-
-    var arrowLeftTriggered = false;
-    var arrowUpTriggered = false;
-    var arrowRightTriggered = false;
-    var arrowDownTriggered = false;
+    var pressedArrayTemp = [];
+    var triggeredArrayTemp = [];
 
     var pressedArray = [];
     var triggeredArray = [];
 
-    this.isArrowLeftPressed = function () {
-        return pressedArray[arrowLeft];
+    var updateFunction;
+
+    this.isPressed = function (keyCode) {
+        return pressedArray[keyCode] !== undefined && pressedArray[keyCode];
     };
 
-    this.isArrowUpPressed = function () {
-        return pressedArray[arrowUp];
-    };
-
-    this.isArrowRightPressed = function () {
-        return pressedArray[arrowRight];
-    };
-
-    this.isArrowDownPressed = function () {
-        return pressedArray[arrowDown];
-    };
-
-    this.isArrowLeftTriggered = function () {
-        return triggeredArray[arrowLeft];
-    };
-
-    this.isArrowUpTriggered = function () {
-        return triggeredArray[arrowUp];
-    };
-
-    this.isArrowRightTriggered = function () {
-        return triggeredArray[arrowRight];
-    };
-
-    this.isArrowDownTriggered = function () {
-        return triggeredArray[arrowDown];
+    this.isTriggered = function (keyCode) {
+        return triggeredArray[keyCode] !== undefined && triggeredArray[keyCode];
     };
 
     this.init = function () {
         return new Promise(function (resolve, reject) {
-            pressedArray[arrowLeft] = false;
-            pressedArray[arrowUp] = false;
-            pressedArray[arrowRight] = false;
-            pressedArray[arrowDown] = false;
-
-            triggeredArray[arrowLeft] = false;
-            triggeredArray[arrowUp] = false;
-            triggeredArray[arrowRight] = false;
-            triggeredArray[arrowDown] = false;
-
             window.addEventListener("keydown", function (event) {
-                if (event.keyCode == arrowLeft) {
-                    arrowLeftPressed = true;
-                    arrowLeftTriggered = true;
-                }
-                else if (event.keyCode == arrowUp) {
-                    arrowUpPressed = true;
-                    arrowUpTriggered = true;
-                }
-                else if (event.keyCode == arrowRight) {
-                    arrowRightPressed = true;
-                    arrowRightTriggered = true;
-                }
-                else if (event.keyCode == arrowDown) {
-                    arrowDownPressed = true;
-                    arrowDownTriggered = true;
-                }
+                pressedArrayTemp[event.keyCode] = true;
+                triggeredArrayTemp[event.keyCode] = true;
             });
             window.addEventListener("keyup", function (event) {
-                if (event.keyCode == arrowLeft) {
-                    arrowLeftPressed = false;
-                    arrowLeftTriggered = false;
-                }
-                else if (event.keyCode == arrowUp) {
-                    arrowUpPressed = false;
-                    arrowUpTriggered = false;
-                }
-                else if (event.keyCode == arrowRight) {
-                    arrowRightPressed = false;
-                    arrowRightTriggered = false;
-                }
-                else if (event.keyCode == arrowDown) {
-                    arrowDownPressed = false;
-                    arrowDownTriggered = false;
-                }
+                pressedArrayTemp[event.keyCode] = false;
+                triggeredArrayTemp[event.keyCode] = false;
             });
             resolve();
         });
     };
 
-    this.update = function () {
-        pressedArray[arrowLeft] = arrowLeftPressed;
-        pressedArray[arrowUp] = arrowUpPressed;
-        pressedArray[arrowRight] = arrowRightPressed;
-        pressedArray[arrowDown] = arrowDownPressed;
-
-        if (arrowLeftTriggered === true && triggeredArray[arrowLeft] === false) {
-            triggeredArray[arrowLeft] = true;
-            arrowLeftTriggered = false;
-        }
-        else if (triggeredArray[arrowLeft] === true) {
-            triggeredArray[arrowLeft] = false;
+    var enabledUpdate = function () {
+        var i;
+        for (i in pressedArrayTemp) {
+            pressedArray[i] = pressedArrayTemp[i];
         }
 
-        if (arrowUpTriggered === true && triggeredArray[arrowUp] === false) {
-            triggeredArray[arrowUp] = true;
-            arrowUpTriggered = false;
-        }
-        else if (triggeredArray[arrowUp] === true) {
-            triggeredArray[arrowUp] = false;
-        }
-
-        if (arrowRightTriggered === true && triggeredArray[arrowRight] === false) {
-            triggeredArray[arrowRight] = true;
-            arrowRightTriggered = false;
-        }
-        else if (triggeredArray[arrowRight] === true) {
-            triggeredArray[arrowRight] = false;
-        }
-
-        if (arrowDownTriggered === true && triggeredArray[arrowDown] === false) {
-            triggeredArray[arrowDown] = true;
-            arrowDownTriggered = false;
-        }
-        else if (triggeredArray[arrowDown] === true) {
-            triggeredArray[arrowDown] = false;
+        for (i in triggeredArrayTemp) {
+            if (triggeredArray[i] === undefined) {
+                triggeredArray[i] = triggeredArrayTemp[i];
+            }
+            else if (triggeredArray[i] === false && triggeredArrayTemp[i] === true) {
+                triggeredArray[i] = true;
+                triggeredArrayTemp[i] = false;
+            }
+            else {
+                triggeredArray[i] = false;
+                triggeredArrayTemp[i] = false;
+            }
         }
     };
+
+    var disabledUpdate = function () {
+        var i;
+        for (i in pressedArrayTemp) {
+            pressedArray[i] = false;
+        }
+
+        for (i in triggeredArrayTemp) {
+                triggeredArray[i] = false;
+        }
+    };
+
+    this.update = function () {
+        updateFunction();
+    };
+
+    this.enable = function () {
+        updateFunction = enabledUpdate;
+    };
+
+    this.disable = function () {
+        updateFunction = disabledUpdate;
+    };
+
+    updateFunction = enabledUpdate;
 
 };
 

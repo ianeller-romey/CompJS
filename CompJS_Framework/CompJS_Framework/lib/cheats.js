@@ -83,11 +83,13 @@
                     cheatsElem.style.height = cheatsElemHeight;
                     cheatsElem.style.padding = "8px";
                     acceptInput = true;
+                    globalInputManager.disable();
                 }
                 else {
                     cheatsElem.style.height = 0;
                     cheatsElem.style.padding = "0px";
                     acceptInput = false;
+                    globalInputManager.enable();
                 }
             }
             else {

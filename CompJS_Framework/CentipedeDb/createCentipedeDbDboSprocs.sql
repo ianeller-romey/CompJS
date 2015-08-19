@@ -454,7 +454,6 @@ BEGIN
 	FROM [compjs].[Entities] e
 	INNER JOIN [game].[EntitiesOnAllLevels] eoal
 	ON eoal.[EntityId] = e.[Id]
-	WHERE eoal.[LevelId] = @levelId	
 
 END
 GO

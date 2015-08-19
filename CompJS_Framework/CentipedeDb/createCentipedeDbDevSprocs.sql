@@ -319,6 +319,39 @@ BEGIN
 END
 GO
 
+IF NOT EXISTS (SELECT 1 FROM [dbo].[sysobjects] WHERE [id] = object_id(N'[dev].[dev_CreatePhysCompWithAABBBoundingData]') AND OBJECTPROPERTY([id], N'IsProcedure') = 1)
+  EXEC('CREATE PROCEDURE [dev].[dev_CreatePhysCompWithAABBBoundingData] AS SELECT 1')
+GO
+-- =============================================
+-- Author:		Ian Eller-Romey
+-- Create date: 8/17/2015
+-- Description:	
+-- =============================================
+ALTER PROCEDURE [dev].[dev_CreatePhysCompWithAABBBoundingData]
+	@entityId int,
+	@physTypeId int,
+	@collisionTypeId int,
+	@originX float,
+	@originY float,
+	@halfWidth float,
+	@halfHeight float
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+	
+	DECLARE @boundingData varchar(1000)
+	SET @boundingData = '{"origin":{"x":' + LTRIM(STR(@originX)) + ',"y":' + LTRIM(STR(@originY)) + '}, "halfValues":{"width":' + LTRIM(STR(@halfWidth)) + ',"height":' + LTRIM(STR(@halfHeight)) + '}' + '}'
+
+	INSERT INTO [compjs].[PhysComps] ([EntityId], [PhysTypeId], [CollisionTypeId], [BoundingData])
+	VALUES (@entityId, @physTypeId, @collisionTypeId, @boundingData)
+	
+	RETURN SCOPE_IDENTITY()
+
+END
+GO
+
 IF NOT EXISTS (SELECT 1 FROM [dbo].[sysobjects] WHERE [id] = object_id(N'[dev].[dev_CreateEntity]') AND OBJECTPROPERTY([id], N'IsProcedure') = 1)
   EXEC('CREATE PROCEDURE [dev].[dev_CreateEntity] AS SELECT 1')
 GO
@@ -387,6 +420,30 @@ BEGIN
 
 	INSERT INTO [game].[LevelLayouts] ([LevelId], [EntityId], [X], [Y])
 	VALUES (@levelId, @entityId, @x, @y)
+	
+	RETURN SCOPE_IDENTITY()
+
+END
+GO
+
+IF NOT EXISTS (SELECT 1 FROM [dbo].[sysobjects] WHERE [id] = object_id(N'[dev].[dev_CreateEntitiesOnAllLevels]') AND OBJECTPROPERTY([id], N'IsProcedure') = 1)
+  EXEC('CREATE PROCEDURE [dev].[dev_CreateEntitiesOnAllLevels] AS SELECT 1')
+GO
+-- =============================================
+-- Author:		Ian Eller-Romey
+-- Create date: 8/14/2015
+-- Description:	
+-- =============================================
+ALTER PROCEDURE [dev].[dev_CreateEntitiesOnAllLevels]
+	@entityId int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+	INSERT INTO [game].[EntitiesOnAllLevels] ([EntityId])
+	VALUES (@entityId)
 	
 	RETURN SCOPE_IDENTITY()
 
