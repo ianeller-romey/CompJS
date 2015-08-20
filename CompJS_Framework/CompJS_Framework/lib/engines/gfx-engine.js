@@ -11,6 +11,8 @@ var GfxEngine = function (canvasElem) {
 
     var webGL;
     var webGLShaderProgram;
+    var webGLVertexShaderExtraSteps;
+    var webGLFragmentShaderExtraSteps;
     var webGLSquareVerticesBuffer;
     var webGLTexCoordBuffer;
 
@@ -109,7 +111,7 @@ var GfxEngine = function (canvasElem) {
                 initShaders();
                 initBuffers();
 
-                setShaderProgram("Texture");
+                setShaderProgram("PointLight");
 
                 webGL.clearColor(0.0, 0.0, 0.0, 0.0);
                 webGL.clear(webGL.COLOR_BUFFER_BIT | webGL.DEPTH_BUFFER_BIT);
@@ -198,35 +200,49 @@ var GfxEngine = function (canvasElem) {
             var nextGfxComp = (i != gfxCompInstances.length - 1) ? gfxCompInstances[i + 1].gfxComp : null;
             var nextAnimationFrame = (nextGfxComp != null) ? gfxCompDefinitions[nextGfxComp.id].animationStateDefinitions[nextGfxComp.animationStateDefinition].animationFrameDefinitions[nextGfxComp.animationFrameDefinition] : null;
             if (nextAnimationFrame == null || animationFrameDefinition.texture != nextAnimationFrame.texture) {
+                // vertex buffer
                 webGL.bindBuffer(webGL.ARRAY_BUFFER, webGLSquareVerticesBuffer);
                 webGL.bufferData(webGL.ARRAY_BUFFER, new Float32Array(vertexVerts), webGL.STATIC_DRAW);
 
+                // vertex shader
                 var positionLocation = webGL.getAttribLocation(webGLShaderProgram, "a_position")
-                webGL.enableVertexAttribArray(positionLocation);
-                webGL.vertexAttribPointer(positionLocation, 2, webGL.FLOAT, false, 0, 0);
+                if (positionLocation != null) {
+                    webGL.enableVertexAttribArray(positionLocation);
+                    webGL.vertexAttribPointer(positionLocation, 2, webGL.FLOAT, false, 0, 0);
+                }
 
                 var resolutionLocation = webGL.getUniformLocation(webGLShaderProgram, "u_resolution");
-                webGL.uniform2f(resolutionLocation, 1024, 1024);
+                if (resolutionLocation != null) {
+                    webGL.uniform2f(resolutionLocation, 1024, 1024);
+                }
 
+                if (webGLVertexShaderExtraSteps != null) {
+                    webGLVertexShaderExtraSteps(webGL, webGLShaderProgram);
+                }
+
+                // texture buffer
                 webGL.bindBuffer(webGL.ARRAY_BUFFER, webGLTexCoordBuffer);
                 webGL.bufferData(webGL.ARRAY_BUFFER, new Float32Array(textureVerts), webGL.STATIC_DRAW);
 
+                // texture shader
                 var texCoordLocation = webGL.getAttribLocation(webGLShaderProgram, "a_texCoord");
-                webGL.enableVertexAttribArray(texCoordLocation);
-                webGL.vertexAttribPointer(texCoordLocation, 2, webGL.FLOAT, false, 0, 0);
-                
-                var textureSizeLocation = webGL.getUniformLocation(webGLShaderProgram, "u_textureSize");
-                if (textureSizeLocation != null) {
-                    var image = textureDefinitions[animationFrameDefinition.texture].image;
-                    webGL.uniform2f(textureSizeLocation, image.width, image.height);
+                if (texCoordLocation != null) {
+                    webGL.enableVertexAttribArray(texCoordLocation);
+                    webGL.vertexAttribPointer(texCoordLocation, 2, webGL.FLOAT, false, 0, 0);
                 }
 
+                if (webGLFragmentShaderExtraSteps != null) {
+                    webGLFragmentShaderExtraSteps(webGL, webGLShaderProgram);
+                }
+
+                // bind active texture
                 if (animationFrameDefinition.texture != activeTexture) {
                     webGL.bindTexture(webGL.TEXTURE_2D, textureDefinitions[animationFrameDefinition.texture].webGLTexture);
 
                     activeTexture = animationFrameDefinition.texture;
                 }
 
+                // draw
                 webGL.drawArrays(webGL.TRIANGLES, 0, vertexVerts.length / 2);
 
                 vertexVerts = [];
@@ -276,6 +292,8 @@ var GfxEngine = function (canvasElem) {
         });
         if (shaderDefinition !== undefined && shaderDefinition !== null) {
             webGLShaderProgram = shaderDefinition.program;
+            webGLVertexShaderExtraSteps = shaderDefinition.vertexShaderExtraSteps;
+            webGLFragmentShaderExtraSteps = shaderDefinition.fragmentShaderExtraSteps;
             webGL.useProgram(webGLShaderProgram);
         }
     };

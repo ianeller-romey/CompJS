@@ -35,6 +35,8 @@
                     });
                 }
             };
+
+            messengerEngine.queueForPosting("setPointLightTransform", this.transformation);
         };
 
         globalMessengerEngine.postImmediate("setBehaviorConstructor", "BehaviorPlayer", BehaviorPlayer);

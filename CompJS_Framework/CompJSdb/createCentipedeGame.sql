@@ -345,4 +345,13 @@ BEGIN
 	
 END
 
+IF NOT EXISTS (SELECT [Id] FROM [game].[Shaders] WHERE [GameId] = @gameId AND [Name] = 'PointLight')
+BEGIN
+	EXEC [dev].[dev_CreateShader]
+		@name = 'PointLight',
+		@shaderFile = 'http://arcade/cabinet/compjs/lib/shaders/centipede/shader-point-light.js',
+		@gameId = @gameId
+	
+END
+
 GO

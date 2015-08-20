@@ -13,31 +13,12 @@
             var fragmentShaderName = "fragmentShader-" + shaderName;
             var vertexShaderName = "vertexShader-" + shaderName;
 
+            /****************/
+            /* FRAGMENT SHADER */
+            /****************/
             var fragmentShader = document.createElement("script");
             fragmentShader.setAttribute("id", fragmentShaderName);
             fragmentShader.setAttribute("type", "x-shader/x-fragment");
-            /*precision mediump float;
- 
-            uniform sampler2D u_image;
-        
-            varying vec2 v_texCoord;
- 
-            void main()
-            {
-              vec2 onePixel = vec2(1.0 / 480.0, 1.0 / 320.0);
- 
-              vec2 texCoord = v_texCoord;
- 
-              vec4 color;
-              color.rgb = vec3(0.5);
-              color -= texture2D(u_image, texCoord - onePixel) * 5.0;
-              color += texture2D(u_image, texCoord + onePixel) * 5.0;
-              color.rgb = vec3((color.r + color.g + color.b) / 3.0);
-
-              vec4 tex = texture2D(u_image, v_texCoord);
-
-              gl_FragColor = vec4(color.rgb, tex.a);
-            }*/
             fragmentShader.text = "" + "\r\n" +
             "precision mediump float;" + "\r\n" +
             "" + "\r\n" +
@@ -62,33 +43,16 @@
             "    gl_FragColor = vec4(color.rgb, tex.a);" + "\r\n" +
             "}";
             headElem.appendChild(fragmentShader);
+            /****************/
+            /* FRAGMENT SHADER */
+            /****************/
 
+            /****************/
+            /* VERTEX SHADER */
+            /****************/
             var vertexShader = document.createElement("script");
             vertexShader.setAttribute("id", vertexShaderName);
             vertexShader.setAttribute("type", "x-shader/x-vertex");
-            /*attribute vec2 a_position;
-            attribute vec2 a_texCoord;
-
-            uniform vec2 u_resolution;
-
-            varying vec2 v_texCoord;
-
-            void main() {
-                // convert the rectangle from pixels to 0.0 to 1.0
-                vec2 zeroToOne = a_position / u_resolution;
-
-                // convert from 0->1 to 0->2
-                vec2 zeroToTwo = zeroToOne * 2.0;
-
-                // convert from 0->2 to -1->+1 (clipspace)
-                vec2 clipSpace = zeroToTwo - 1.0;
-
-                gl_Position = vec4(clipSpace * vec2(1, -1), 0, 1);
-
-                // pass the texCoord to the fragment shader
-                // The GPU will interpolate this value between points.
-                v_texCoord = a_texCoord;
-            }*/
             vertexShader.text = "" + "\r\n" +
             "attribute vec2 a_position;" + "\r\n" +
             "attribute vec2 a_texCoord;" + "\r\n" +
@@ -114,12 +78,19 @@
             "    v_texCoord = a_texCoord;" + "\r\n" +
             "}";
             headElem.appendChild(vertexShader);
+            /****************/
+            /* VERTEX SHADER */
+            /****************/
 
             shaderList.push({
                 name: shaderName,
                 init: function (gl, index) {
                     var shaderProgram = compileShader(gl, fragmentShaderName, vertexShaderName);
                     shaderList[index].program = shaderProgram;
+
+                    shaderList[index].vertexShaderExtraSteps = null;
+
+                    shaderList[index].fragmentShaderExtraSteps = null;
                 }
             });
         }

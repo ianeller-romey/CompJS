@@ -54,7 +54,7 @@ var MessengerEngine = function () {
 
     this.postImmediate = function (messageType) {
         if (!validMessageType(messageType)) {
-            throw "Cannot post a message for a messageType that doesn't exist.";
+            return;
         }
 
         var messageTypeRegistration = messageRegistration[messageType];
@@ -66,7 +66,7 @@ var MessengerEngine = function () {
 
     this.queueForPosting = function (messageType) {
         if (!validMessageType(messageType)) {
-            throw "Cannot post a message for a messageType that doesn't exist.";
+            return;
         }
 
         var params = Array.prototype.slice.call(arguments, 1);

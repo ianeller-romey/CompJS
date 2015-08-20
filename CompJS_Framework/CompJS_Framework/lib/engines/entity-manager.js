@@ -44,13 +44,13 @@ var EntityManager = function () {
         var entityDefinition = entityTypeDefinitions[entity.typeId];
 
         if (entityHasBehavior(entityDefinition)) {
-            messengerEngine.queueForPosting("createBehavior", entity, entityDefinition.behavior);
+            messengerEngine.postImmediate("createBehavior", entity, entityDefinition.behavior);
         }
         if (entityHasGraphics(entityDefinition)) {
-            messengerEngine.queueForPosting("createGraphics", entity, entityDefinition.graphics);
+            messengerEngine.postImmediate("createGraphics", entity, entityDefinition.graphics);
         }
         if (entityHasPhysics(entityDefinition)) {
-            messengerEngine.queueForPosting("createPhysics", entity, entityDefinition.physics);
+            messengerEngine.postImmediate("createPhysics", entity, entityDefinition.physics);
         }
     };
 
