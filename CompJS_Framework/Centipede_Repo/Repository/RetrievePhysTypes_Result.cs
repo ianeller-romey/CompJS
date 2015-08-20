@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CompJS_Repo.Centipede.Repository
+namespace CompJS_Repo.Repository
 {
     using System;
     

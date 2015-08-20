@@ -7,14 +7,14 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CompJS_Repo.Centipede.Repository
+namespace CompJS_Repo.Repository
 {
     using System;
     
     public partial class RetrieveLevelLayoutsForLevel_Result
     {
-        public int EntityId { get; set; }
-        public string EntityName { get; set; }
+        public int EntityTypeId { get; set; }
+        public string EntityTypeName { get; set; }
         public int LevelId { get; set; }
         public double X { get; set; }
         public double Y { get; set; }

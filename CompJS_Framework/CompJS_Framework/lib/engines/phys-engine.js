@@ -38,7 +38,7 @@ var PhysEngine = function () {
         });
     };
 
-    this.init = function () {
+    this.init = function (gameId) {
         var physTypesPromise = new Promise(function (resolve, reject) {
             servicesEngine.retrievePhysTypes().then(function (data) {
                 buildPhysTypeDefinitions(data);
@@ -54,7 +54,7 @@ var PhysEngine = function () {
 
         return new Promise(function (resolve, reject) {
             Promise.all([physTypesPromise, collisionTypesPromise]).then(function () {
-                servicesEngine.retrieveAllPhysComps().then(function (data) {
+                servicesEngine.retrieveAllPhysCompDefinitionsForGame(gameId).then(function (data) {
                     buildPhysCompDefinitions(data);
                     resolve();
                 });
@@ -97,7 +97,7 @@ var PhysEngine = function () {
                             }
                             instance.physComp.colliders.push({
                                 instanceId: otherInstance.instanceId,
-                                entityName: otherInstance.entityName
+                                entityTypeName: otherInstance.entityTypeName
                             });
                         }
                     }
@@ -108,7 +108,7 @@ var PhysEngine = function () {
                             }
                             instance.physComp.colliders.push({
                                 instanceId: otherInstance.instanceId,
-                                entityName: otherInstance.entityName
+                                entityTypeName: otherInstance.entityTypeName
                             });
                         }
                     }
@@ -127,7 +127,7 @@ var PhysEngine = function () {
         var physCompDefinition = physCompDefinitions[physCompId];
         var instance = {
             instanceId: entity.instanceId,
-            entityName: entity.name,
+            entityTypeName: entity.typeName,
             transformation: entity.transformation,
             physComp: {
                 physTypeId: physCompDefinition.physTypeId,

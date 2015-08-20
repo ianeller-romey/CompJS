@@ -14,18 +14,21 @@ namespace CompJS_Repo.Interface
         IEnumerable<AudioType> RetrieveAudioTypes();
         IEnumerable<PhysType> RetrievePhysTypes();
         IEnumerable<CollisionType> RetrieveCollisionTypes();
-        IEnumerable<Audio> RetrieveAllAudio();
-        IEnumerable<BhvComp> RetrieveAllBhvComps();
-        IEnumerable<GfxComp> RetrieveAllGfxComps();
-        IEnumerable<PhysComp> RetrieveAllPhysComps();
-        IEnumerable<EntityDefinition> RetrieveAllEntityDefinitions();
+        IEnumerable<Game> RetrieveAllGames();
+        IEnumerable<Audio> RetrieveAllAudioForGame(int gameId);
+        IEnumerable<BhvCompDefinition> RetrieveAllBhvCompDefinitionsForGame(int gameId);
+        IEnumerable<GfxCompDefinition> RetrieveAllGfxCompDefinitionsForGame(int gameId);
+        IEnumerable<PhysCompDefinition> RetrieveAllPhysCompDefinitionsForGame(int gameId);
+        IEnumerable<EntityTypeDefinition> RetrieveAllEntityTypeDefinitionsForGame(int gameId);
+        IEnumerable<Shader> RetrieveAllShadersForGame(int gameId);
+        IEnumerable<Level> RetrieveAllLevelsForGame(int gameId);
         LevelStartData RetrieveLevel(int levelId);
 
-        BhvComp RetrieveBhvComp(int id);
-        GfxComp RetrieveGfxComp(int id);
-        PhysComp RetrievePhysComp(int id);
-        BhvComp RetrieveBhvCompForEntity(int entityId);
-        GfxComp RetrieveGfxCompForEntity(int entityId);
-        PhysComp RetrievePhysCompForEntity(int entityId);
+        BhvCompDefinition RetrieveBhvComp(int id);
+        GfxCompDefinition RetrieveGfxComp(int id);
+        PhysCompDefinition RetrievePhysComp(int id);
+        BhvCompDefinition RetrieveBhvCompForEntity(int entityId);
+        GfxCompDefinition RetrieveGfxCompForEntity(int entityId);
+        PhysCompDefinition RetrievePhysCompForEntity(int entityId);
     }
 }

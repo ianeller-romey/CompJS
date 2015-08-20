@@ -57,11 +57,11 @@
     <Reference Include="System.EnterpriseServices" />-->
   </ItemGroup>
   <ItemGroup>
-    <Content Include="lib\behaviors\behavior-player.js" />
-    <Content Include="lib\behaviors\behavior-player-bullet.js" />
-    <Content Include="lib\behaviors\behavior-mushroom-manager.js" />
-    <Content Include="lib\behaviors\behavior-mushroom.js" />
-    <Content Include="lib\behaviors\behavior-spider.js" />
+    <Content Include="lib\behaviors\centipede\behavior-mushroom-manager.js" />
+    <Content Include="lib\behaviors\centipede\behavior-mushroom.js" />
+    <Content Include="lib\behaviors\centipede\behavior-player-bullet.js" />
+    <Content Include="lib\behaviors\centipede\behavior-player.js" />
+    <Content Include="lib\behaviors\centipede\behavior-spider.js" />
     <Content Include="lib\engines\bhv-engine.js" />
     <Content Include="lib\cheats.js" />
     <Content Include="lib\engines\input-manager.js" />
@@ -73,6 +73,8 @@
     <Content Include="lib\engines\messenger-engine.js" />
     <Content Include="lib\engines\phys-engine.js" />
     <Content Include="lib\engines\services-engine.js" />
+    <Content Include="lib\shaders\centipede\shader-emboss.js" />
+    <Content Include="lib\shaders\centipede\shader-texture.js" />
     <Content Include="lib\utilities.js" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -118,13 +120,15 @@
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
-    <PostBuildEvent>echo D|xcopy "$(ProjectDir)*.html" C:\inetpub\arcade\compjs\centipede /R /Y
+    <PostBuildEvent>echo D|xcopy "$(ProjectDir)*.html" C:\inetpub\arcade\cabinet\compjs /R /Y
 
-echo D|xcopy "$(ProjectDir)lib" C:\inetpub\arcade\compjs\centipede\lib /R /Y /S
+echo D|xcopy "$(ProjectDir)lib" C:\inetpub\arcade\cabinet\compjs\lib /R /Y /S
 
-echo D|xcopy "$(ProjectDir)css" C:\inetpub\arcade\compjs\centipede\css /R /Y
+echo D|xcopy "$(ProjectDir)css" C:\inetpub\arcade\cabinet\compjs\css /R /Y
 
-echo D|xcopy "$(ProjectDir)images" C:\inetpub\arcade\compjs\centipede\images /R /Y</PostBuildEvent>
+echo D|xcopy "$(ProjectDir)images" C:\inetpub\arcade\cabinet\compjs\images /R /Y /S
+
+</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -126,10 +126,12 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AudioTypesController.cs" />
     <Compile Include="Controllers\CollisionTypesController.cs" />
-    <Compile Include="Controllers\BhvCompsController.cs" />
-    <Compile Include="Controllers\PhysCompsController.cs" />
-    <Compile Include="Controllers\GfxCompsController.cs" />
-    <Compile Include="Controllers\EntityDefinitionsController.cs" />
+    <Compile Include="Controllers\BhvCompDefinitionsController.cs" />
+    <Compile Include="Controllers\ShadersController.cs" />
+    <Compile Include="Controllers\GamesController.cs" />
+    <Compile Include="Controllers\EntityTypeDefinitionsController.cs" />
+    <Compile Include="Controllers\PhysCompDefinitionsController.cs" />
+    <Compile Include="Controllers\GfxCompDefinitionsController.cs" />
     <Compile Include="Controllers\LevelsController.cs" />
     <Compile Include="Controllers\PhysTypesController.cs" />
     <Compile Include="Global.asax.cs">
@@ -137,17 +139,20 @@
     </Compile>
     <Compile Include="Models\Audio.cs" />
     <Compile Include="Models\AudioType.cs" />
-    <Compile Include="Models\BhvComp.cs" />
+    <Compile Include="Models\BhvCompDefinition.cs" />
     <Compile Include="Models\CollisionType.cs" />
-    <Compile Include="Models\Entity.cs" />
-    <Compile Include="Models\EntityDefinition.cs" />
-    <Compile Include="Models\AnimationState.cs" />
-    <Compile Include="Models\AnimationFrame.cs" />
-    <Compile Include="Models\GfxComp.cs" />
+    <Compile Include="Models\Level.cs" />
+    <Compile Include="Models\Shader.cs" />
+    <Compile Include="Models\Game.cs" />
+    <Compile Include="Models\EntityType.cs" />
+    <Compile Include="Models\EntityTypeDefinition.cs" />
+    <Compile Include="Models\AnimationStateDefinition.cs" />
+    <Compile Include="Models\AnimationFrameDefinition.cs" />
+    <Compile Include="Models\GfxCompDefinition.cs" />
     <Compile Include="Models\HighScore.cs" />
     <Compile Include="Models\LevelPosition.cs" />
     <Compile Include="Models\LevelStartData.cs" />
-    <Compile Include="Models\PhysComp.cs" />
+    <Compile Include="Models\PhysCompDefinition.cs" />
     <Compile Include="Models\PhysType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -167,9 +172,9 @@
     <None Include="Properties\PublishProfiles\CompJS_Services.pubxml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Centipede_Repo\Centipede_Repo.csproj">
+    <ProjectReference Include="..\Centipede_Repo\CompJS_Repo.csproj">
       <Project>{a3b4f3ae-842f-46f2-8038-795ee7fc4291}</Project>
-      <Name>Centipede_Repo</Name>
+      <Name>CompJS_Repo</Name>
     </ProjectReference>
     <ProjectReference Include="..\ICompJS_Repo\ICompJS_Repo.csproj">
       <Project>{ffefb831-7db9-4cd6-a13b-5b3e64ce02d4}</Project>

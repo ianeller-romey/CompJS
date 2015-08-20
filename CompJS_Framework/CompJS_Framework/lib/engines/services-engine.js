@@ -30,35 +30,47 @@ var ServicesEngine = function () {
     };
 
     this.retrieveAudioTypes = function () {
-        return sendHttpGetRequest("http://arcade/compjs/centipede/compjsservices/api/AudioTypes/");
+        return sendHttpGetRequest("http://arcade/cabinet/compjs/compjsservices/compjs/AudioTypes/");
     };
 
     this.retrievePhysTypes = function () {
-        return sendHttpGetRequest("http://arcade/compjs/centipede/compjsservices/api/PhysTypes/");
+        return sendHttpGetRequest("http://arcade/cabinet/compjs/compjsservices/compjs/PhysTypes/");
     };
 
     this.retrieveCollisionTypes = function () {
-        return sendHttpGetRequest("http://arcade/compjs/centipede/compjsservices/api/CollisionTypes/");
+        return sendHttpGetRequest("http://arcade/cabinet/compjs/compjsservices/compjs/CollisionTypes/");
     };
 
-    this.retrieveAllEntityDefinitions = function () {
-        return sendHttpGetRequest("http://arcade/compjs/centipede/compjsservices/api/EntityDefinitions/")
+    this.retrieveAllGames = function () {
+        return sendHttpGetRequest("http://arcade/cabinet/compjs/compjsservices/game/");
     };
 
-    this.retrieveAllBhvComps = function () {
-        return sendHttpGetRequest("http://arcade/compjs/centipede/compjsservices/api/BhvComps/");
+    this.retrieveAllLevelsForGame = function (gameId) {
+        return sendHttpGetRequest("http://arcade/cabinet/compjs/compjsservices/game/levels/" + gameId);
     };
 
-    this.retrieveAllGfxComps = function () {
-        return sendHttpGetRequest("http://arcade/compjs/centipede/compjsservices/api/GfxComps/");
+    this.retrieveAllEntityTypeDefinitionsForGame = function (gameId) {
+        return sendHttpGetRequest("http://arcade/cabinet/compjs/compjsservices/game/ent/" + gameId)
     };
 
-    this.retrieveAllPhysComps = function () {
-        return sendHttpGetRequest("http://arcade/compjs/centipede/compjsservices/api/PhysComps/");
+    this.retrieveAllBhvCompDefinitionsForGame = function (gameId) {
+        return sendHttpGetRequest("http://arcade/cabinet/compjs/compjsservices/game/bhv/" + gameId);
+    };
+
+    this.retrieveAllGfxCompDefinitionsForGame = function (gameId) {
+        return sendHttpGetRequest("http://arcade/cabinet/compjs/compjsservices/game/gfx/" + gameId);
+    };
+
+    this.retrieveAllShadersForGame = function (gameId) {
+        return sendHttpGetRequest("http://arcade/cabinet/compjs/compjsservices/game/shaders/" + gameId);
+    };
+
+    this.retrieveAllPhysCompDefinitionsForGame = function (gameId) {
+        return sendHttpGetRequest("http://arcade/cabinet/compjs/compjsservices/game/phys/" + gameId);
     };
 
     this.loadLevel = function (levelId) {
-        return sendHttpGetRequest("http://arcade/compjs/centipede/compjsservices/api/Levels/" + levelId);
+        return sendHttpGetRequest("http://arcade/cabinet/compjs/compjsservices/game/levels/level/" + levelId);
     };
 };
 

@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CompJS_Repo.Centipede.Repository
+namespace CompJS_Repo.Repository
 {
     using System;
     
@@ -15,5 +15,6 @@ namespace CompJS_Repo.Centipede.Repository
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public int GameId { get; set; }
     }
 }

@@ -1,8 +1,8 @@
 ﻿
-var Entity = function (instanceId, entityId, name, position) {
+var Entity = function (instanceId, entityTypeId, entityTypeName, position) {
     this.instanceId = instanceId;
-    this.entityId = entityId;
-    this.name = name;
+    this.typeId = entityTypeId;
+    this.typeName = entityTypeName;
 
     this.transformation = {
         position: position,

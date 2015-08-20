@@ -10,13 +10,13 @@ namespace CompJS_Repo.Entities
 {
     public class LevelPosition
     {
-        public int EntityId
+        public int EntityTypeId
         {
             get;
             set;
         }
 
-        public string EntityName
+        public string EntityTypeName
         {
             get;
             set;

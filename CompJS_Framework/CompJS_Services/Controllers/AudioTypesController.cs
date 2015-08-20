@@ -8,7 +8,7 @@ using System.Web.Http;
 using FastMapper;
 
 using CompJS_Repo.Interface;
-using CompJS_Repo.Centipede;
+using CompJS_Repo;
 
 using CompJS_Services.Models;
 
@@ -21,7 +21,7 @@ namespace CompJS_Services.Controllers
 
         public AudioTypesController()
         {
-            m_repo = new Centipede_Repo();
+            m_repo = new CompJS_Repo.CompJS_Repo();
         }
 
         public IEnumerable<AudioType> Get()

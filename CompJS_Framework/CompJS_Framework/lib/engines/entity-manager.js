@@ -3,8 +3,8 @@ var EntityManager = function () {
     var servicesEngine = globalServicesEngine;
     var messengerEngine = globalMessengerEngine;
 
-    var entityDefinitions = [];
-    var entityNamedIds = [];
+    var entityTypeDefinitions = [];
+    var entityTypeNamedIds = [];
     var entityInstances = [];
 
     var entityHasBehavior = Entity.hasBehavior;
@@ -13,35 +13,35 @@ var EntityManager = function () {
 
     var entityIdGenerator = 0;
 
-    var buildEntityDefinitions = function (data) {
+    var buildEntityTypeDefinitions = function (data) {
         data.forEach(function (x) {
-            entityDefinitions[x.id] = {
+            entityTypeDefinitions[x.id] = {
                 name: x.name,
                 behavior: x.behavior,
                 graphics: x.graphics,
                 physics: x.physics
             };
 
-            entityNamedIds[x.name] = x.id;
+            entityTypeNamedIds[x.name] = x.id;
         });
     };
 
-    this.init = function () {
+    this.init = function (gameId) {
         return new Promise(function (resolve, reject) {
-            servicesEngine.retrieveAllEntityDefinitions().then(function (data) {
-                buildEntityDefinitions(data);
+            servicesEngine.retrieveAllEntityTypeDefinitionsForGame(gameId).then(function (data) {
+                buildEntityTypeDefinitions(data);
                 resolve();
             });
         });
     };
 
-    var createEntityInstance = function (xEntity) {
-        var entity = new Entity(entityIdGenerator++, xEntity.entityId, xEntity.entityName, {
-            x: xEntity.x,
-            y: xEntity.y
+    var createEntityInstance = function (xEntityType) {
+        var entity = new Entity(entityIdGenerator++, xEntityType.entityTypeId, xEntityType.entityTypeName, {
+            x: xEntityType.x,
+            y: xEntityType.y
         });
         entityInstances.push(entity);
-        var entityDefinition = entityDefinitions[entity.entityId];
+        var entityDefinition = entityTypeDefinitions[entity.typeId];
 
         if (entityHasBehavior(entityDefinition)) {
             messengerEngine.queueForPosting("createBehavior", entity, entityDefinition.behavior);
@@ -55,15 +55,15 @@ var EntityManager = function () {
     };
 
     var createEntityInstanceFromMessage = function (name, position) {
-        var entityNamedId = entityNamedIds[name];
-        if (entityNamedId != null) {
-            var xEntity = {
-                entityId: entityNamedId,
-                entityName: name,
+        var entityTypeNamedId = entityTypeNamedIds[name];
+        if (entityTypeNamedId != null) {
+            var xEntityType = {
+                entityTypeId: entityTypeNamedId,
+                entityTypeName: name,
                 x: position.x,
                 y: position.y
             };
-            createEntityInstance(xEntity);
+            createEntityInstance(xEntityType);
         }
     };
 
@@ -85,10 +85,10 @@ var EntityManager = function () {
                 createEntityInstance(x);
             });
 
-            data.entitiesOnAllLevels.forEach(function (x) {
+            data.entityTypesOnAllLevels.forEach(function (x) {
                 createEntityInstance({
-                    entityId: x.id,
-                    entityName: x.name,
+                    entityTypeId: x.id,
+                    entityTypeName: x.name,
                     behavior: x.behavior,
                     graphics: x.graphics,
                     physics: x.physics,

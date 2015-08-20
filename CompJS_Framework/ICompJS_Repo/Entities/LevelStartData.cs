@@ -16,7 +16,7 @@ namespace CompJS_Repo.Entities
             set;
         }
 
-        public IEnumerable<Entity> EntitiesOnAllLevels
+        public IEnumerable<EntityType> EntityTypesOnAllLevels
         {
             get;
             set;

@@ -16,7 +16,7 @@ namespace CompJS_Services.Models
             set;
         }
 
-        public IEnumerable<EntityDefinition> EntitiesOnAllLevels
+        public IEnumerable<EntityTypeDefinition> EntityTypesOnAllLevels
         {
             get;
             set;

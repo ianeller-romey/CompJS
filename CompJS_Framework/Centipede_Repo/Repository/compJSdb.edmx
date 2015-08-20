@@ -1,0 +1,539 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="CompJSdbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <Function Name="RetrieveAudioTypes" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="compjs" />
+        <Function Name="RetrieveCollisionTypes" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="compjs" />
+        <Function Name="RetrievePhysTypes" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="compjs" />    
+        <Function Name="RetrieveAllAudioForGame" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="game">
+          <Parameter Name="gameId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="RetrieveAllGames" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="game" />
+        <Function Name="RetrieveBhvCompDefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="game">
+          <Parameter Name="id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="RetrieveBhvCompDefinitionForEntity" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="game">
+          <Parameter Name="entityTypeId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="RetrieveAllBhvCompDefinitionsForGame" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="game">
+          <Parameter Name="gameId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="RetrieveGfxCompDefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="game">
+          <Parameter Name="id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="RetrieveGfxCompDefinitionForEntity" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="game">
+          <Parameter Name="entityTypeId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="RetrieveAllGfxCompDefinitionsForGame" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="game">
+          <Parameter Name="gameId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="RetrieveAnimationStateDefinitionsForGfxCompDefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="game">
+          <Parameter Name="gfxCompDefinitionId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="RetrieveAnimationFrameDefinitionsForAnimationStateDefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="game">
+          <Parameter Name="animationStateDefinitionId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="RetrievePhysCompDefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="game">
+          <Parameter Name="id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="RetrievePhysCompDefinitionForEntity" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="game">
+          <Parameter Name="entityTypeId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="RetrieveAllPhysCompDefinitionsForGame" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="game">
+          <Parameter Name="gameId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="RetrieveEntity" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="game">
+          <Parameter Name="entityTypeId" Type="int" Mode="In" />
+        </Function><Function Name="RetrieveAllEntityTypeDefinitionsForGame" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="game">
+          <Parameter Name="gameId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="RetrieveAllShadersForGame" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="game">
+          <Parameter Name="gameId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="RetrieveAllLevelsForGame" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="game">
+          <Parameter Name="gameId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="RetrieveLevelLayoutsForLevel" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="game">
+          <Parameter Name="levelId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="CreateHighScoreForGame" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="game">
+          <Parameter Name="playerName" Type="varchar" Mode="In" />
+          <Parameter Name="score" Type="bigint" Mode="In" />
+          <Parameter Name="gameId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="RetrieveTopHighScoresForGame" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="game">
+          <Parameter Name="count" Type="int" Mode="In" />
+          <Parameter Name="gameId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="RetrieveAllHighScoresForGame" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="game">
+          <Parameter Name="gameId" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="CompJSdbModelStoreContainer" />
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CompJSdbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="CompJSdbEntities" annotation:LazyLoadingEnabled="true" >
+          <FunctionImport Name="RetrieveAudioTypes" ReturnType="Collection(CompJSdbModel.RetrieveAudioTypes_Result)" />
+          <FunctionImport Name="RetrieveCollisionTypes" ReturnType="Collection(CompJSdbModel.RetrieveCollisionTypes_Result)" />
+          <FunctionImport Name="RetrievePhysTypes" ReturnType="Collection(CompJSdbModel.RetrievePhysTypes_Result)" />
+          <FunctionImport Name="RetrieveAllAudioForGame" ReturnType="Collection(CompJSdbModel.RetrieveAllAudioForGame_Result)">
+            <Parameter Name="gameId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="RetrieveBhvCompDefinition" ReturnType="Collection(CompJSdbModel.RetrieveBhvCompDefinition_Result)">
+            <Parameter Name="id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="RetrieveBhvCompDefinitionForEntity" ReturnType="Collection(CompJSdbModel.RetrieveBhvCompDefinition_Result)">
+            <Parameter Name="entityTypeId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="RetrieveAllBhvCompDefinitionsForGame" ReturnType="Collection(CompJSdbModel.RetrieveBhvCompDefinition_Result)">
+            <Parameter Name="gameId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="RetrieveAllGames" ReturnType="Collection(CompJSdbModel.RetrieveAllGames_Result)" />
+          <FunctionImport Name="RetrieveGfxCompDefinition" ReturnType="Collection(CompJSdbModel.RetrieveGfxCompDefinition_Result)">
+            <Parameter Name="id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="RetrieveGfxCompDefinitionForEntity" ReturnType="Collection(CompJSdbModel.RetrieveGfxCompDefinition_Result)">
+            <Parameter Name="entityTypeId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="RetrieveAllGfxCompDefinitionsForGame">
+            <ReturnType Type="Collection(CompJSdbModel.RetrieveGfxCompDefinition_Result)" />
+            <ReturnType Type="Collection(CompJSdbModel.RetrieveAnimationStateDefinitionsForGfxCompDefinition_Result)" />
+            <ReturnType Type="Collection(CompJSdbModel.RetrieveAnimationFrameDefinitionsForAnimationStateDefinition_Result)" />
+            <Parameter Name="gameId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="RetrieveAnimationStateDefinitionsForGfxCompDefinition" ReturnType="Collection(CompJSdbModel.RetrieveAnimationStateDefinitionsForGfxCompDefinition_Result)">
+            <Parameter Name="gfxCompDefinitionId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="RetrieveAnimationFrameDefinitionsForAnimationStateDefinition" ReturnType="Collection(CompJSdbModel.RetrieveAnimationFrameDefinitionsForAnimationStateDefinition_Result)">
+            <Parameter Name="animationStateDefinitionId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="RetrievePhysCompDefinition" ReturnType="Collection(CompJSdbModel.RetrievePhysCompDefinition_Result)">
+            <Parameter Name="id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="RetrievePhysCompDefinitionForEntity" ReturnType="Collection(CompJSdbModel.RetrievePhysCompDefinition_Result)">
+            <Parameter Name="entityTypeId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="RetrieveAllPhysCompDefinitionsForGame" ReturnType="Collection(CompJSdbModel.RetrievePhysCompDefinition_Result)">
+            <Parameter Name="gameId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="RetrieveEntity" ReturnType="Collection(CompJSdbModel.RetrieveEntity_Result)">
+            <Parameter Name="entityTypeId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="RetrieveAllEntityTypeDefinitionsForGame" ReturnType="Collection(CompJSdbModel.RetrieveAllEntityTypeDefinitionsForGame_Result)">
+            <Parameter Name="gameId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="RetrieveAllShadersForGame" ReturnType="Collection(CompJSdbModel.RetrieveAllShadersForGame_Result)">
+            <Parameter Name="gameId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="RetrieveAllLevelsForGame" ReturnType="Collection(CompJSdbModel.RetrieveAllLevelsForGame_Result)">
+            <Parameter Name="gameId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="RetrieveLevelLayoutsForLevel">
+            <ReturnType Type="Collection(CompJSdbModel.RetrieveLevelLayoutsForLevel_Result)" />
+            <ReturnType Type="Collection(CompJSdbModel.RetrieveEntity_Result)" />
+            <Parameter Name="levelId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="CreateHighScoreForGame" ReturnType="Collection(Decimal)">
+            <Parameter Name="playerName" Mode="In" Type="String" />
+            <Parameter Name="score" Mode="In" Type="Int64" />
+            <Parameter Name="gameId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="RetrieveTopHighScoresForGame" ReturnType="Collection(CompJSdbModel.RetrieveTopHighScoresForGame_Result)">
+            <Parameter Name="count" Mode="In" Type="Int32" />
+            <Parameter Name="gameId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="RetrieveAllHighScoresForGame" ReturnType="Collection(CompJSdbModel.RetrieveAllHighScoresForGame_Result)">
+            <Parameter Name="gameId" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="RetrieveAudioTypes_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="256" />
+        </ComplexType>
+        <ComplexType Name="RetrieveAllAudioForGame_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="Int32" Name="AudioTypeId" Nullable="false" />
+          <Property Type="String" Name="AudioFile" Nullable="false" MaxLength="1000" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="256" />
+        </ComplexType>
+        <ComplexType Name="RetrieveCollisionTypes_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="256" />
+        </ComplexType>
+        <ComplexType Name="RetrievePhysTypes_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="256" />
+        </ComplexType>
+        <ComplexType Name="RetrieveAllGames_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="256" />
+        </ComplexType>
+        <ComplexType Name="RetrieveBhvCompDefinition_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="Int32" Name="EntityTypeId" Nullable="false" />
+          <Property Type="String" Name="StateFile" Nullable="false" MaxLength="1000" />
+          <Property Type="String" Name="BehaviorConstructor" Nullable="false" MaxLength="256" />
+        </ComplexType>
+        <ComplexType Name="RetrieveGfxCompDefinition_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="Int32" Name="EntityTypeId" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="RetrieveAnimationStateDefinitionsForGfxCompDefinition_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="Int32" Name="GfxCompDefinitionId" Nullable="false" />
+          <Property Type="Int32" Name="State" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="RetrieveAnimationFrameDefinitionsForAnimationStateDefinition_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="Int32" Name="AnimationStateDefinitionId" Nullable="false" />
+          <Property Type="Int32" Name="Frame" Nullable="false" />
+          <Property Type="Double" Name="Duration" Nullable="true" />
+          <Property Type="String" Name="Texture" Nullable="false" MaxLength="1000" />
+          <Property Type="Double" Name="Width" Nullable="false" />
+          <Property Type="Double" Name="Height" Nullable="false" />
+          <Property Type="Double" Name="TexCoordTL" Nullable="false" />
+          <Property Type="Double" Name="TexCoordTR" Nullable="false" />
+          <Property Type="Double" Name="TexCoordBR" Nullable="false" />
+          <Property Type="Double" Name="TexCoordBL" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="RetrievePhysCompDefinition_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="Int32" Name="EntityTypeId" Nullable="false" />
+          <Property Type="Int32" Name="PhysTypeId" Nullable="false" />
+          <Property Type="Int32" Name="CollisionTypeId" Nullable="false" />
+          <Property Type="String" Name="BoundingData" Nullable="false" MaxLength="1000" />
+        </ComplexType>
+        <ComplexType Name="RetrieveEntity_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="256" />
+          <Property Type="Int32" Name="GameId" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="RetrieveAllEntityTypeDefinitionsForGame_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="256" />
+          <Property Type="Int32" Name="Behavior" Nullable="true" />
+          <Property Type="Int32" Name="Graphics" Nullable="true" />
+          <Property Type="Int32" Name="Physics" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="RetrieveAllShadersForGame_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="256" />
+          <Property Type="String" Name="ShaderFile" Nullable="false" MaxLength="1000" />
+          <Property Type="Int32" Name="GameId" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="RetrieveAllLevelsForGame_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="Int32" Name="Order" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="true" MaxLength="256" />
+          <Property Type="Int32" Name="GameId" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="RetrieveLevelLayoutsForLevel_Result">
+          <Property Type="Int32" Name="EntityTypeId" Nullable="false" />
+          <Property Type="String" Name="EntityTypeName" Nullable="false" MaxLength="256" />
+          <Property Type="Int32" Name="LevelId" Nullable="false" />
+          <Property Type="Double" Name="X" Nullable="false" />
+          <Property Type="Double" Name="Y" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="RetrieveTopHighScoresForGame_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="PlayerName" Nullable="false" MaxLength="100" />
+          <Property Type="Int64" Name="Score" Nullable="false" />
+          <Property Type="Int32" Name="GameId" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="RetrieveAllHighScoresForGame_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="PlayerName" Nullable="false" MaxLength="100" />
+          <Property Type="Int64" Name="Score" Nullable="false" />
+          <Property Type="Int32" Name="GameId" Nullable="false" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CompJSdbModelStoreContainer" CdmEntityContainer="CompJSdbEntities" >
+          <FunctionImportMapping FunctionImportName="RetrieveAudioTypes" FunctionName="CompJSdbModel.Store.RetrieveAudioTypes">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CompJSdbModel.RetrieveAudioTypes_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="RetrieveCollisionTypes" FunctionName="CompJSdbModel.Store.RetrieveCollisionTypes">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CompJSdbModel.RetrieveCollisionTypes_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="RetrievePhysTypes" FunctionName="CompJSdbModel.Store.RetrievePhysTypes">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CompJSdbModel.RetrievePhysTypes_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="RetrieveAllAudioForGame" FunctionName="CompJSdbModel.Store.RetrieveAllAudioForGame">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CompJSdbModel.RetrieveAllAudioForGame_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="AudioTypeId" ColumnName="AudioTypeId" />
+                <ScalarProperty Name="AudioFile" ColumnName="AudioFile" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="RetrieveAllGames" FunctionName="CompJSdbModel.Store.RetrieveAllGames">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CompJSdbModel.RetrieveAllGames_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="RetrieveBhvCompDefinition" FunctionName="CompJSdbModel.Store.RetrieveBhvCompDefinition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CompJSdbModel.RetrieveBhvCompDefinition_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="EntityTypeId" ColumnName="EntityTypeId" />
+                <ScalarProperty Name="StateFile" ColumnName="StateFile" />
+                <ScalarProperty Name="BehaviorConstructor" ColumnName="BehaviorConstructor" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="RetrieveBhvCompDefinitionForEntity" FunctionName="CompJSdbModel.Store.RetrieveBhvCompDefinitionForEntity">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CompJSdbModel.RetrieveBhvCompDefinition_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="EntityTypeId" ColumnName="EntityTypeId" />
+                <ScalarProperty Name="StateFile" ColumnName="StateFile" />
+                <ScalarProperty Name="BehaviorConstructor" ColumnName="BehaviorConstructor" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="RetrieveAllBhvCompDefinitionsForGame" FunctionName="CompJSdbModel.Store.RetrieveAllBhvCompDefinitionsForGame">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CompJSdbModel.RetrieveBhvCompDefinition_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="EntityTypeId" ColumnName="EntityTypeId" />
+                <ScalarProperty Name="StateFile" ColumnName="StateFile" />
+                <ScalarProperty Name="BehaviorConstructor" ColumnName="BehaviorConstructor" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="RetrieveGfxCompDefinition" FunctionName="CompJSdbModel.Store.RetrieveGfxCompDefinition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CompJSdbModel.RetrieveGfxCompDefinition_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="EntityTypeId" ColumnName="EntityTypeId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="RetrieveGfxCompDefinitionForEntity" FunctionName="CompJSdbModel.Store.RetrieveGfxCompDefinitionForEntity">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CompJSdbModel.RetrieveGfxCompDefinition_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="EntityTypeId" ColumnName="EntityTypeId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="RetrieveAllGfxCompDefinitionsForGame" FunctionName="CompJSdbModel.Store.RetrieveAllGfxCompDefinitionsForGame">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CompJSdbModel.RetrieveGfxCompDefinition_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="EntityTypeId" ColumnName="EntityTypeId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CompJSdbModel.RetrieveAnimationStateDefinitionsForGfxCompDefinition_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="GfxCompDefinitionId" ColumnName="GfxCompDefinitionId" />
+                <ScalarProperty Name="State" ColumnName="State" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CompJSdbModel.RetrieveAnimationFrameDefinitionsForAnimationStateDefinition_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="AnimationStateDefinitionId" ColumnName="AnimationStateDefinitionId" />
+                <ScalarProperty Name="Frame" ColumnName="Frame" />
+                <ScalarProperty Name="Duration" ColumnName="Duration" />
+                <ScalarProperty Name="Texture" ColumnName="Texture" />
+                <ScalarProperty Name="Width" ColumnName="Width" />
+                <ScalarProperty Name="Height" ColumnName="Height" />
+                <ScalarProperty Name="TexCoordTL" ColumnName="TexCoordTL" />
+                <ScalarProperty Name="TexCoordTR" ColumnName="TexCoordTR" />
+                <ScalarProperty Name="TexCoordBR" ColumnName="TexCoordBR" />
+                <ScalarProperty Name="TexCoordBL" ColumnName="TexCoordBL" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="RetrieveAnimationStateDefinitionsForGfxCompDefinition" FunctionName="CompJSdbModel.Store.RetrieveAnimationStateDefinitionsForGfxCompDefinition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CompJSdbModel.RetrieveAnimationStateDefinitionsForGfxCompDefinition_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="GfxCompDefinitionId" ColumnName="GfxCompDefinitionId" />
+                <ScalarProperty Name="State" ColumnName="State" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="RetrieveAnimationFrameDefinitionsForAnimationStateDefinition" FunctionName="CompJSdbModel.Store.RetrieveAnimationFrameDefinitionsForAnimationStateDefinition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CompJSdbModel.RetrieveAnimationFrameDefinitionsForAnimationStateDefinition_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="AnimationStateDefinitionId" ColumnName="AnimationStateDefinitionId" />
+                <ScalarProperty Name="Frame" ColumnName="Frame" />
+                <ScalarProperty Name="Duration" ColumnName="Duration" />
+                <ScalarProperty Name="Texture" ColumnName="Texture" />
+                <ScalarProperty Name="Width" ColumnName="Width" />
+                <ScalarProperty Name="Height" ColumnName="Height" />
+                <ScalarProperty Name="TexCoordTL" ColumnName="TexCoordTL" />
+                <ScalarProperty Name="TexCoordTR" ColumnName="TexCoordTR" />
+                <ScalarProperty Name="TexCoordBR" ColumnName="TexCoordBR" />
+                <ScalarProperty Name="TexCoordBL" ColumnName="TexCoordBL" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="RetrievePhysCompDefinition" FunctionName="CompJSdbModel.Store.RetrievePhysCompDefinition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CompJSdbModel.RetrievePhysCompDefinition_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="EntityTypeId" ColumnName="EntityTypeId" />
+                <ScalarProperty Name="PhysTypeId" ColumnName="PhysTypeId" />
+                <ScalarProperty Name="CollisionTypeId" ColumnName="CollisionTypeId" />
+                <ScalarProperty Name="BoundingData" ColumnName="BoundingData" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="RetrievePhysCompDefinitionForEntity" FunctionName="CompJSdbModel.Store.RetrievePhysCompDefinitionForEntity">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CompJSdbModel.RetrievePhysCompDefinition_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="EntityTypeId" ColumnName="EntityTypeId" />
+                <ScalarProperty Name="PhysTypeId" ColumnName="PhysTypeId" />
+                <ScalarProperty Name="CollisionTypeId" ColumnName="CollisionTypeId" />
+                <ScalarProperty Name="BoundingData" ColumnName="BoundingData" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="RetrieveAllPhysCompDefinitionsForGame" FunctionName="CompJSdbModel.Store.RetrieveAllPhysCompDefinitionsForGame">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CompJSdbModel.RetrievePhysCompDefinition_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="EntityTypeId" ColumnName="EntityTypeId" />
+                <ScalarProperty Name="PhysTypeId" ColumnName="PhysTypeId" />
+                <ScalarProperty Name="CollisionTypeId" ColumnName="CollisionTypeId" />
+                <ScalarProperty Name="BoundingData" ColumnName="BoundingData" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="RetrieveEntity" FunctionName="CompJSdbModel.Store.RetrieveEntity">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CompJSdbModel.RetrieveEntity_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="GameId" ColumnName="GameId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="RetrieveAllEntityTypeDefinitionsForGame" FunctionName="CompJSdbModel.Store.RetrieveAllEntityTypeDefinitionsForGame">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CompJSdbModel.RetrieveAllEntityTypeDefinitionsForGame_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Behavior" ColumnName="Behavior" />
+                <ScalarProperty Name="Graphics" ColumnName="Graphics" />
+                <ScalarProperty Name="Physics" ColumnName="Physics" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="RetrieveAllShadersForGame" FunctionName="CompJSdbModel.Store.RetrieveAllShadersForGame">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CompJSdbModel.RetrieveAllShadersForGame_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ShaderFile" ColumnName="ShaderFile" />
+                <ScalarProperty Name="GameId" ColumnName="GameId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="RetrieveAllLevelsForGame" FunctionName="CompJSdbModel.Store.RetrieveAllLevelsForGame">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CompJSdbModel.RetrieveAllLevelsForGame_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Order" ColumnName="Order" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="GameId" ColumnName="GameId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="RetrieveLevelLayoutsForLevel" FunctionName="CompJSdbModel.Store.RetrieveLevelLayoutsForLevel">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CompJSdbModel.RetrieveLevelLayoutsForLevel_Result">
+                <ScalarProperty Name="EntityTypeId" ColumnName="EntityTypeId" />
+                <ScalarProperty Name="EntityTypeName" ColumnName="EntityTypeName" />
+                <ScalarProperty Name="LevelId" ColumnName="LevelId" />
+                <ScalarProperty Name="X" ColumnName="X" />
+                <ScalarProperty Name="Y" ColumnName="Y" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CompJSdbModel.RetrieveEntity_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="GameId" ColumnName="GameId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="CreateHighScoreForGame" FunctionName="CompJSdbModel.Store.CreateHighScoreForGame" />
+          <FunctionImportMapping FunctionImportName="RetrieveTopHighScoresForGame" FunctionName="CompJSdbModel.Store.RetrieveTopHighScoresForGame">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CompJSdbModel.RetrieveTopHighScoresForGame_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="PlayerName" ColumnName="PlayerName" />
+                <ScalarProperty Name="Score" ColumnName="Score" />
+                <ScalarProperty Name="GameId" ColumnName="GameId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="RetrieveAllHighScoresForGame" FunctionName="CompJSdbModel.Store.RetrieveAllHighScoresForGame">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CompJSdbModel.RetrieveAllHighScoresForGame_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="PlayerName" ColumnName="PlayerName" />
+                <ScalarProperty Name="Score" ColumnName="Score" />
+                <ScalarProperty Name="GameId" ColumnName="GameId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

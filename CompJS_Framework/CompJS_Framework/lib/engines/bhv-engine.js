@@ -25,9 +25,9 @@ var BhvEngine = function (headElem) {
         });
     };
 
-    this.init = function () {
+    this.init = function (gameId) {
         return new Promise(function (resolve, reject) {
-            servicesEngine.retrieveAllBhvComps().then(function (data) {
+            servicesEngine.retrieveAllBhvCompDefinitionsForGame(gameId).then(function (data) {
                 buildBhvCompDefinitions(data);
                 loadStateScripts();
                 resolve();

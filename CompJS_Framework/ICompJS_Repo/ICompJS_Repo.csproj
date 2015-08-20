@@ -40,18 +40,21 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\AnimationFrame.cs" />
-    <Compile Include="Entities\BhvComp.cs" />
+    <Compile Include="Entities\AnimationFrameDefinition.cs" />
+    <Compile Include="Entities\BhvCompDefinition.cs" />
     <Compile Include="Entities\CollisionType.cs" />
     <Compile Include="Entities\AudioType.cs" />
     <Compile Include="Entities\Audio.cs" />
-    <Compile Include="Entities\AnimationState.cs" />
-    <Compile Include="Entities\Entity.cs" />
+    <Compile Include="Entities\AnimationStateDefinition.cs" />
+    <Compile Include="Entities\Level.cs" />
+    <Compile Include="Entities\Shader.cs" />
+    <Compile Include="Entities\EntityType.cs" />
+    <Compile Include="Entities\Game.cs" />
     <Compile Include="Entities\HighScore.cs" />
     <Compile Include="Entities\PhysType.cs" />
-    <Compile Include="Entities\PhysComp.cs" />
-    <Compile Include="Entities\GfxComp.cs" />
-    <Compile Include="Entities\EntityDefinition.cs" />
+    <Compile Include="Entities\PhysCompDefinition.cs" />
+    <Compile Include="Entities\GfxCompDefinition.cs" />
+    <Compile Include="Entities\EntityTypeDefinition.cs" />
     <Compile Include="Entities\LevelPosition.cs" />
     <Compile Include="Entities\LevelStartData.cs" />
     <Compile Include="ICompJS_Repo.cs" />
