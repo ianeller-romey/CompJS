@@ -17,8 +17,8 @@ EXECUTE sp_executesql @dropDatabaseExec
 
 -- Create the database anew
 DECLARE @mdfFileDirectory varchar(MAX)
---SELECT @mdfFileDirectory = N'C:\Program Files\Microsoft SQL Server\MSSQL10.MSSQLSERVER\MSSQL\DATA\' 
-SELECT @mdfFileDirectory = N'C:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\DATA\'
+SELECT @mdfFileDirectory = N'C:\Program Files\Microsoft SQL Server\MSSQL10.MSSQLSERVER\MSSQL\DATA\' 
+--SELECT @mdfFileDirectory = N'C:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\DATA\'
 
 DECLARE @mdfFileName varchar(MAX)
 DECLARE @mdfLogFileName varchar(MAX)
@@ -35,6 +35,8 @@ SELECT @createDatabaseExec = N'CREATE DATABASE [' + @databaseName + '] ON PRIMAR
 	--'GO ' +
 	'IF (1 = FULLTEXTSERVICEPROPERTY(''IsFullTextInstalled'')) BEGIN EXEC [' + @databaseName + '].[dbo].[sp_fulltext_database] @action = ''enable'' END'
 EXECUTE sp_executesql @createDatabaseExec
+
+GO
 
 -- Create schemas
 USE [CompJSdb]

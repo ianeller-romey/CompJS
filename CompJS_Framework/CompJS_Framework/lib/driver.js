@@ -32,11 +32,12 @@
                 gamesDefinitions.forEach(function (g, i) {
                     var gameElem = document.createElement("span");
                     gameElem.classList.add("cabinetSelected");
+                    gameElem.classList.add("transition150");
                     var onSelect = createOnCabinetSelect(i);
                     gameElem.addEventListener("click", function () {
                         onSelect();
                     });
-                    gameElem.innerHTML = g;
+                    gameElem.innerHTML = "> " + g + "_";
 
                     cabinetElem.appendChild(gameElem);
                 });
