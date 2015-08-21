@@ -20,7 +20,7 @@
                         var c = this.physComp.colliders[i];
                         if (c.entityTypeName != "Player") {
                             messengerEngine.queueForPosting("removeEntityInstance", this.instanceId);
-                            messengerEngine.queueForPosting("playerBulletDamage", c.instanceId);
+                            messengerEngine.queueForPosting("setBehaviorInstanceData", c.instanceId, { playerBulletDamage: 1 });
                         }
                     };
                 }

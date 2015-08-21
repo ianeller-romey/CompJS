@@ -34,10 +34,17 @@
                     gameElem.classList.add("cabinetSelected");
                     gameElem.classList.add("transition150");
                     var onSelect = createOnCabinetSelect(i);
+                    var onMouse = createOnCabinetMouseEvents(gameElem, g);
                     gameElem.addEventListener("click", function () {
                         onSelect();
                     });
-                    gameElem.innerHTML = "> " + g + "_";
+                    gameElem.addEventListener("mouseenter", function () {
+                        onMouse.enter();
+                    });
+                    gameElem.addEventListener("mouseleave", function () {
+                        onMouse.leave();
+                    });
+                    gameElem.innerHTML = ">" + g;
 
                     cabinetElem.appendChild(gameElem);
                 });
@@ -47,6 +54,32 @@
                 return function () {
                     displayViewport();
                     loadGame(id);
+                };
+            };
+
+            var createOnCabinetMouseEvents = function (gameElem, g) {
+                var go;
+                var blink1 = function (gameElem, g) {
+                    gameElem.innerHTML = ">" + g;
+                    if (go) {
+                        setTimeout(blink2, 500, gameElem, g);
+                    }
+                };
+                var blink2 = function (gameElem, g) {
+                    if (go) {
+                        gameElem.innerHTML = ">" + g + "_";
+                        setTimeout(blink1, 500, gameElem, g);
+                    }
+                };
+                return {
+                    enter: function () {
+                        go = true;
+                        blink2(gameElem, g);
+                    },
+                    leave: function () {
+                        go = false;
+                        blink1(gameElem, g);
+                    }
                 };
             };
 

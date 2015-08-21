@@ -36,7 +36,7 @@
             "" + "\r\n" +
             "    float dist = abs(distance(vec2(lightPosition.x, 1.0 - lightPosition.y), vec2(v_worldCoord.x, 1.0 - v_worldCoord.y)));" + "\r\n" +
             "" + "\r\n" +
-            "    float alph = clamp(u_lightRadius - dist, 0.0, 1.0);" + "\r\n" +
+            "    float alph = clamp(u_lightRadius - dist + .15, 0.0, 1.0);" + "\r\n" +
             "" + "\r\n" +
             "    gl_FragColor = vec4(texture2D(u_image, v_texCoord).rgb * u_lightColor.rgb, alph);" + "\r\n" +
             "}";
@@ -49,7 +49,7 @@
                         y: 0
                     }
                 };
-                var lightRadius = 0.65;
+                var lightRadius = 0.45;
                 var lightColor = {
                     r: 1.0,
                     g: 1.0,

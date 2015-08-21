@@ -111,7 +111,7 @@ var GfxEngine = function (canvasElem) {
                 initShaders();
                 initBuffers();
 
-                setShaderProgram("PointLight");
+                setShaderProgram("Texture");
 
                 webGL.clearColor(0.0, 0.0, 0.0, 0.0);
                 webGL.clear(webGL.COLOR_BUFFER_BIT | webGL.DEPTH_BUFFER_BIT);

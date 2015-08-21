@@ -96,6 +96,7 @@ var globalMessengerEngine = new MessengerEngine();
 globalMessengerEngine.addMessageType("createBehavior");
 globalMessengerEngine.addMessageType("createdBehaviorInstance");
 globalMessengerEngine.addMessageType("setBehaviorConstructor");
+globalMessengerEngine.addMessageType("setBehaviorInstanceData");
 
 globalMessengerEngine.addMessageType("createGraphics");
 globalMessengerEngine.addMessageType("setShaderProgram");

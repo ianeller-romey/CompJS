@@ -64,6 +64,17 @@ var PhysEngine = function () {
         return ;
     };
 
+    var addColliders = function (instance, otherInstance) {
+        instance.physComp.colliders.push({
+            instanceId: otherInstance.instanceId,
+            entityTypeName: otherInstance.entityTypeName,
+            position: {
+                x: otherInstance.transformation.position.x,
+                y: otherInstance.transformation.position.y
+            }
+        });
+    };
+
     this.update = function (delta) {
         for (var i = 0; i < physCompInstances.length; ++i) {
             var instance = physCompInstances[i];
@@ -95,10 +106,7 @@ var PhysEngine = function () {
                             if (!hasNonGhostCollider && collisionTypeDefinitions[otherInstance.physComp.collisionTypeId] != "Ghost") {
                                 hasNonGhostCollider = true;
                             }
-                            instance.physComp.colliders.push({
-                                instanceId: otherInstance.instanceId,
-                                entityTypeName: otherInstance.entityTypeName
-                            });
+                            addColliders(instance, otherInstance);
                         }
                     }
                     else if (physTypeDefinitions[otherInstance.physComp.physTypeId] == "AABB") {
@@ -106,10 +114,7 @@ var PhysEngine = function () {
                             if (!hasNonGhostCollider && collisionTypeDefinitions[otherInstance.physComp.collisionTypeId] != "Ghost") {
                                 hasNonGhostCollider = true;
                             }
-                            instance.physComp.colliders.push({
-                                instanceId: otherInstance.instanceId,
-                                entityTypeName: otherInstance.entityTypeName
-                            });
+                            addColliders(instance, otherInstance);
                         }
                     }
                     // TODO: OBB

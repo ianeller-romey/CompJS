@@ -38,13 +38,19 @@ var BhvEngine = function (headElem) {
     this.update = function (delta) {
         for (var i = 0; i < bhvCompInstances.length; ++i) {
             bhvCompInstances[i].bhvComp.update(delta);
+            bhvCompInstances[i].bhvComp.data = {};
         }
     };
 
     var createBhvCompInstance = function (entity, bhvCompId) {
+        var bhvComp = new bhvConstructors[bhvCompDefinitions[bhvCompId].behaviorConstructor](entity);
+        // if the behavior doesn't define its own data, do it for them
+        if (bhvComp.data === undefined) {
+            bhvComp.data = {};
+        }
         var instance = {
             instanceId: entity.instanceId,
-            bhvComp: new bhvConstructors[bhvCompDefinitions[bhvCompId].behaviorConstructor](entity)
+            bhvComp: bhvComp
         };
         bhvCompInstances.push(instance);
         messengerEngine.queueForPosting("createdBehaviorInstance", instance.bhvComp, instance.instanceId);
@@ -53,6 +59,19 @@ var BhvEngine = function (headElem) {
     var setBehaviorConstructor = function (constructorName, constructorFunction) {
         if (bhvConstructors[constructorName] === undefined || bhvConstructors[constructorName] === null) {
             bhvConstructors[constructorName] = constructorFunction;
+        }
+    };
+
+    var setBehaviorInstanceData = function (instanceId, data) {
+        var instance = bhvCompInstances.firstOrNull(function (x) {
+            return x.instanceId == instanceId;
+        });
+        if (instance != null) {
+            for (var key in data) {
+                if (data.hasOwnProperty(key)) {
+                    instance.bhvComp.data[key] = data[key];
+                }
+            }
         }
     };
 
@@ -68,5 +87,6 @@ var BhvEngine = function (headElem) {
 
     messengerEngine.register("createBehavior", this, createBhvCompInstance);
     messengerEngine.register("setBehaviorConstructor", this, setBehaviorConstructor);
+    messengerEngine.register("setBehaviorInstanceData", this, setBehaviorInstanceData);
     messengerEngine.register("removeEntityInstance", this, removeBhvCompInstanceFromMessage);
 };

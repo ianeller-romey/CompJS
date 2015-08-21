@@ -7,21 +7,20 @@
 
             var messengerEngine = globalMessengerEngine;
 
-            this.update = function () {
-            };
-
-            this.playerBulletDamage = function (instanceId) {
-                if (instanceId == this.instanceId) {
-                    if (++this.currentAnimationState > 3) {
-                        messengerEngine.queueForPosting("removeEntityInstance", this.instanceId);
-                    }
-                    else {
-                        messengerEngine.queueForPosting("setInstanceAnimationState", this.instanceId, this.currentAnimationState);
-                    }
+            this.playerBulletDamage = function () {
+                if (++this.currentAnimationState > 3) {
+                    messengerEngine.queueForPosting("removeEntityInstance", this.instanceId);
+                }
+                else {
+                    messengerEngine.queueForPosting("setInstanceAnimationState", this.instanceId, this.currentAnimationState);
                 }
             };
 
-            messengerEngine.register("playerBulletDamage", this, this.playerBulletDamage);
+            this.update = function () {
+                if (this.data["playerBulletDamage"] !== undefined) {
+                    this.playerBulletDamage();
+                }
+            };
         };
 
         globalMessengerEngine.postImmediate("setBehaviorConstructor", "BehaviorMushroom", BehaviorMushroom);

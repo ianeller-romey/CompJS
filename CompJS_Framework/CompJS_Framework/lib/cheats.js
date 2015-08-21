@@ -24,7 +24,7 @@
         cheatsElem.style.position = "relative"; 
         cheatsElem.style.top = 0;
         cheatsElem.style.height = "0px"; 
-        cheatsElem.style.width = "640px";
+        cheatsElem.style.width = "624px";
         cheatsElem.style.background = "darkgray";
         cheatsElem.style.color = "black";
         cheatsElem.style["font-family"] = "Courier New";
