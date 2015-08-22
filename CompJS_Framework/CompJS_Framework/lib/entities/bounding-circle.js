@@ -26,10 +26,10 @@ BoundingCircle.prototype.collideWithBoundingAABB = function (rect) {
         x: rect.position.x + rect.origin.x,
         y: rect.position.y + rect.origin.y
     };
-    var x1 = rectPosition.x - rect.halfValues.x;
-    var y1 = rectPosition.y - rect.halfValues.y;
-    var x2 = rectPosition.x + rect.halfValues.x;
-    var y2 = rectPosition.y + rect.halfValues.y;
+    var x1 = rectPosition.x - rect.halfValues.width;
+    var y1 = rectPosition.y - rect.halfValues.height;
+    var x2 = rectPosition.x + rect.halfValues.width;
+    var y2 = rectPosition.y + rect.halfValues.height;
     if (x1 <= circlePosition.x && circlePosition.x <= x2 && y1 <= circlePosition.y && circlePosition.y <= y2) {
         return true;
     }

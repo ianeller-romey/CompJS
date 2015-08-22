@@ -7,7 +7,9 @@
     }, false);
 
     var initialize = function () {
-        var Cabinet = function (cabinetElem, viewportElem) {
+        var Cabinet = function (menuElem, gameElem) {
+            var menuElement = menuElem;
+            var gameElement = gameElem;
             var servicesEngine = globalServicesEngine;
 
             var gamesDefinitions = [];
@@ -15,7 +17,7 @@
             this.init = function () {
                 servicesEngine.retrieveAllGames().then(function (data) {
                     buildGamesDefinitions(data);
-                    displayCabinet();
+                    displayMenu();
                 });
             };
 
@@ -25,129 +27,147 @@
                 });
             };
 
-            var displayCabinet = function () {
-                viewportElem.style.display = "none";
-                cabinetElem.style.display = "";
+            var displayMenu = function () {
+                gameElement.style.display = "none";
+                menuElement.style.display = "";
 
+                var menuViewElem = document.getElementById("menuView");
                 gamesDefinitions.forEach(function (g, i) {
-                    var gameElem = document.createElement("span");
-                    gameElem.classList.add("cabinetSelected");
-                    gameElem.classList.add("transition150");
-                    var onSelect = createOnCabinetSelect(i);
-                    var onMouse = createOnCabinetMouseEvents(gameElem, g);
-                    gameElem.addEventListener("click", function () {
+                    var selectionElem = document.createElement("span");
+                    selectionElem.classList.add("menuSelected");
+                    selectionElem.classList.add("transition150");
+                    selectionElem.style["margin-top"] = "32px";
+                    selectionElem.style.display = "inline-block";
+                    var onSelect = createOnMenuSelect(i);
+                    var onMouse = createOnMenuMouseEvents(selectionElem, g);
+                    selectionElem.addEventListener("click", function () {
                         onSelect();
                     });
-                    gameElem.addEventListener("mouseenter", function () {
+                    selectionElem.addEventListener("mouseenter", function () {
                         onMouse.enter();
                     });
-                    gameElem.addEventListener("mouseleave", function () {
+                    selectionElem.addEventListener("mouseleave", function () {
                         onMouse.leave();
                     });
-                    gameElem.innerHTML = ">" + g;
+                    selectionElem.innerHTML = ">" + g;
 
-                    cabinetElem.appendChild(gameElem);
+                    menuViewElem.appendChild(selectionElem);
                 });
             };
 
-            var createOnCabinetSelect = function (id) {
+            var createOnMenuSelect = function (id) {
                 return function () {
-                    displayViewport();
+                    displayGame();
                     loadGame(id);
                 };
             };
 
-            var createOnCabinetMouseEvents = function (gameElem, g) {
+            var createOnMenuMouseEvents = function (selectionElement, g) {
                 var go;
-                var blink1 = function (gameElem, g) {
-                    gameElem.innerHTML = ">" + g;
+                var blink1 = function (selectionElement, g) {
+                    selectionElement.innerHTML = ">" + g;
                     if (go) {
-                        setTimeout(blink2, 500, gameElem, g);
+                        setTimeout(blink2, 500, selectionElement, g);
                     }
                 };
-                var blink2 = function (gameElem, g) {
+                var blink2 = function (selectionElement, g) {
                     if (go) {
-                        gameElem.innerHTML = ">" + g + "_";
-                        setTimeout(blink1, 500, gameElem, g);
+                        selectionElement.innerHTML = ">" + g + "_";
+                        setTimeout(blink1, 500, selectionElement, g);
                     }
                 };
                 return {
                     enter: function () {
                         go = true;
-                        blink2(gameElem, g);
+                        blink2(selectionElement, g);
                     },
                     leave: function () {
                         go = false;
-                        blink1(gameElem, g);
+                        blink1(selectionElement, g);
                     }
                 };
             };
 
-            var displayViewport = function () {
-                viewportElem.style.display = "";
-                cabinetElem.style.display = "none";
-                cabinetElem.innerHTML = "";
+            var displayGame = function () {
+                gameElement.style.display = "";
+                menuElement.style.display = "none";
+                var menuViewElem = document.getElementById("menuView");
+                menuViewElem.innerHTML = "";
             };
 
             var loadGame = function (gameId) {
                 var headElem = document.getElementsByTagName("head")[0];
                 var canvasElem = document.getElementById("glCanvas");
-                servicesEngine.retrieveAllShadersForGame(gameId).then(function (data) {
-                    GfxEngine.loadShaderScripts(data, headElem).then(function () {
-
-                        var messengerEngine = globalMessengerEngine;
-                        var bhvEngine;
-                        var gfxEngine;
-                        var physEngine;
-                        var entManager;
-                        var inputManager;
-                        var run = function () {
-                            bhvEngine = new BhvEngine(headElem);
-                            gfxEngine = new GfxEngine(canvasElem);
-                            entManager = new EntityManager();
-                            physEngine = new PhysEngine();
-                            inputManager = globalInputManager;
-                            var initPromise = Promise.all([bhvEngine.init(gameId), gfxEngine.init(gameId), entManager.init(gameId), physEngine.init(gameId), inputManager.init()]);
-                            initPromise.then(function () {
-                                servicesEngine.retrieveAllLevelsForGame(gameId).then(function (data) {
-                                    entManager.loadLevel(data[0].id);
-
-                                    var d = new Date();
-                                    var n = d.getTime();
-                                    var go = true;
-                                    var gameLoop = function () {
-                                        d = new Date();
-                                        var newN = d.getTime();
-                                        var delta = (newN - n) / 1000;
-                                        n = newN;
-                                        inputManager.update(delta);
-                                        messengerEngine.update(delta);
-                                        gfxEngine.update(delta);
-                                        bhvEngine.update(delta);
-                                        physEngine.update(delta);
-
-                                        if (go) {
-                                            setTimeout(gameLoop, 1);
-                                        }
-                                        else {
-                                            // TODO: Destroy webGL, etc.
-                                            setTimeout(displayCabinet, 1);
-                                        }
-                                    };
-                                    gameLoop();
-                                });
-                            });
-                        };
-                        run();
+                // statically load behaviors
+                var loadScriptsPromise = new Promise(function (resolve, reject) {
+                    servicesEngine.retrieveAllBhvCompDefinitionsForGame(gameId).then(function (data) {
+                        BhvEngine.loadStateScripts(data, headElem).then(function () {
+                            resolve();
+                        });
                     });
+                });
+                // statically load shaders
+                var loadShadersPromise = new Promise(function (resolve, reject) {
+                    servicesEngine.retrieveAllShadersForGame(gameId).then(function (data) {
+                        GfxEngine.loadShaderScripts(data, headElem).then(function(){
+                            resolve();
+                        });
+                    });
+                });
+                Promise.all([loadScriptsPromise, loadShadersPromise]).then(function () {
+                    var messengerEngine = globalMessengerEngine;
+                    var bhvEngine;
+                    var gfxEngine;
+                    var physEngine;
+                    var entManager;
+                    var inputManager;
+                    var run = function () {
+                        bhvEngine = new BhvEngine(headElem);
+                        gfxEngine = new GfxEngine(canvasElem);
+                        entManager = new EntityManager();
+                        physEngine = new PhysEngine();
+                        inputManager = globalInputManager;
+                        var initPromise = Promise.all([bhvEngine.init(gameId), gfxEngine.init(gameId), entManager.init(gameId), physEngine.init(gameId), inputManager.init()]);
+                        initPromise.then(function () {
+                            servicesEngine.retrieveAllLevelsForGame(gameId).then(function (data) {
+                                entManager.loadLevel(data[0].id);
+
+                                var d = new Date();
+                                var n = d.getTime();
+                                var gameLoop = function () {
+                                    d = new Date();
+                                    var newN = d.getTime();
+                                    var delta = (newN - n);
+                                    n = newN;
+                                    inputManager.update(delta);
+                                    messengerEngine.update(delta);
+                                    gfxEngine.update(delta);
+                                    bhvEngine.update(delta);
+                                    physEngine.update(delta);
+
+                                    if (inputManager.isTriggered(inputManager.keys.escape)) {
+                                        // TODO: Destroy webGL
+                                        Promise.all([BhvEngine.unloadStateScripts(), GfxEngine.unloadShaderScripts()]).then(function () {
+                                            setTimeout(displayMenu, 1);
+                                        });
+                                    }
+                                    else {
+                                        setTimeout(gameLoop, 1);
+                                    }
+                                };
+                                gameLoop();
+                            });
+                        });
+                    };
+                    run();
                 });
             };
         };
 
-        var c = document.getElementById("cabinet");
-        var v = document.getElementById("viewport");
-        if (c && v) {
-            var driver = new Cabinet(c, v);
+        var MENU = document.getElementById("menu");
+        var GAME = document.getElementById("game");
+        if (MENU && GAME) {
+            var driver = new Cabinet(MENU, GAME);
             driver.init();
         }
     };

@@ -9,20 +9,20 @@
 
             this.update = function () {
                 if (inputManager.isPressed(inputManager.keys.arrowLeft) || inputManager.isPressed(inputManager.keys.a)) {
-                    this.transformation.velocity.x = -250.0;
+                    this.transformation.velocity.x = -0.25;
                 }
                 else if (inputManager.isPressed(inputManager.keys.arrowRight) || inputManager.isPressed(inputManager.keys.d)) {
-                    this.transformation.velocity.x = 250.0;
+                    this.transformation.velocity.x = 0.25;
                 }
                 else {
                     this.transformation.velocity.x = 0.0;
                 }
 
                 if (inputManager.isPressed(inputManager.keys.arrowUp) || inputManager.isPressed(inputManager.keys.w)) {
-                    this.transformation.velocity.y = -250.0;
+                    this.transformation.velocity.y = -0.25;
                 }
                 else if (inputManager.isPressed(inputManager.keys.arrowDown) || inputManager.isPressed(inputManager.keys.s)) {
-                    this.transformation.velocity.y = 250.0;
+                    this.transformation.velocity.y = 0.25;
                 }
                 else {
                     this.transformation.velocity.y = 0.0;

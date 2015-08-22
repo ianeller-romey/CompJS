@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <title>CompJS - Centipede</title>
+    <title>Arcade Cabinet</title>
     <script src="lib/utilities.js"></script>
     <script src="lib/engines/messenger-engine.js"></script>
     <script src="lib/engines/services-engine.js"></script>
@@ -19,13 +19,19 @@
 </head>
 <body>
     <div id="master-container">
-        <div id="viewport" class="hardware center" style="display: none;">
-            <div id="glEasle">
-                <canvas id="glCanvas" ></canvas>
+        <div id="cabinet" class="hardware center">
+            <div id="game" style="display: none;">
+                <div class="boxContainer">
+                    <canvas id="glCanvas" class="box" ></canvas>
+                </div>
             </div>
+            <div id="menu">
+                <div class="boxContainer">
+                    <div id="menuView" class="box"></div>
+                </div>
+            </div>
+            <img id="panel" src="http://arcade/cabinet/compjs/images/panel_scaled.png" />
         </div>
-        <div id="cabinet" class="hardware center"></div>
-        <img id="panel" class="center" src="http://arcade/cabinet/compjs/images/panel_scaled.png" />
     </div>
 </body>
 </html>

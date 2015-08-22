@@ -29,40 +29,26 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0e3047', end
 }
 
 /*****************/
-/* GAME */
-/*****************/
-
-#viewport {
-    overflow: visible;
-}
-
-#glEasle {
-	position: relative;
-	width: 100%;
-}
-
-#glEasle:before{
-	content: "";
-	display: block;
-	padding-top: 100%;
-}
-
-#glCanvas {
-    position: absolute;
-	top: 0;
-	left: 0;
-    width: 100%;
-	height: 100%;
-}
-
-/*****************/
 /* CABINET */
 /*****************/
 
 #cabinet {
     height: 100%;
-    max-height: 320px;
-    padding-top: 64px;
+}
+
+/*****************/
+/* GAME */
+/*****************/
+
+#game {
+    overflow: visible;
+}
+
+/*****************/
+/* MENU */
+/*****************/
+
+#menuView {
     overflow-x: hidden;
     color: lime;
     font-family: 'Lucida Console';
@@ -71,13 +57,13 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0e3047', end
     text-align: left;
 }
 
-.cabinetSelected {
+.menuSelected {
     margin-left: 32px;
     margin-right: 32px;
     cursor: pointer;
 }
 
-    .cabinetSelected:hover {
+    .menuSelected:hover {
         font-size: 40px;
     }
 
@@ -87,9 +73,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0e3047', end
 
 #panel {
     width: 100%;
-    padding-top: 32px;
+    padding-top: 8px;
     min-width: 200px;
-    max-width: 500px;
     display: block;
 }
 
@@ -97,12 +82,31 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0e3047', end
 /* GENERIC */
 /*****************/
 
+.boxContainer {
+	position: relative;
+	width: 100%;
+}
+
+.boxContainer:before{
+	content: "";
+	display: block;
+	padding-top: 100%;
+}
+
+.box {
+    position: absolute;
+	top: 0;
+	left: 0;
+    width: 100%;
+	height: 100%;
+}
+
 .hardware {
     position: relative;
     top: 0;
     width: 75%;
     min-width: 200px;
-    max-width: 500px;
+    max-width: 640px;
     background: black;
 }
 

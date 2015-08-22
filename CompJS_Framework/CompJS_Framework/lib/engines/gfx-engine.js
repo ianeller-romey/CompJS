@@ -304,8 +304,6 @@ var GfxEngine = function (canvasElem) {
     messengerEngine.register("removeEntityInstance", this, removeGfxCompInstanceFromMessage);
 };
 
-GfxEngine.shaderList = [];
-
 GfxEngine.getShader = function (gl, id) {
     var shaderScript;
     var theSource;
@@ -343,6 +341,7 @@ GfxEngine.getShader = function (gl, id) {
     if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
         return null;
     }
+    GfxEngine.shaderElements.push(shaderScript);
 
     return shader;
 };
@@ -365,15 +364,21 @@ GfxEngine.compileShader = function (gl, fragmentShaderId, vertexShaderId) {
 
 
 GfxEngine.loadShaderScripts = function (data, headElem) {
+    GfxEngine.shaderList = [];
+    GfxEngine.shaderElements = [];
+
+    var gfxShaderElements = GfxEngine.shaderElements;
     data.forEach(function (s) {
         var script = document.createElement("script");
         script.setAttribute("type", "text/javascript");
         script.setAttribute("src", s.shaderFile);
         headElem.appendChild(script);
+        gfxShaderElements.push(script);
     });
+    var gfxShaderList = GfxEngine.shaderList;
     return new Promise(function (resolve, reject) {
         var checkShadersLoaded = function () {
-            if (GfxEngine.shaderList.length == data.length) {
+            if (gfxShaderList.length == data.length) {
                 resolve();
             }
             else {
@@ -381,5 +386,16 @@ GfxEngine.loadShaderScripts = function (data, headElem) {
             }
         };
         setTimeout(checkShadersLoaded, 1);
+    });
+};
+
+GfxEngine.unloadShaderScripts = function () {
+    return new Promise(function (resolve, reject) {
+        GfxEngine.shaderElements.forEach(function (e) {
+            e.parentElement.removeChild(e);
+        });
+        GfxEngine.shaderElements = [];
+        GfxEngine.shaderList = [];
+        resolve();
     });
 };

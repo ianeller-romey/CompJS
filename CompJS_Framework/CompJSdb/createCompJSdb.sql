@@ -17,8 +17,8 @@ EXECUTE sp_executesql @dropDatabaseExec
 
 -- Create the database anew
 DECLARE @mdfFileDirectory varchar(MAX)
-SELECT @mdfFileDirectory = N'C:\Program Files\Microsoft SQL Server\MSSQL10.MSSQLSERVER\MSSQL\DATA\' 
---SELECT @mdfFileDirectory = N'C:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\DATA\'
+--SELECT @mdfFileDirectory = N'C:\Program Files\Microsoft SQL Server\MSSQL10.MSSQLSERVER\MSSQL\DATA\' 
+SELECT @mdfFileDirectory = N'C:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\DATA\'
 
 DECLARE @mdfFileName varchar(MAX)
 DECLARE @mdfLogFileName varchar(MAX)

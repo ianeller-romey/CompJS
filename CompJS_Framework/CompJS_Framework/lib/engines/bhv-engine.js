@@ -4,7 +4,7 @@ var BhvEngine = function (headElem) {
     var messengerEngine = globalMessengerEngine;
 
     var bhvCompDefinitions = [];
-    var bhvConstructors = {};
+    var bhvConstructors = BhvEngine.bhvConstructors;
     var bhvCompInstances = [];
 
     var buildBhvCompDefinitions = function (data) {
@@ -16,20 +16,10 @@ var BhvEngine = function (headElem) {
         });
     };
 
-    var loadStateScripts = function() {
-        bhvCompDefinitions.forEach(function(x){
-            var script = document.createElement("script");
-            script.setAttribute("type", "text/javascript");
-            script.setAttribute("src", x.stateFile);
-            headElem.appendChild(script);
-        });
-    };
-
     this.init = function (gameId) {
         return new Promise(function (resolve, reject) {
             servicesEngine.retrieveAllBhvCompDefinitionsForGame(gameId).then(function (data) {
                 buildBhvCompDefinitions(data);
-                loadStateScripts();
                 resolve();
             });
         });
@@ -56,12 +46,6 @@ var BhvEngine = function (headElem) {
         messengerEngine.queueForPosting("createdBehaviorInstance", instance.bhvComp, instance.instanceId);
     };
 
-    var setBehaviorConstructor = function (constructorName, constructorFunction) {
-        if (bhvConstructors[constructorName] === undefined || bhvConstructors[constructorName] === null) {
-            bhvConstructors[constructorName] = constructorFunction;
-        }
-    };
-
     var setBehaviorInstanceData = function (instanceId, data) {
         var instance = bhvCompInstances.firstOrNull(function (x) {
             return x.instanceId == instanceId;
@@ -86,7 +70,59 @@ var BhvEngine = function (headElem) {
     };
 
     messengerEngine.register("createBehavior", this, createBhvCompInstance);
-    messengerEngine.register("setBehaviorConstructor", this, setBehaviorConstructor);
     messengerEngine.register("setBehaviorInstanceData", this, setBehaviorInstanceData);
     messengerEngine.register("removeEntityInstance", this, removeBhvCompInstanceFromMessage);
+};
+
+BhvEngine.setBehaviorConstructor = function (constructorName, constructorFunction) {
+    var bhvConstructorList = BhvEngine.bhvConstructors;
+    if (bhvConstructorList[constructorName] === undefined || bhvConstructorList[constructorName] === null) {
+        bhvConstructorList[constructorName] = constructorFunction;
+    }
+};
+
+globalMessengerEngine.register("setBehaviorConstructor", BhvEngine, BhvEngine.setBehaviorConstructor);
+
+BhvEngine.loadStateScripts = function (data, headElem) {
+    BhvEngine.bhvConstructors = {};
+    BhvEngine.bhvScriptElements = [];
+
+    var bhvScriptElementList = BhvEngine.bhvScriptElements;
+    data.forEach(function (x) {
+        var script = document.createElement("script");
+        script.setAttribute("type", "text/javascript");
+        script.setAttribute("src", x.stateFile);
+        headElem.appendChild(script);
+        bhvScriptElementList.push(script);
+    });
+
+    var bhvConstructorList = BhvEngine.bhvConstructors;
+    return new Promise(function (resolve, reject) {
+        var checkScriptsLoaded = function () {
+            var count = 0;
+            for (var key in bhvConstructorList) {
+                if (bhvConstructorList.hasOwnProperty(key)) {
+                    count += 1;
+                }
+            }
+            if (count == data.length) {
+                resolve();
+            }
+            else {
+                setTimeout(checkScriptsLoaded, 1);
+            }
+        };
+        setTimeout(checkScriptsLoaded, 1);
+    });
+};
+
+BhvEngine.unloadStateScripts = function () {
+    return new Promise(function (resolve, reject) {
+        BhvEngine.bhvScriptElements.forEach(function (e) {
+            e.parentElement.removeChild(e);
+        });
+        BhvEngine.bhvScriptElements = [];
+        BhvEngine.bhvConstructors = {};
+        resolve();
+    });
 };

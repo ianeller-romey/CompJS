@@ -12,7 +12,8 @@ var InputManager = function () {
         s: 83,
         d: 68,
         space: 32,
-        enter: 13
+        enter: 13,
+        escape: 27
     };
 
     var pressedArrayTemp = [];

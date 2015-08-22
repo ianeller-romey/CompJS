@@ -22,19 +22,19 @@ BoundingAABB.prototype.collideWithBoundingAABB = function (rect) {
         x: this.position.x + this.origin.x,
         y: this.position.y + this.origin.y
     };
-    var x1 = rectPosition.x - this.halfValues.x;
-    var y1 = rectPosition.y - this.halfValues.y;
-    var x2 = rectPosition.x + this.halfValues.x;
-    var y2 = rectPosition.y + this.halfValues.y;
+    var x1 = rectPosition.x - this.halfValues.width;
+    var y1 = rectPosition.y - this.halfValues.height;
+    var x2 = rectPosition.x + this.halfValues.width;
+    var y2 = rectPosition.y + this.halfValues.height;
 
     var otherRectPosition = {
         x: rect.position.x + rect.origin.x,
         y: rect.position.y + rect.origin.y
     };
-    var ox1 = otherRectPosition.x - rect.halfValues.x;
-    var oy1 = otherRectPosition.y - rect.halfValues.y;
-    var ox2 = otherRectPosition.x + rect.halfValues.x;
-    var oy2 = otherRectPosition.y + rect.halfValues.y;
+    var ox1 = otherRectPosition.x - rect.halfValues.width;
+    var oy1 = otherRectPosition.y - rect.halfValues.height;
+    var ox2 = otherRectPosition.x + rect.halfValues.width;
+    var oy2 = otherRectPosition.y + rect.halfValues.height;
 
     return (x1 < ox2 &&
             x2 > ox1 &&
@@ -51,10 +51,10 @@ BoundingAABB.prototype.collideWithBoundingCircle = function (circle) {
         x: this.position.x + this.origin.x,
         y: this.position.y + this.origin.y
     };
-    var x1 = rectPosition.x - this.halfValues.x;
-    var y1 = rectPosition.y - this.halfValues.y;
-    var x2 = rectPosition.x + this.halfValues.x;
-    var y2 = rectPosition.y + this.halfValues.y;
+    var x1 = rectPosition.x - this.halfValues.width;
+    var y1 = rectPosition.y - this.halfValues.height;
+    var x2 = rectPosition.x + this.halfValues.width;
+    var y2 = rectPosition.y + this.halfValues.height;
     if (x1 <= circlePosition.x && circlePosition.x <= x2 && y1 <= circlePosition.y && circlePosition.y <= y2) {
         return true;
     }

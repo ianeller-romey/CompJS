@@ -17,12 +17,12 @@
                 var mushroomHeight = 52;
                 var columnStartPoint = ((viewportWidth - (numColumns * mushroomWidth)) / 2) + (mushroomWidth / 2);
                 var columnEndPoint = columnStartPoint + (numColumns * mushroomWidth);
-                var rowStartPoint = ((viewportHeight - (numRows * mushroomHeight)) / 2) + (mushroomHeight / 2);
-                var rowEndPoint = rowStartPoint + (numRows * mushroomHeight);
+                var rowStartPoint = ((viewportHeight - (numRows * mushroomHeight)) / 2) + (mushroomHeight);
+                var rowEndPoint = rowStartPoint + (numRows * mushroomHeight) - mushroomHeight * 2;
 
-                var numMushrooms = 100;
+                var numMushrooms = 50;
                 var currentNumMushrooms = 0;
-                var randChance = (numMushrooms / (numColumns * numRows)) * 100.0;
+                var randChance = numMushrooms;
                 for (var y = rowStartPoint; y < rowEndPoint; y += mushroomHeight) {
                     for (var x = columnStartPoint; x < columnEndPoint; x += mushroomWidth) {
                         if ((Math.random() * 100) < randChance) {
@@ -30,6 +30,10 @@
                                 x: x,
                                 y: y
                             });
+                            randChance -= 1;
+                            if (++currentNumMushrooms >= numMushrooms) {
+                                return;
+                            }
                         }
                     }
                 }
