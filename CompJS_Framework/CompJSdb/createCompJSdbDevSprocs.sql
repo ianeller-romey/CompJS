@@ -310,6 +310,33 @@ BEGIN
 END
 GO
 
+IF NOT EXISTS (SELECT 1 FROM [dbo].[sysobjects] WHERE [id] = object_id(N'[dev].[dev_CreateFontTextureDefinition]') AND OBJECTPROPERTY([id], N'IsProcedure') = 1)
+  EXEC('CREATE PROCEDURE [dev].[dev_CreateFontTextureDefinition] AS SELECT 1')
+GO
+-- =============================================
+-- Author:		Ian Eller-Romey
+-- Create date: 8/24/2015
+-- Description:	
+-- =============================================
+ALTER PROCEDURE [dev].[dev_CreateFontTextureDefinition]
+	@gfxCompDefinitionId int,
+	@texture varchar(1000),
+	@characterWidth float,
+	@characterHeight float
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+	INSERT INTO [game].[FontTextureDefinitions] ([GfxCompDefinitionId], [Texture], [CharacterWidth], [CharacterHeight])
+	VALUES (@gfxCompDefinitionId, @texture, @characterWidth, @characterHeight)
+	
+	RETURN SCOPE_IDENTITY()
+
+END
+GO
+
 IF NOT EXISTS (SELECT 1 FROM [dbo].[sysobjects] WHERE [id] = object_id(N'[dev].[dev_CreatePhysCompDefinition]') AND OBJECTPROPERTY([id], N'IsProcedure') = 1)
   EXEC('CREATE PROCEDURE [dev].[dev_CreatePhysCompDefinition] AS SELECT 1')
 GO

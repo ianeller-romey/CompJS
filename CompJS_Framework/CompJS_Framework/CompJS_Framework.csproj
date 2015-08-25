@@ -62,7 +62,8 @@
     <Content Include="lib\behaviors\centipede\behavior-player-bullet.js" />
     <Content Include="lib\behaviors\centipede\behavior-player.js" />
     <Content Include="lib\behaviors\centipede\behavior-spider.js" />
-    <Content Include="lib\behaviors\centipede\behavior-spider-manager.js" />
+    <Content Include="lib\behaviors\centipede\behavior-minion-manager.js" />
+    <Content Include="lib\behaviors\centipede\behavior-scorpion.js" />
     <Content Include="lib\engines\bhv-engine.js" />
     <Content Include="lib\cheats.js" />
     <Content Include="lib\engines\input-manager.js" />

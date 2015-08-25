@@ -54,8 +54,31 @@ var GfxEngine = function (canvasElem) {
 
     var buildGfxCompDefinitions = function (data) {
         data.forEach(function (x) {
+            var animationStates = [];
+            for (var i = 0; i < x.animationStateDefinitions.length; ++i) {
+                var animationState = x.animationStateDefinitions[i];
+                var animationFrames = [];
+                for (var j = 0; j < animationState.animationFrameDefinitions.length; ++j) {
+                    var animationFrame = animationState.animationFrameDefinitions[j];
+                    animationFrames[animationFrame.frame] = {
+                        id: animationFrame.id,
+                        duration: animationFrame.duration,
+                        texture: animationFrame.texture,
+                        width: animationFrame.width,
+                        height: animationFrame.height,
+                        texCoordTL: animationFrame.texCoordTL,
+                        texCoordTR: animationFrame.texCoordTR,
+                        texCoordBR: animationFrame.texCoordBR,
+                        texCoordBL: animationFrame.texCoordBL
+                    };
+                }
+                animationStates[animationState.state] = {
+                    id: animationState.id,
+                    animationFrameDefinitions: animationFrames
+                };
+            }
             gfxCompDefinitions[x.id] = {
-                animationStateDefinitions: x.animationStateDefinitions
+                animationStateDefinitions: animationStates
             };
         });
     };
@@ -143,6 +166,14 @@ var GfxEngine = function (canvasElem) {
         return outMatrix2d;
     };
 
+    var getAnimationStateDefinitionOfGfxComp = function (gfxComp) {
+        return gfxCompDefinitions[gfxComp.id].animationStateDefinitions[gfxComp.animationState];
+    };
+
+    var getAnimationFrameDefinitionOfGfxComp = function (gfxComp) {
+        return gfxCompDefinitions[gfxComp.id].animationStateDefinitions[gfxComp.animationState].animationFrameDefinitions[gfxComp.animationFrame];
+    };
+
     this.update = function (delta) {
         webGL.clear(webGL.COLOR_BUFFER_BIT | webGL.DEPTH_BUFFER_BIT);
 
@@ -155,14 +186,14 @@ var GfxEngine = function (canvasElem) {
         for (var i = 0; i < gfxCompInstances.length; ++i) {
             var g = gfxCompInstances[i];
             var gfxComp = g.gfxComp;
-            var animationStateDefinition = gfxCompDefinitions[gfxComp.id].animationStateDefinitions[gfxComp.animationStateDefinition];
-            var animationFrameDefinition = animationStateDefinition.animationFrameDefinitions[gfxComp.animationFrameDefinition];
+            var animationFrameDefinition = getAnimationFrameDefinitionOfGfxComp(gfxComp);
 
             // animate
             gfxComp.currentDuration += delta;
             if (animationFrameDefinition.duration != null && gfxComp.currentDuration > animationFrameDefinition.duration) {
-                gfxComp.animationFrameDefinition = (gfxComp.animationFrameDefinition + 1) % animationStateDefinition.animationFrameDefinitions.length;
-                animationFrameDefinition = animationStateDefinition.animationFrameDefinitions[gfxComp.animationFrameDefinition];
+                var animationStateDefinition = getAnimationStateDefinitionOfGfxComp(gfxComp);
+                gfxComp.animationFrame = (gfxComp.animationFrame + 1) % animationStateDefinition.animationFrameDefinitions.length;
+                animationFrameDefinition = animationStateDefinition.animationFrameDefinitions[gfxComp.animationFrame];
                 gfxComp.currentDuration = 0;
             }
 
@@ -198,7 +229,7 @@ var GfxEngine = function (canvasElem) {
 
             // same texture? don't draw yet
             var nextGfxComp = (i != gfxCompInstances.length - 1) ? gfxCompInstances[i + 1].gfxComp : null;
-            var nextAnimationFrame = (nextGfxComp != null) ? gfxCompDefinitions[nextGfxComp.id].animationStateDefinitions[nextGfxComp.animationStateDefinition].animationFrameDefinitions[nextGfxComp.animationFrameDefinition] : null;
+            var nextAnimationFrame = (nextGfxComp != null) ? getAnimationFrameDefinitionOfGfxComp(nextGfxComp) : null;
             if (nextAnimationFrame == null || animationFrameDefinition.texture != nextAnimationFrame.texture) {
                 // vertex buffer
                 webGL.bindBuffer(webGL.ARRAY_BUFFER, webGLSquareVerticesBuffer);
@@ -252,13 +283,15 @@ var GfxEngine = function (canvasElem) {
     };
 
     var createGfxCompInstance = function (entity, gfxCompId) {
+        var animationState = gfxCompDefinitions[gfxCompId].animationStateDefinitions[0].id;
+        var animationFrame = gfxCompDefinitions[gfxCompId].animationStateDefinitions
         var instance = {
             instanceId: entity.instanceId,
             transformation: entity.transformation,
             gfxComp: {
                 id: gfxCompId,
-                animationStateDefinition: 0,
-                animationFrameDefinition: 0,
+                animationState: 0,
+                animationFrame: 0,
                 currentDuration: 0
             }
         };
@@ -267,12 +300,21 @@ var GfxEngine = function (canvasElem) {
         messengerEngine.queueForPosting("createdGraphicsInstance", instance.gfxComp, instance.instanceId);
     };
 
-    var setInstanceAnimationState = function (instanceId, animationStateDefinition) {
+    var setInstanceAnimationState = function (instanceId, animationState) {
         var gfxInstance = gfxCompInstances.firstOrNull(function (x) {
             return x.instanceId == instanceId;
         });
         if (gfxInstance != null) {
-            gfxInstance.gfxComp.animationStateDefinition = animationStateDefinition;
+            gfxInstance.gfxComp.animationState = animationState;
+        }
+    };
+
+    var setInstanceAnimationFrame = function (instanceId, animationFrame) {
+        var gfxInstance = gfxCompInstances.firstOrNull(function (x) {
+            return x.instanceId == instanceId;
+        });
+        if (gfxInstance != null) {
+            gfxInstance.gfxComp.animationFrame = animationFrame;
         }
     };
 
@@ -301,6 +343,7 @@ var GfxEngine = function (canvasElem) {
     messengerEngine.register("createGraphics", this, createGfxCompInstance);
     messengerEngine.register("setShaderProgram", this, setShaderProgram);
     messengerEngine.register("setInstanceAnimationState", this, setInstanceAnimationState);
+    messengerEngine.register("setInstanceAnimationFrame", this, setInstanceAnimationFrame);
     messengerEngine.register("removeEntityInstance", this, removeGfxCompInstanceFromMessage);
 };
 

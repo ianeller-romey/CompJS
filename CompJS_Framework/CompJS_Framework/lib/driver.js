@@ -130,7 +130,7 @@
                         var initPromise = Promise.all([bhvEngine.init(gameId), gfxEngine.init(gameId), entManager.init(gameId), physEngine.init(gameId), inputManager.init()]);
                         initPromise.then(function () {
                             servicesEngine.retrieveAllLevelsForGame(gameId).then(function (data) {
-                                entManager.loadLevel(data[0].id);
+                                entManager.loadLevel(gameId, data[0].id);
 
                                 var d = new Date();
                                 var n = d.getTime();

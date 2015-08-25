@@ -46,31 +46,31 @@ var ServicesEngine = function () {
     };
 
     this.retrieveAllLevelsForGame = function (gameId) {
-        return sendHttpGetRequest("http://arcade/cabinet/compjs/compjsservices/game/levels/" + gameId);
+        return sendHttpGetRequest("http://arcade/cabinet/compjs/compjsservices/game/" + gameId + "/levels");
     };
 
     this.retrieveAllEntityTypeDefinitionsForGame = function (gameId) {
-        return sendHttpGetRequest("http://arcade/cabinet/compjs/compjsservices/game/ent/" + gameId)
+        return sendHttpGetRequest("http://arcade/cabinet/compjs/compjsservices/game/" + gameId + "/ent/")
     };
 
     this.retrieveAllBhvCompDefinitionsForGame = function (gameId) {
-        return sendHttpGetRequest("http://arcade/cabinet/compjs/compjsservices/game/bhv/" + gameId);
+        return sendHttpGetRequest("http://arcade/cabinet/compjs/compjsservices/game/" + gameId + "/bhv/");
     };
 
     this.retrieveAllGfxCompDefinitionsForGame = function (gameId) {
-        return sendHttpGetRequest("http://arcade/cabinet/compjs/compjsservices/game/gfx/" + gameId);
+        return sendHttpGetRequest("http://arcade/cabinet/compjs/compjsservices/game/" + gameId + "/gfx/");
     };
 
     this.retrieveAllShadersForGame = function (gameId) {
-        return sendHttpGetRequest("http://arcade/cabinet/compjs/compjsservices/game/shaders/" + gameId);
+        return sendHttpGetRequest("http://arcade/cabinet/compjs/compjsservices/game/" + gameId + "/shaders/");
     };
 
     this.retrieveAllPhysCompDefinitionsForGame = function (gameId) {
-        return sendHttpGetRequest("http://arcade/cabinet/compjs/compjsservices/game/phys/" + gameId);
+        return sendHttpGetRequest("http://arcade/cabinet/compjs/compjsservices/game/" + gameId + "/phys/");
     };
 
-    this.loadLevel = function (levelId) {
-        return sendHttpGetRequest("http://arcade/cabinet/compjs/compjsservices/game/levels/level/" + levelId);
+    this.loadLevel = function (gameId, levelId) {
+        return sendHttpGetRequest("http://arcade/cabinet/compjs/compjsservices/game/" + gameId + "/levels/" + levelId);
     };
 };
 

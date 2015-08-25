@@ -284,6 +284,8 @@ BEGIN
 	INNER JOIN [game].[EntityTypes] ent
 	ON gfx.[EntityTypeId] = ent.[Id]
 	WHERE ent.[GameId] = @gameId
+	
+	/* TODO: SELECT FONTS */
 
 END
 GO
@@ -338,6 +340,31 @@ BEGIN
 		,[TexCoordBL]
 	FROM [game].[AnimationFrameDefinitions]
 	WHERE [AnimationStateDefinitionId] = @animationStateDefinitionId
+
+END
+GO
+
+IF NOT EXISTS (SELECT 1 FROM [dbo].[sysobjects] WHERE [id] = object_id(N'[game].[RetrieveFontTextureDefinitionsForGfxComp]') AND OBJECTPROPERTY([id], N'IsProcedure') = 1)
+  EXEC('CREATE PROCEDURE [game].[RetrieveFontTextureDefinitionsForGfxComp] AS SELECT 1')
+GO
+-- =============================================
+-- Author:		Ian Eller-Romey
+-- Create date: 8/24/2015
+-- Description:	
+-- =============================================
+ALTER PROCEDURE [game].[RetrieveFontTextureDefinitionsForGfxComp]
+	@gfxCompDefinitionId int
+AS
+BEGIN
+
+	SELECT
+		[Id]
+		,[GfxCompDefinitionId]
+		,[Texture]
+		,[CharacterWidth]
+		,[CharacterHeight]
+	FROM [game].[FontTextureDefinitions]
+	WHERE [GfxCompDefinitionId] = @gfxCompDefinitionId
 
 END
 GO

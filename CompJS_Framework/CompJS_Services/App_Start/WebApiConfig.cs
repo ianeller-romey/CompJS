@@ -23,43 +23,43 @@ namespace CompJS_Services
             );
             config.Routes.MapHttpRoute(
                 "game-bhv-get",
-                "game/bhv/{gameId}",
+                "game/{gameId}/bhv",
                 new { controller = "BhvCompDefinitions", action = "GetForGame" },
                 new { httpMethod = new HttpMethodConstraint("GET") }
             );
             config.Routes.MapHttpRoute(
                 "game-gfx-get",
-                "game/gfx/{gameId}",
+                "game/{gameId}/gfx",
                 new { controller = "GfxCompDefinitions", action = "GetForGame" },
                 new { httpMethod = new HttpMethodConstraint("GET") }
             );
             config.Routes.MapHttpRoute(
                 "game-phys-get",
-                "game/phys/{gameId}",
+                "game/{gameId}/phys",
                 new { controller = "PhysCompDefinitions", action = "GetForGame" },
                 new { httpMethod = new HttpMethodConstraint("GET") }
             );
             config.Routes.MapHttpRoute(
                 "game-ent-get",
-                "game/ent/{gameId}",
+                "game/{gameId}/ent",
                 new { controller = "EntityTypeDefinitions", action = "GetForGame" },
                 new { httpMethod = new HttpMethodConstraint("GET") }
             );
             config.Routes.MapHttpRoute(
                 "game-shader-get",
-                "game/shaders/{gameId}",
+                "game/{gameId}/shaders",
                 new { controller = "Shaders", action = "GetForGame" },
                 new { httpMethod = new HttpMethodConstraint("GET") }
             );
             config.Routes.MapHttpRoute(
                 "game-levels-get",
-                "game/levels/{gameId}",
+                "game/{gameId}/levels",
                 new { controller = "Levels", action = "GetForGame" },
                 new { httpMethod = new HttpMethodConstraint("GET") }
             );
             config.Routes.MapHttpRoute(
                 "game-levels-level-get",
-                "game/levels/level/{id}",
+                "game/{gameId}/levels/{id}",
                 new { controller = "Levels", action = "Get" },
                 new { httpMethod = new HttpMethodConstraint("GET") }
             );

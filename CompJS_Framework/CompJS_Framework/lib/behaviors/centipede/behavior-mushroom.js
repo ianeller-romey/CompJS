@@ -12,7 +12,7 @@
                     messengerEngine.queueForPosting("removeEntityInstance", this.instanceId);
                 }
                 else {
-                    messengerEngine.queueForPosting("setInstanceAnimationState", this.instanceId, this.currentAnimationState);
+                    messengerEngine.queueForPosting("setInstanceAnimationFrame", this.instanceId, this.currentAnimationState);
                 }
             };
 

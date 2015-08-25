@@ -24,14 +24,14 @@ namespace CompJS_Services.Controllers
             m_repo = new CompJS_Repo.CompJS_Repo();
         }
 
-        public LevelStartData Get(int id)
-        {
-            return TypeAdapter.Adapt<LevelStartData>(m_repo.RetrieveLevel(id));
-        }
-
         public IEnumerable<Level> GetForGame(int gameId)
         {
             return m_repo.RetrieveAllLevelsForGame(gameId).Select(x => TypeAdapter.Adapt<Level>(x)).ToList();
+        }
+
+        public LevelStartData Get(int gameId, int id)
+        {
+            return TypeAdapter.Adapt<LevelStartData>(m_repo.RetrieveLevel(id));
         }
     }
 }

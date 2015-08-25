@@ -127,6 +127,21 @@ BEGIN
 END
 
 IF NOT EXISTS (SELECT 1 FROM [sys].[tables] t 
+			   INNER JOIN [sys].[schemas] s ON (t.[schema_id] = s.[schema_id]) WHERE s.[name] = 'game' and t.[name] = 'FontTextureDefinitions')
+BEGIN
+	CREATE TABLE [game].[FontTextureDefinitions] (
+		[Id] int PRIMARY KEY CLUSTERED IDENTITY,
+		[GfxCompDefinitionId] int NOT NULL FOREIGN KEY REFERENCES [game].[GfxCompDefinitions]([Id]),
+		[Texture] varchar(1000) NOT NULL,
+		[CharacterWidth] float NOT NULL,
+		[CharacterHeight] float NOT NULL,
+	)
+	CREATE NONCLUSTERED INDEX IX__FontTextureDefinitions__GfxCompDefinitionId ON [game].[FontTextureDefinitions]([GfxCompDefinitionId])
+	INCLUDE([Texture], [CharacterWidth], [CharacterHeight])
+	DBCC CHECKIDENT ('[game].[FontTextureDefinitions]', RESEED, 0)
+END
+
+IF NOT EXISTS (SELECT 1 FROM [sys].[tables] t 
 			   INNER JOIN [sys].[schemas] s ON (t.[schema_id] = s.[schema_id]) WHERE s.[name] = 'game' and t.[name] = 'PhysCompDefinitions')
 BEGIN
 	CREATE TABLE [game].[PhysCompDefinitions] (

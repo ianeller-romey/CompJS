@@ -77,8 +77,8 @@ var EntityManager = function () {
         }
     };
 
-    this.loadLevel = function (levelId) {
-        servicesEngine.loadLevel(levelId).then(function (data) {
+    this.loadLevel = function (gameId, levelId) {
+        servicesEngine.loadLevel(gameId, levelId).then(function (data) {
             entityInstances = [];
 
             data.levelPositions.forEach(function (x) {
