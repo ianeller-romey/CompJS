@@ -110,11 +110,11 @@ BEGIN
 			@frame = 0,
 			@duration = null,
 			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
-			@width = 52.0,
-			@height = 52.0,
+			@width = 16.0,
+			@height = 16.0,
 			@pixCoordTL = 0.0,
-			@pixCoordTR = 26.0,
-			@pixCoordBR = 26.0,
+			@pixCoordTR = 16.0,
+			@pixCoordBR = 16.0,
 			@pixCoordBL = 0.0,
 			@textureWidth = 256.0
 			
@@ -123,12 +123,12 @@ BEGIN
 			@frame = 1,
 			@duration = null,
 			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
-			@width = 52.0,
-			@height = 52.0,
+			@width = 16.0,
+			@height = 16.0,
 			@pixCoordTL = 0.0,
-			@pixCoordTR = 52.0,
-			@pixCoordBR = 26.0,
-			@pixCoordBL = 26.0,
+			@pixCoordTR = 32.0,
+			@pixCoordBR = 16.0,
+			@pixCoordBL = 16.0,
 			@textureWidth = 256.0
 			
 		EXEC @altAltId = [dev].[dev_CreateAnimationFrameDefinitionFromPixels]
@@ -136,12 +136,12 @@ BEGIN
 			@frame = 2,
 			@duration = null,
 			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
-			@width = 52.0,
-			@height = 52.0,
+			@width = 16.0,
+			@height = 16.0,
 			@pixCoordTL = 0.0,
-			@pixCoordTR = 78.0,
-			@pixCoordBR = 26.0,
-			@pixCoordBL = 52.0,
+			@pixCoordTR = 48.0,
+			@pixCoordBR = 16.0,
+			@pixCoordBL = 32.0,
 			@textureWidth = 256.0
 			
 		EXEC @altAltId = [dev].[dev_CreateAnimationFrameDefinitionFromPixels]
@@ -149,12 +149,12 @@ BEGIN
 			@frame = 3,
 			@duration = null,
 			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
-			@width = 52.0,
-			@height = 52.0,
+			@width = 16.0,
+			@height = 16.0,
 			@pixCoordTL = 0.0,
-			@pixCoordTR = 104.0,
-			@pixCoordBR = 26.0,
-			@pixCoordBL = 78.0,
+			@pixCoordTR = 64.0,
+			@pixCoordBR = 16.0,
+			@pixCoordBL = 48.0,
 			@textureWidth = 256.0
 	
 		EXEC @altId = [dev].[dev_CreateAnimationStateDefinition]
@@ -166,11 +166,11 @@ BEGIN
 			@frame = 0,
 			@duration = null,
 			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
-			@width = 52.0,
-			@height = 52.0,
-			@pixCoordTL = 26.0,
-			@pixCoordTR = 26.0,
-			@pixCoordBR = 52.0,
+			@width = 16.0,
+			@height = 16.0,
+			@pixCoordTL = 17.0,
+			@pixCoordTR = 16.0,
+			@pixCoordBR = 33.0,
 			@pixCoordBL = 0.0,
 			@textureWidth = 256.0
 			
@@ -179,12 +179,12 @@ BEGIN
 			@frame = 1,
 			@duration = null,
 			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
-			@width = 52.0,
-			@height = 52.0,
-			@pixCoordTL = 26.0,
-			@pixCoordTR = 52.0,
-			@pixCoordBR = 52.0,
-			@pixCoordBL = 26.0,
+			@width = 16.0,
+			@height = 16.0,
+			@pixCoordTL = 17.0,
+			@pixCoordTR = 32.0,
+			@pixCoordBR = 33.0,
+			@pixCoordBL = 16.0,
 			@textureWidth = 256.0
 			
 		EXEC @altAltId = [dev].[dev_CreateAnimationFrameDefinitionFromPixels]
@@ -192,12 +192,12 @@ BEGIN
 			@frame = 2,
 			@duration = null,
 			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
-			@width = 52.0,
-			@height = 52.0,
-			@pixCoordTL = 26.0,
-			@pixCoordTR = 78.0,
-			@pixCoordBR = 52.0,
-			@pixCoordBL = 52.0,
+			@width = 16.0,
+			@height = 16.0,
+			@pixCoordTL = 17.0,
+			@pixCoordTR = 48.0,
+			@pixCoordBR = 32.0,
+			@pixCoordBL = 33.0,
 			@textureWidth = 256.0
 			
 		EXEC @altAltId = [dev].[dev_CreateAnimationFrameDefinitionFromPixels]
@@ -205,12 +205,12 @@ BEGIN
 			@frame = 3,
 			@duration = null,
 			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
-			@width = 52.0,
-			@height = 52.0,
-			@pixCoordTL = 26.0,
-			@pixCoordTR = 104.0,
-			@pixCoordBR = 52.0,
-			@pixCoordBL = 78.0,
+			@width = 16.0,
+			@height = 16.0,
+			@pixCoordTL = 17.0,
+			@pixCoordTR = 64.0,
+			@pixCoordBR = 33.0,
+			@pixCoordBL = 48.0,
 			@textureWidth = 256.0
 	END
 		
@@ -223,9 +223,9 @@ BEGIN
 			@entityTypeId = @id,
 			@physTypeId = @altId,
 			@collisionTypeId = @altAltId,
-			@originX = 26.0,
-			@originY = 26.0,
-			@radius = 20.0
+			@originX = 8.0,
+			@originY = 8.0,
+			@radius = 7.5
 	
 	END
 
@@ -281,12 +281,12 @@ BEGIN
 			@frame = 0,
 			@duration = null,
 			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
-			@width = 36.0,
-			@height = 52.0,
+			@width = 16.0,
+			@height = 16.0,
 			@pixCoordTL = 0.0,
-			@pixCoordTR = 122.0,
-			@pixCoordBR = 26.0,
-			@pixCoordBL = 104.0,
+			@pixCoordTR = 81.0,
+			@pixCoordBR = 16.0,
+			@pixCoordBL = 65.0,
 			@textureWidth = 256.0
 			
 	END
@@ -300,17 +300,17 @@ BEGIN
 			@entityTypeId = @id,
 			@physTypeId = @altId,
 			@collisionTypeId = @altAltId,
-			@originX = 18.0,
-			@originY = 26.0,
-			@radius = 14.0
+			@originX = 8.0,
+			@originY = 8.0,
+			@radius = 7.0
 	
 	END
 
 	EXEC [dev].[dev_CreateLevelLayout]
 	@levelId = @levelId,
 	@entityTypeId = @id,
-	@x = 512.0,
-	@y = 950.0
+	@x = 256.0,
+	@y = 500.0
 		
 END
 
@@ -343,12 +343,12 @@ BEGIN
 			@frame = 0,
 			@duration = null,
 			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
-			@width = 12.0,
-			@height = 28.0,
+			@width = 2.0,
+			@height = 12.0,
 			@pixCoordTL = 0.0,
-			@pixCoordTR = 128.0,
-			@pixCoordBR = 14.0,
-			@pixCoordBL = 122.0,
+			@pixCoordTR = 84.0,
+			@pixCoordBR = 12.0,
+			@pixCoordBL = 82.0,
 			@textureWidth = 256.0
 			
 	END
@@ -362,10 +362,10 @@ BEGIN
 			@entityTypeId = @id,
 			@physTypeId = @altId,
 			@collisionTypeId = @altAltId,
-			@originX = 6.0,
-			@originY = 14.0,
-			@halfWidth = 6.0,
-			@halfHeight = 14.0
+			@originX = 1.0,
+			@originY = 6.0,
+			@halfWidth = 1.0,
+			@halfHeight = 6.0
 	
 	END
 	
@@ -400,12 +400,12 @@ BEGIN
 			@frame = 0,
 			@duration = 50,
 			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
-			@width = 96.0,
-			@height = 60.0,
+			@width = 42.0,
+			@height = 25.0,
 			@pixCoordTL = 0.0,
-			@pixCoordTR = 176.0,
-			@pixCoordBR = 30.0,
-			@pixCoordBL = 128.0,
+			@pixCoordTR = 127.0,
+			@pixCoordBR = 25.0,
+			@pixCoordBL = 85.0,
 			@textureWidth = 256.0
 			
 		EXEC @altAltId = [dev].[dev_CreateAnimationFrameDefinitionFromPixels]
@@ -413,12 +413,12 @@ BEGIN
 			@frame = 1,
 			@duration = 50,
 			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
-			@width = 96.0,
-			@height = 60.0,
+			@width = 42.0,
+			@height = 25.0,
 			@pixCoordTL = 0.0,
-			@pixCoordTR = 225.0,
-			@pixCoordBR = 30.0,
-			@pixCoordBL = 177.0,
+			@pixCoordTR = 170.0,
+			@pixCoordBR = 25.0,
+			@pixCoordBL = 128.0,
 			@textureWidth = 256.0
 			
 		EXEC @altAltId = [dev].[dev_CreateAnimationFrameDefinitionFromPixels]
@@ -426,12 +426,12 @@ BEGIN
 			@frame = 2,
 			@duration = 50,
 			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
-			@width = 96.0,
-			@height = 60.0,
-			@pixCoordTL = 30.0,
-			@pixCoordTR = 176.0,
-			@pixCoordBR = 60.0,
-			@pixCoordBL = 128.0,
+			@width = 42.0,
+			@height = 25.0,
+			@pixCoordTL = 26.0,
+			@pixCoordTR = 127.0,
+			@pixCoordBR = 51.0,
+			@pixCoordBL = 85.0,
 			@textureWidth = 256.0
 			
 		EXEC @altAltId = [dev].[dev_CreateAnimationFrameDefinitionFromPixels]
@@ -439,12 +439,12 @@ BEGIN
 			@frame = 3,
 			@duration = 50,
 			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
-			@width = 96.0,
-			@height = 60.0,
-			@pixCoordTL = 30.0,
-			@pixCoordTR = 225.0,
-			@pixCoordBR = 60.0,
-			@pixCoordBL = 177.0,
+			@width = 42.0,
+			@height = 25.0,
+			@pixCoordTL = 26.0,
+			@pixCoordTR = 170.0,
+			@pixCoordBR = 51.0,
+			@pixCoordBL = 128.0,
 			@textureWidth = 256.0
 			
 	END
@@ -458,10 +458,10 @@ BEGIN
 			@entityTypeId = @id,
 			@physTypeId = @altId,
 			@collisionTypeId = @altAltId,
-			@originX = 48.0,
-			@originY = 30.0,
-			@halfWidth = 40.0,
-			@halfHeight = 25.0
+			@originX = 21.0,
+			@originY = 12.5,
+			@halfWidth = 21.0,
+			@halfHeight = 12.5
 	
 	END
 	
@@ -496,12 +496,12 @@ BEGIN
 			@frame = 0,
 			@duration = 50,
 			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
-			@width = 96.0,
-			@height = 52.0,
+			@width = 32.0,
+			@height = 16.0,
 			@pixCoordTL = 61.0,
-			@pixCoordTR = 176.0,
-			@pixCoordBR = 87.0,
-			@pixCoordBL = 128.0,
+			@pixCoordTR = 223.0,
+			@pixCoordBR = 16.0,
+			@pixCoordBL = 191.0,
 			@textureWidth = 256.0
 			
 		EXEC @altAltId = [dev].[dev_CreateAnimationFrameDefinitionFromPixels]
@@ -509,12 +509,12 @@ BEGIN
 			@frame = 1,
 			@duration = 50,
 			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
-			@width = 96.0,
-			@height = 52.0,
-			@pixCoordTL = 61.0,
-			@pixCoordTR = 225.0,
-			@pixCoordBR = 87.0,
-			@pixCoordBL = 177.0,
+			@width = 32.0,
+			@height = 16.0,
+			@pixCoordTL = 0.0,
+			@pixCoordTR = 256.0,
+			@pixCoordBR = 16.0,
+			@pixCoordBL = 224.0,
 			@textureWidth = 256.0
 	
 		EXEC @altId = [dev].[dev_CreateAnimationStateDefinition]
@@ -526,12 +526,12 @@ BEGIN
 			@frame = 0,
 			@duration = 50,
 			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
-			@width = 96.0,
-			@height = 52.0,
-			@pixCoordTL = 87.0,
-			@pixCoordTR = 176.0,
-			@pixCoordBR = 113.0,
-			@pixCoordBL = 128.0,
+			@width = 32.0,
+			@height = 16.0,
+			@pixCoordTL = 17.0,
+			@pixCoordTR = 223.0,
+			@pixCoordBR = 33.0,
+			@pixCoordBL = 191.0,
 			@textureWidth = 256.0
 			
 		EXEC @altAltId = [dev].[dev_CreateAnimationFrameDefinitionFromPixels]
@@ -539,12 +539,12 @@ BEGIN
 			@frame = 1,
 			@duration = 50,
 			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
-			@width = 96.0,
-			@height = 52.0,
-			@pixCoordTL = 87.0,
-			@pixCoordTR = 225.0,
-			@pixCoordBR = 113.0,
-			@pixCoordBL = 177.0,
+			@width = 32.0,
+			@height = 16.0,
+			@pixCoordTL = 17.0,
+			@pixCoordTR = 256.0,
+			@pixCoordBR = 33.0,
+			@pixCoordBL = 224.0,
 			@textureWidth = 256.0
 			
 	END
@@ -558,10 +558,10 @@ BEGIN
 			@entityTypeId = @id,
 			@physTypeId = @altId,
 			@collisionTypeId = @altAltId,
-			@originX = 48.0,
-			@originY = 26.0,
-			@halfWidth = 44.0,
-			@halfHeight = 22.0
+			@originX = 16.0,
+			@originY = 8.0,
+			@halfWidth = 16.0,
+			@halfHeight = 8.0
 	
 	END
 	

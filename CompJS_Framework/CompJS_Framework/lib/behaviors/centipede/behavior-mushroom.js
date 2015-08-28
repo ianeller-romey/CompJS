@@ -3,22 +3,27 @@
         var BehaviorMushroom = function (entity) {
             this.instanceId = entity.instanceId;
             this.transformation = entity.transformation;
-            this.currentAnimationState = 0;
+
+            var currentAnimationFrame = 0;
+            var isPoisoned = false;
 
             var messengerEngine = globalMessengerEngine;
 
             this.playerBulletDamage = function () {
-                if (++this.currentAnimationState > 3) {
+                messengerEngine.queueForPosting("incrementPlayerScore", 1);
+                if (++currentAnimationFrame > 3) {
                     messengerEngine.queueForPosting("removeEntityInstance", this.instanceId);
-                }
-                else {
-                    messengerEngine.queueForPosting("setInstanceAnimationFrame", this.instanceId, this.currentAnimationState);
+                } else {
+                    messengerEngine.queueForPosting("setInstanceAnimationFrame", this.instanceId, currentAnimationFrame);
                 }
             };
 
             this.update = function () {
                 if (this.data["playerBulletDamage"] !== undefined) {
                     this.playerBulletDamage();
+                } else if (!isPoisoned && this.data["scorpionDamage"] !== undefined) {
+                    isPoisoned = true;
+                    messengerEngine.queueForPosting("setInstanceAnimationState", this.instanceId, 1);
                 }
             };
         };

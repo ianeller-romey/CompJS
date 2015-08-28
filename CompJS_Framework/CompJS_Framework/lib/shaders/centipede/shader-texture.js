@@ -23,13 +23,45 @@
             "precision mediump float;" + "\r\n" +
             "" + "\r\n" +
             "uniform sampler2D u_image;" + "\r\n" +
+            "uniform vec3 u_colorInversion;" + "\r\n" +
             "" + "\r\n" +
             "varying vec2 v_texCoord;" + "\r\n" +
             "" + "\r\n" +
             "void main() {" + "\r\n" +
-            "    gl_FragColor = texture2D(u_image, v_texCoord);" + "\r\n" +
+            "" + "\r\n" +
+            "    vec4 color = texture2D(u_image, v_texCoord);" + "\r\n" +
+            "    gl_FragColor = vec4(color.rgb - u_colorInversion, color.a);" + "\r\n" +
             "}";
             headElem.appendChild(fragmentShader);
+
+            var FragmentShaderTextureSteps = function () {
+                var colorInversion = {
+                    r: 0.0,
+                    g: 0.0,
+                    b: 0.0
+                };
+
+                var setColorInversion = function (color) {
+                    if (color.r !== undefined && color.r !== null) {
+                        colorInversion.r = color.r;
+                    }
+                    if (color.g !== undefined && color.g !== null) {
+                        colorInversion.g = color.g;
+                    }
+                    if (color.b !== undefined && color.b !== null) {
+                        colorInversion.b = color.b;
+                    }
+                };
+
+                this.extraSteps = function (gl, prgrm) {
+                    var lightColorLocation = gl.getUniformLocation(prgrm, "u_colorInversion");
+                    if (lightColorLocation != null) {
+                        gl.uniform3f(lightColorLocation, colorInversion.r, colorInversion.g, colorInversion.b);
+                    }
+                };
+
+                globalMessengerEngine.register("setColorInversion", this, setColorInversion);
+            };
             /****************/
             /* FRAGMENT SHADER */
             /****************/
@@ -77,7 +109,8 @@
 
                     shaderList[index].vertexShaderExtraSteps = null;
 
-                    shaderList[index].fragmentShaderExtraSteps = null;
+                    var shaderExtraSteps = new FragmentShaderTextureSteps();
+                    shaderList[index].fragmentShaderExtraSteps = shaderExtraSteps.extraSteps;
                 }
             });
         }

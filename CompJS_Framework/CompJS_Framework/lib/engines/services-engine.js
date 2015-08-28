@@ -13,8 +13,7 @@ var ServicesEngine = function () {
                     if (xmlHttp.status == 200) {
                         var data = JSON.parse(xmlHttp.responseText);
                         resolve(data);
-                    }
-                    else {
+                    } else {
                         reject(xmlHttp.status);
                     }
                 }
@@ -22,8 +21,7 @@ var ServicesEngine = function () {
 
             if (parameters !== undefined) {
                 xmlHttp.send(parameters);
-            }
-            else {
+            } else {
                 xmlHttp.send();
             }
         });

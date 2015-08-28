@@ -27,34 +27,6 @@
                 });
             };
 
-            var displayMenu = function () {
-                gameElement.style.display = "none";
-                menuElement.style.display = "";
-
-                var menuViewElem = document.getElementById("menuView");
-                gamesDefinitions.forEach(function (g, i) {
-                    var selectionElem = document.createElement("span");
-                    selectionElem.classList.add("menuSelected");
-                    selectionElem.classList.add("transition150");
-                    selectionElem.style["margin-top"] = "32px";
-                    selectionElem.style.display = "inline-block";
-                    var onSelect = createOnMenuSelect(i);
-                    var onMouse = createOnMenuMouseEvents(selectionElem, g);
-                    selectionElem.addEventListener("click", function () {
-                        onSelect();
-                    });
-                    selectionElem.addEventListener("mouseenter", function () {
-                        onMouse.enter();
-                    });
-                    selectionElem.addEventListener("mouseleave", function () {
-                        onMouse.leave();
-                    });
-                    selectionElem.innerHTML = ">" + g;
-
-                    menuViewElem.appendChild(selectionElem);
-                });
-            };
-
             var createOnMenuSelect = function (id) {
                 return function () {
                     displayGame();
@@ -86,6 +58,34 @@
                         blink1(selectionElement, g);
                     }
                 };
+            };
+
+            var displayMenu = function () {
+                gameElement.style.display = "none";
+                menuElement.style.display = "";
+
+                var menuViewElem = document.getElementById("menuView");
+                gamesDefinitions.forEach(function (g, i) {
+                    var selectionElem = document.createElement("span");
+                    selectionElem.classList.add("menuSelected");
+                    selectionElem.classList.add("transition150");
+                    selectionElem.style["margin-top"] = "32px";
+                    selectionElem.style.display = "inline-block";
+                    var onSelect = createOnMenuSelect(i);
+                    var onMouse = createOnMenuMouseEvents(selectionElem, g);
+                    selectionElem.addEventListener("click", function () {
+                        onSelect();
+                    });
+                    selectionElem.addEventListener("mouseenter", function () {
+                        onMouse.enter();
+                    });
+                    selectionElem.addEventListener("mouseleave", function () {
+                        onMouse.leave();
+                    });
+                    selectionElem.innerHTML = ">" + g;
+
+                    menuViewElem.appendChild(selectionElem);
+                });
             };
 
             var displayGame = function () {
@@ -150,8 +150,7 @@
                                         Promise.all([BhvEngine.unloadStateScripts(), GfxEngine.unloadShaderScripts()]).then(function () {
                                             setTimeout(displayMenu, 1);
                                         });
-                                    }
-                                    else {
+                                    } else {
                                         setTimeout(gameLoop, 1);
                                     }
                                 };

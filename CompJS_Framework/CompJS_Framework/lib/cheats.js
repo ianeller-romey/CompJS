@@ -61,8 +61,7 @@
         function updateConsoleInput(event) {
             if (event.keyCode == deleteKey) { // delete characters if the delete key is pressed
                 cheatsElem.innerHTML = consoleInputManager.deleteCharFromConsoleInput(cheatsElem.innerHTML);
-            }
-            else if (event.keyCode == enterKey) { // parse characters if the enter key is pressed
+            } else if (event.keyCode == enterKey) { // parse characters if the enter key is pressed
                 var str = cheatsElem.innerHTML.substring(0, cheatsElem.innerHTML.length - 1);
                 try {
                     eval(str);
@@ -72,8 +71,7 @@
                 }
                 lastActiveCommand = str;
                 cheatsElem.innerHTML = consoleInputManager.resetConsoleInput();
-            }
-            else { // otherwise, add characters
+            } else { // otherwise, add characters
                 cheatsElem.innerHTML = consoleInputManager.addCharToConsoleInput(String.fromCharCode(event.keyCode), cheatsElem.innerHTML);
             }
         };
@@ -84,15 +82,13 @@
                     cheatsElem.style.padding = "8px";
                     acceptInput = true;
                     globalInputManager.disable();
-                }
-                else {
+                } else {
                     cheatsElem.style.height = 0;
                     cheatsElem.style.padding = "0px";
                     acceptInput = false;
                     globalInputManager.enable();
                 }
-            }
-            else {
+            } else {
                 if (acceptInput) {
                     updateConsoleInput(event);
                 }

@@ -26,8 +26,7 @@ var PhysEngine = function () {
             var boundingData;
             if (physType == "Circle") {
                 boundingData = new BoundingCircle(JSON.parse(x.boundingData));
-            }
-            else if (physType == "AABB") {
+            } else if (physType == "AABB") {
                 boundingData = new BoundingAABB(JSON.parse(x.boundingData));
             }
             physCompDefinitions[x.id] = {
@@ -60,8 +59,6 @@ var PhysEngine = function () {
                 });
             });
         });
-
-        return ;
     };
 
     var addColliders = function (instance, otherInstance) {
@@ -108,8 +105,7 @@ var PhysEngine = function () {
                             }
                             addColliders(instance, otherInstance);
                         }
-                    }
-                    else if (physTypeDefinitions[otherInstance.physComp.physTypeId] == "AABB") {
+                    } else if (physTypeDefinitions[otherInstance.physComp.physTypeId] == "AABB") {
                         if (newBounding.collideWithBoundingAABB(otherBounding)) {
                             if (!hasNonGhostCollider && collisionTypeDefinitions[otherInstance.physComp.collisionTypeId] != "Ghost") {
                                 hasNonGhostCollider = true;
@@ -145,6 +141,15 @@ var PhysEngine = function () {
         messengerEngine.queueForPosting("createdPhysicsInstance", instance.physComp, instance.instanceId);
     };
 
+    var getPhysCompInstanceForEntityInstance = function (instanceId) {
+        var physCompInstance = physCompInstances.firstOrNull(function (x) {
+            return x.instanceId == instanceId;
+        });
+        if (physCompInstance != null) {
+            messengerEngine.queueForPosting("getPhysCompInstanceForEntityInstanceResponse", physCompInstance);
+        }
+    };
+
     var removePhysCompInstanceFromMessage = function (instanceId) {
         for (var i = 0; i < physCompInstances.length; ++i) {
             var instance = physCompInstances[i];
@@ -156,5 +161,6 @@ var PhysEngine = function () {
     };
 
     messengerEngine.register("createPhysics", this, createPhysCompInstance);
+    messengerEngine.register("getPhysCompInstanceForEntityInstanceRequest", this, getPhysCompInstanceForEntityInstance);
     messengerEngine.register("removeEntityInstance", this, removePhysCompInstanceFromMessage);
 };

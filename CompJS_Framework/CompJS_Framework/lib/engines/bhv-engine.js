@@ -59,6 +59,15 @@ var BhvEngine = function (headElem) {
         }
     };
 
+    var getBhvCompInstanceForEntityInstance = function (instanceId) {
+        var bhvCompInstance = bhvCompInstances.firstOrNull(function (x) {
+            return x.instanceId == instanceId;
+        });
+        if (bhvCompInstance != null) {
+            messengerEngine.queueForPosting("getBhvCompInstanceForEntityInstanceResponse", bhvCompInstance);
+        }
+    };
+
     var removeBhvCompInstanceFromMessage = function (instanceId) {
         for (var i = 0; i < bhvCompInstances.length; ++i) {
             var instance = bhvCompInstances[i];
@@ -71,6 +80,7 @@ var BhvEngine = function (headElem) {
 
     messengerEngine.register("createBehavior", this, createBhvCompInstance);
     messengerEngine.register("setBehaviorInstanceData", this, setBehaviorInstanceData);
+    messengerEngine.register("getBhvCompInstanceForEntityInstanceRequest", this, getBhvCompInstanceForEntityInstance);
     messengerEngine.register("removeEntityInstance", this, removeBhvCompInstanceFromMessage);
 };
 
@@ -107,8 +117,7 @@ BhvEngine.loadStateScripts = function (data, headElem) {
             }
             if (count == data.length) {
                 resolve();
-            }
-            else {
+            } else {
                 setTimeout(checkScriptsLoaded, 1);
             }
         };

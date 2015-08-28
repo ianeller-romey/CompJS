@@ -97,14 +97,23 @@ globalMessengerEngine.addMessageType("createBehavior");
 globalMessengerEngine.addMessageType("createdBehaviorInstance");
 globalMessengerEngine.addMessageType("setBehaviorConstructor");
 globalMessengerEngine.addMessageType("setBehaviorInstanceData");
+globalMessengerEngine.addMessageType("getBhvCompInstanceForEntityInstanceRequest");
+globalMessengerEngine.addMessageType("getBhvCompInstanceForEntityInstanceResponse");
 
 globalMessengerEngine.addMessageType("createGraphics");
 globalMessengerEngine.addMessageType("setShaderProgram");
 globalMessengerEngine.addMessageType("createdGraphicsInstance");
 globalMessengerEngine.addMessageType("setInstanceAnimationState");
+globalMessengerEngine.addMessageType("setInstanceAnimationFrame");
+globalMessengerEngine.addMessageType("getGfxCompInstanceForEntityInstanceRequest");
+globalMessengerEngine.addMessageType("getGfxCompInstanceForEntityInstanceResponse");
 
 globalMessengerEngine.addMessageType("createPhysics");
 globalMessengerEngine.addMessageType("createdPhysicsInstance");
+globalMessengerEngine.addMessageType("getPhysCompInstanceForEntityInstanceRequest");
+globalMessengerEngine.addMessageType("getPhysCompInstanceForEntityInstanceResponse");
 
 globalMessengerEngine.addMessageType("createEntityInstance");
 globalMessengerEngine.addMessageType("removeEntityInstance");
+globalMessengerEngine.addMessageType("getTransformationForEntityInstanceRequest");
+globalMessengerEngine.addMessageType("getTransformationForEntityInstanceResponse");

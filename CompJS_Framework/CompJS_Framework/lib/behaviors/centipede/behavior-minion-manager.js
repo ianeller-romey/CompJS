@@ -2,6 +2,7 @@
     if (BehaviorMinionManager === undefined) {
         var BehaviorMinionManager = function (entity) {
             this.instanceId = entity.instanceId;
+            var currentWave = 0;
 
             var messengerEngine = globalMessengerEngine;
 
@@ -10,20 +11,30 @@
 
             var createSpider = function () {
                 messengerEngine.queueForPosting("createEntityInstance", "Spider", {
-                    x: 0,
-                    y: 512
+                    position: {
+                        x: 0,
+                        y: 256
+                    }
                 });
             };
 
             var createScorpion = function () {
                 messengerEngine.queueForPosting("createEntityInstance", "Scorpion", {
-                    x: 0,
-                    y: 512
+                    position: {
+                        x: 0,
+                        y: 265
+                    }
                 });
+            };
+
+            var nextWave = function () {
+                ++currentWave;
             };
 
             createSpider();
             createScorpion();
+
+            messengerEngine.register("nextWave", this, nextWave);
         };
 
         globalMessengerEngine.postImmediate("setBehaviorConstructor", "BehaviorMinionManager", BehaviorMinionManager);

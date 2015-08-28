@@ -16,7 +16,8 @@ var GfxEngine = function (canvasElem) {
     var webGLSquareVerticesBuffer;
     var webGLTexCoordBuffer;
 
-    var horizAspect = 480.0 / 640.0;
+    var width = 512;
+    var height = width;
     var vertices = [
         0.0, 0.0,
         1.0, 0.0,
@@ -89,10 +90,10 @@ var GfxEngine = function (canvasElem) {
             webGL.bindTexture(webGL.TEXTURE_2D, webGLTexture);
 
             // Set the parameters so we can render any size image
-            webGL.texParameteri(webGL.TEXTURE_2D, webGL.TEXTURE_WRAP_S, webGL.CLAMP_TO_EDGE);
-            webGL.texParameteri(webGL.TEXTURE_2D, webGL.TEXTURE_WRAP_T, webGL.CLAMP_TO_EDGE);
-            webGL.texParameteri(webGL.TEXTURE_2D, webGL.TEXTURE_MIN_FILTER, webGL.NEAREST);
-            webGL.texParameteri(webGL.TEXTURE_2D, webGL.TEXTURE_MAG_FILTER, webGL.NEAREST);
+            webGL.texParameterf(webGL.TEXTURE_2D, webGL.TEXTURE_WRAP_S, webGL.CLAMP_TO_EDGE);
+            webGL.texParameterf(webGL.TEXTURE_2D, webGL.TEXTURE_WRAP_T, webGL.CLAMP_TO_EDGE);
+            webGL.texParameterf(webGL.TEXTURE_2D, webGL.TEXTURE_MIN_FILTER, webGL.NEAREST);
+            webGL.texParameterf(webGL.TEXTURE_2D, webGL.TEXTURE_MAG_FILTER, webGL.NEAREST);
 
             image.addEventListener("load", function () {
                 webGL.texImage2D(webGL.TEXTURE_2D, 0, webGL.RGBA, webGL.RGBA, webGL.UNSIGNED_BYTE, image);
@@ -130,6 +131,8 @@ var GfxEngine = function (canvasElem) {
 
     this.init = function (gameId) {
         var webGLPromise = new Promise(function (resolve, reject) {
+            canvasElem.width = width;
+            canvasElem.height = height;
             if (initWebGL(canvasElem)) {
                 initShaders();
                 initBuffers();
@@ -140,10 +143,10 @@ var GfxEngine = function (canvasElem) {
                 webGL.clear(webGL.COLOR_BUFFER_BIT | webGL.DEPTH_BUFFER_BIT);
                 webGL.enable(webGL.BLEND);
                 webGL.blendFunc(webGL.SRC_ALPHA, webGL.ONE_MINUS_SRC_ALPHA);
+                //webGL.viewport(0, 0, width, height);
 
                 resolve();
-            }
-            else {
+            } else {
                 reject("Failed to initialize WebGL.");
             }
         });
@@ -237,14 +240,14 @@ var GfxEngine = function (canvasElem) {
 
                 // vertex shader
                 var positionLocation = webGL.getAttribLocation(webGLShaderProgram, "a_position")
-                if (positionLocation != null) {
+                if (positionLocation > -1) {
                     webGL.enableVertexAttribArray(positionLocation);
                     webGL.vertexAttribPointer(positionLocation, 2, webGL.FLOAT, false, 0, 0);
                 }
 
                 var resolutionLocation = webGL.getUniformLocation(webGLShaderProgram, "u_resolution");
                 if (resolutionLocation != null) {
-                    webGL.uniform2f(resolutionLocation, 1024, 1024);
+                    webGL.uniform2f(resolutionLocation, width, height);
                 }
 
                 if (webGLVertexShaderExtraSteps != null) {
@@ -257,7 +260,7 @@ var GfxEngine = function (canvasElem) {
 
                 // texture shader
                 var texCoordLocation = webGL.getAttribLocation(webGLShaderProgram, "a_texCoord");
-                if (texCoordLocation != null) {
+                if (texCoordLocation > -1) {
                     webGL.enableVertexAttribArray(texCoordLocation);
                     webGL.vertexAttribPointer(texCoordLocation, 2, webGL.FLOAT, false, 0, 0);
                 }
@@ -300,6 +303,18 @@ var GfxEngine = function (canvasElem) {
         messengerEngine.queueForPosting("createdGraphicsInstance", instance.gfxComp, instance.instanceId);
     };
 
+    var setShaderProgram = function (programName) {
+        var shaderDefinition = shaderList.firstOrNull(function (x) {
+            return x.name === programName;
+        });
+        if (shaderDefinition !== undefined && shaderDefinition !== null) {
+            webGLShaderProgram = shaderDefinition.program;
+            webGLVertexShaderExtraSteps = shaderDefinition.vertexShaderExtraSteps;
+            webGLFragmentShaderExtraSteps = shaderDefinition.fragmentShaderExtraSteps;
+            webGL.useProgram(webGLShaderProgram);
+        }
+    };
+
     var setInstanceAnimationState = function (instanceId, animationState) {
         var gfxInstance = gfxCompInstances.firstOrNull(function (x) {
             return x.instanceId == instanceId;
@@ -318,6 +333,15 @@ var GfxEngine = function (canvasElem) {
         }
     };
 
+    var getGfxCompInstanceForEntityInstance = function (instanceId) {
+        var gfxCompInstance = gfxCompInstances.firstOrNull(function (x) {
+            return x.instanceId == instanceId;
+        });
+        if (gfxCompInstance != null) {
+            messengerEngine.queueForPosting("getGfxCompInstanceForEntityInstanceResponse", gfxCompInstance);
+        }
+    };
+
     var removeGfxCompInstanceFromMessage = function (instanceId) {
         for (var i = 0; i < gfxCompInstances.length; ++i) {
             var instance = gfxCompInstances[i];
@@ -328,22 +352,11 @@ var GfxEngine = function (canvasElem) {
         }
     };
 
-    var setShaderProgram = function (programName) {
-        var shaderDefinition = shaderList.firstOrNull(function (x) {
-            return x.name === programName;
-        });
-        if (shaderDefinition !== undefined && shaderDefinition !== null) {
-            webGLShaderProgram = shaderDefinition.program;
-            webGLVertexShaderExtraSteps = shaderDefinition.vertexShaderExtraSteps;
-            webGLFragmentShaderExtraSteps = shaderDefinition.fragmentShaderExtraSteps;
-            webGL.useProgram(webGLShaderProgram);
-        }
-    };
-
     messengerEngine.register("createGraphics", this, createGfxCompInstance);
     messengerEngine.register("setShaderProgram", this, setShaderProgram);
     messengerEngine.register("setInstanceAnimationState", this, setInstanceAnimationState);
     messengerEngine.register("setInstanceAnimationFrame", this, setInstanceAnimationFrame);
+    messengerEngine.register("getGfxCompInstanceForEntityInstanceRequest", this, getGfxCompInstanceForEntityInstance);
     messengerEngine.register("removeEntityInstance", this, removeGfxCompInstanceFromMessage);
 };
 
@@ -423,8 +436,7 @@ GfxEngine.loadShaderScripts = function (data, headElem) {
         var checkShadersLoaded = function () {
             if (gfxShaderList.length == data.length) {
                 resolve();
-            }
-            else {
+            } else {
                 setTimeout(checkShadersLoaded, 1);
             }
         };

@@ -55,12 +55,10 @@ var InputManager = function () {
         for (i in triggeredArrayTemp) {
             if (triggeredArray[i] === undefined) {
                 triggeredArray[i] = triggeredArrayTemp[i];
-            }
-            else if (triggeredArray[i] === false && triggeredArrayTemp[i] === true) {
+            } else if (triggeredArray[i] === false && triggeredArrayTemp[i] === true) {
                 triggeredArray[i] = true;
                 triggeredArrayTemp[i] = false;
-            }
-            else {
+            } else {
                 triggeredArray[i] = false;
                 triggeredArrayTemp[i] = false;
             }

@@ -106,7 +106,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0e3047', end
     top: 0;
     width: 75%;
     min-width: 200px;
-    max-width: 640px;
+    max-width: 512px;
     background: black;
 }
 

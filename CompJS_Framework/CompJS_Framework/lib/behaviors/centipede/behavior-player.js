@@ -29,31 +29,39 @@
                 return inputManager.isTriggered(inputManager.keys.space) || inputManager.isTriggered(inputManager.keys.enter)
             };
 
+            var playerDeath = function () {
+                messengerEngine.queueForPosting("playerModifyLives", -1);
+            };
+
             this.update = function () {
-                if (controllerLeft() && this.transformation.position.x > 28) {
+                if (this.data["spiderDamage"] !== undefined || this.data["scorpionDamage"] !== undefined || this.data["fleaDamage"] !== undefined || this.data["centipedeDamage"] !== undefined) {
+                    if (!godMode) {
+                        playerDeath();
+                    }
+                }
+
+                if (controllerLeft() && this.transformation.position.x > 4) {
                     this.transformation.velocity.x = -0.25;
-                }
-                else if (controllerRight() && this.transformation.position.x < 996) {
+                } else if (controllerRight() && this.transformation.position.x < 500) {
                     this.transformation.velocity.x = 0.25;
-                }
-                else {
+                } else {
                     this.transformation.velocity.x = 0.0;
                 }
 
-                if (controllerUp() && this.transformation.position.y > 600) {
+                if (controllerUp() && this.transformation.position.y > 402) {
                     this.transformation.velocity.y = -0.25;
-                }
-                else if (controllerDown() && this.transformation.position.y < 996) {
+                } else if (controllerDown() && this.transformation.position.y < 500) {
                     this.transformation.velocity.y = 0.25;
-                }
-                else {
+                } else {
                     this.transformation.velocity.y = 0.0;
                 }
 
                 if (controllerShoot()) {
                     messengerEngine.queueForPosting("createEntityInstance", "PlayerBullet", {
-                        x: this.transformation.position.x + 13,
-                        y: this.transformation.position.y - 13
+                        position: {
+                            x: this.transformation.position.x + 7,
+                            y: this.transformation.position.y - 7
+                        }
                     });
                 }
             };
@@ -62,8 +70,14 @@
                 godMode = bool;
             };
 
-            messengerEngine.queueForPosting("setPointLightTransform", this.transformation);
+            this.getPlayerInstanceId = function () {
+                messengerEngine.queueForPosting("getPlayerInstanceIdResponse", this.instanceId);
+            };
+
             messengerEngine.register("setPlayerGodMode", this, setPlayerGodMode);
+            messengerEngine.register("getPlayerInstanceIdRequest", this, this.getPlayerInstanceId);
+
+            messengerEngine.queueForPosting("setPointLightTransform", this.transformation);
         };
 
         globalMessengerEngine.postImmediate("setBehaviorConstructor", "BehaviorPlayer", BehaviorPlayer);

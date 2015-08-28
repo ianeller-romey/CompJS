@@ -1,4 +1,5 @@
 ﻿
+
 String.prototype.isNullOrWhitespace = function () {
     return this === null || this.match(/^\s*$/) !== null;
 };

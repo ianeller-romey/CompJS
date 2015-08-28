@@ -35,7 +35,7 @@ var EntityManager = function () {
         });
     };
 
-    var createEntityInstance = function (xEntityType) {
+    var createEntityInstance = function (xEntityType, data) {
         var entity = new Entity(entityIdGenerator++, xEntityType.entityTypeId, xEntityType.entityTypeName, {
             x: xEntityType.x,
             y: xEntityType.y
@@ -45,6 +45,9 @@ var EntityManager = function () {
 
         if (entityHasBehavior(entityDefinition)) {
             messengerEngine.postImmediate("createBehavior", entity, entityDefinition.behavior);
+            if (data !== undefined) {
+                messengerEngine.postImmediate("setBehaviorInstanceData", entity.instanceId, data);
+            }
         }
         if (entityHasGraphics(entityDefinition)) {
             messengerEngine.postImmediate("createGraphics", entity, entityDefinition.graphics);
@@ -54,16 +57,18 @@ var EntityManager = function () {
         }
     };
 
-    var createEntityInstanceFromMessage = function (name, position) {
+    var createEntityInstanceFromMessage = function (name, additional) {
         var entityTypeNamedId = entityTypeNamedIds[name];
         if (entityTypeNamedId != null) {
             var xEntityType = {
                 entityTypeId: entityTypeNamedId,
-                entityTypeName: name,
-                x: position.x,
-                y: position.y
+                entityTypeName: name
             };
-            createEntityInstance(xEntityType);
+            if (additional.position !== undefined) {
+                xEntityType.x = additional.position.x;
+                xEntityType.y = additional.position.y;
+            }
+            createEntityInstance(xEntityType, additional.data);
         }
     };
 
@@ -74,6 +79,15 @@ var EntityManager = function () {
                 entityInstances.splice(i, 1);
                 break;
             }
+        }
+    };
+
+    var getTransformationForEntityInstance = function (instanceId) {
+        var entityInstance = entityInstances.firstOrNull(function (x) {
+            return x.instanceId == instanceId;
+        });
+        if (entityInstance != null) {
+            messengerEngine.queueForPosting("getTransformationForEntityInstanceResponse", instanceId, entityInstance.transformation);
         }
     };
 
@@ -97,10 +111,10 @@ var EntityManager = function () {
                 });
             });
         });
-
     };
 
     messengerEngine.register("createEntityInstance", this, createEntityInstanceFromMessage);
     messengerEngine.register("removeEntityInstance", this, removeEntityInstanceFromMessage);
+    messengerEngine.register("getTransformationForEntityInstanceRequest", this, getTransformationForEntityInstance);
 
 };

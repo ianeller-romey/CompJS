@@ -5,10 +5,12 @@
         var BehaviorPlayerBullet = function (entity) {
             this.instanceId = entity.instanceId;
             this.transformation = entity.transformation;
-            this.transformation.velocity.y = -0.35;
+
             this.physComp = null;
 
             var messengerEngine = globalMessengerEngine;
+
+            this.transformation.velocity.y = -0.35;
 
             this.update = function () {
                 if (this.physComp != null) {
