@@ -5,7 +5,27 @@
 
             var messengerEngine = globalMessengerEngine;
 
-            this.update = function () {
+            var inspectingDamagedMushrooms = false;
+            var damagedMushrooms = [];
+            var updateInterval = 300;
+            var currentInterval = 0;
+
+            this.update = function (delta) {
+                if (inspectingDamagedMushrooms) {
+                    if (damagedMushrooms.length > 0) {
+                        currentInterval != delta;
+                        if (currentInterval >= updateInterval) {
+                            currentInterval = 0;
+
+                            var mushroomInstanceId = damagedMushrooms.shift();
+                            messengerEngine.queueForPosting("setBehaviorInstanceData", mushroomInstanceId, {
+                                reset: true
+                            });
+                        }
+                    } else {
+                        messengerEngine.queueForPosting("halftime", false);
+                    }
+                }
             };
 
             var createMushrooms = function () {
@@ -40,6 +60,22 @@
                     }
                 }
             };
+
+            var halftime = function (start) {
+                if(start){
+                    inspectingDamagedMushrooms = true;
+                    messengerEngine.queueForPosting("getAllDamagedMushroomsRequest", true);
+                } else {
+                    inspectingDamagedMushrooms = false;
+                }
+            };
+
+            var getAllDamagedMushrooms = function (instanceId) {
+                damagedMushrooms.push(instanceId);
+            };
+
+            messengerEngine.register("halftime", this, halftime);
+            messengerEngine.register("getAllDamagedMushroomsResponse", this, getAllDamagedMushrooms);
 
             createMushrooms();
         };

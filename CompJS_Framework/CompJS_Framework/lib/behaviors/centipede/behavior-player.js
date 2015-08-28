@@ -30,14 +30,14 @@
             };
 
             var playerDeath = function () {
-                messengerEngine.queueForPosting("playerModifyLives", -1);
+                if (!godMode) {
+                    messengerEngine.queueForPosting("playerDeath", true);
+                }
             };
 
             this.update = function () {
                 if (this.data["spiderDamage"] !== undefined || this.data["scorpionDamage"] !== undefined || this.data["fleaDamage"] !== undefined || this.data["centipedeDamage"] !== undefined) {
-                    if (!godMode) {
-                        playerDeath();
-                    }
+                    playerDeath();
                 }
 
                 if (controllerLeft() && this.transformation.position.x > 4) {

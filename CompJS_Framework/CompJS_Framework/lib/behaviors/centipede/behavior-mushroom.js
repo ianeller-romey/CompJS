@@ -24,8 +24,21 @@
                 } else if (!isPoisoned && this.data["scorpionDamage"] !== undefined) {
                     isPoisoned = true;
                     messengerEngine.queueForPosting("setInstanceAnimationState", this.instanceId, 1);
+                } else if (this.data["reset"] !== undefined) {
+                    messengerEngine.queueForPosting("setInstanceAnimationState", this.instanceId, 0);
+                    messengerEngine.queueForPosting("setInstanceAnimationFrame", this.instanceId, 0);
+                    currentAnimationFrame = 0;
+                    isPoisoned = false;
                 }
             };
+
+            this.getAllDamagedMushrooms = function () {
+                if (currentAnimationFrame > 0 || isPoisoned) {
+                    messengerEngine.queueForPosting("getAllDamagedMushroomsResponse", this.instanceId);
+                }
+            }
+
+            messengerEngine.register("getAllDamagedMushroomsRequest", this, this.getAllDamagedMushrooms);
         };
 
         globalMessengerEngine.postImmediate("setBehaviorConstructor", "BehaviorMushroom", BehaviorMushroom);

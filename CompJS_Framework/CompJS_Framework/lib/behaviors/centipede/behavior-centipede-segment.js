@@ -6,7 +6,8 @@
             
             this.physComp = null;
 
-            var parentSegment = null;
+            var nextSegment = null;
+            var prevSegment = null;
             var segmentId = null;
             var totalSegments = null;
 
@@ -25,7 +26,7 @@
             var messengerEngine = globalMessengerEngine;
 
             this.init = function () {
-                parentSegment = this.data["parentSegment"];
+                nextSegment = this.data["nextSegment"];
                 segmentId = this.data["segmentId"];
                 totalSegments = this.data["totalSegments"];
 
@@ -37,12 +38,14 @@
                             y: 0
                         },
                         data: {
-                            parentSegment: segmentId,
+                            nextSegment: segmentId,
                             segmentId: nextSegmentId,
                             totalSegments: totalSegments
                         }
                     });
                 }
+
+                messengerEngine.queueForPosting("centipedeSegmentCreated", segmentId, this.instanceId);
             };
 
             this.setMovingHorizontal = function () {
@@ -92,12 +95,18 @@
 
             this.playerBulletDamage = function () {
                 messengerEngine.queueForPosting("incrementPlayerScore", 10);
-                messengerEngine.queueForPosting("centipedeSegmentDestroyed", segmentId);
+                messengerEngine.queueForPosting("centipedeSegmentDestroyed", segmentId, this.instanceId);
                 messengerEngine.queueForPosting("removeEntityInstance", this.instanceId);
             };
 
-            var centipedeSegmentDestroyed = function (segmentId) {
-                if (segmentId == parentSegment) {
+            var centipedeSegmentCreated = function (segmentCreated, instanceId) {
+                if (segmentCreated == segmentId - 1) {
+                    prevSegment = segmentCreated;
+                }
+            };
+
+            var centipedeSegmentDestroyed = function (segmentDestroyed) {
+                if (segmentDestroyed == nextSegment) {
                     // TODO: become a head
                 }
             };
@@ -109,8 +118,10 @@
                 }
             };
 
+            messengerEngine.register("centipedeSegmentCreated", this, centipedeSegmentCreated);
             messengerEngine.register("centipedeSegmentDestroyed", this, centipedeSegmentDestroyed);
             messengerEngine.register("createdPhysicsInstance", this, this.capturePhysicsInstance);
+
         };
 
         globalMessengerEngine.postImmediate("setBehaviorConstructor", "BehaviorCentipedeSegment", BehaviorCentipedeSegment);
