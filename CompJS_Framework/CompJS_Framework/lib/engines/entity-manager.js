@@ -64,11 +64,15 @@ var EntityManager = function () {
                 entityTypeId: entityTypeNamedId,
                 entityTypeName: name
             };
-            if (additional.position !== undefined) {
-                xEntityType.x = additional.position.x;
-                xEntityType.y = additional.position.y;
+            if (additional != undefined) {
+                if (additional.position !== undefined) {
+                    xEntityType.x = additional.position.x;
+                    xEntityType.y = additional.position.y;
+                }
+                createEntityInstance(xEntityType, additional.data);
+            } else {
+                createEntityInstance(xEntityType);
             }
-            createEntityInstance(xEntityType, additional.data);
         }
     };
 

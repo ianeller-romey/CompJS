@@ -30,7 +30,7 @@
 
             var createMushrooms = function () {
                 var numColumns = 32;
-                var numRows = 32;
+                var numRows = 31;
                 var viewportWidth = 512;
                 var viewportHeight = viewportWidth;
                 var mushroomWidth = 16;
@@ -42,7 +42,7 @@
 
                 var numMushrooms = 50;
                 var currentNumMushrooms = 0;
-                var randChance = numMushrooms;
+                var randChance = 10;
                 for (var y = rowStartPoint; y < rowEndPoint; y += mushroomHeight) {
                     for (var x = columnStartPoint; x < columnEndPoint; x += mushroomWidth) {
                         if ((Math.random() * 100) < randChance) {
@@ -52,7 +52,6 @@
                                     y: y
                                 }
                             });
-                            randChance -= 1;
                             if (++currentNumMushrooms >= numMushrooms) {
                                 return;
                             }

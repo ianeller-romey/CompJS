@@ -31,6 +31,8 @@
                 } else {
                     if (this.xDirection()) {
                         messengerEngine.queueForPosting("removeEntityInstance", this.instanceId);
+
+                        messengerEngine.unregisterAll(this);
                     }
 
                     if (this.physComp != null) {
@@ -45,6 +47,8 @@
             this.playerBulletDamage = function () {
                 messengerEngine.queueForPosting("incrementPlayerScore", 1000);
                 messengerEngine.queueForPosting("removeEntityInstance", this.instanceId);
+
+                messengerEngine.unregisterAll(this);
             };
 
             this.capturePhysicsInstance = function (physComp, instanceId) {

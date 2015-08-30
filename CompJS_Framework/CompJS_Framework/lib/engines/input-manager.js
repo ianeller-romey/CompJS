@@ -22,6 +22,8 @@ var InputManager = function () {
     var pressedArray = [];
     var triggeredArray = [];
 
+    var triggeredArrayAccepting = [];
+
     var updateFunction;
 
     this.isPressed = function (keyCode) {
@@ -36,11 +38,15 @@ var InputManager = function () {
         return new Promise(function (resolve, reject) {
             window.addEventListener("keydown", function (event) {
                 pressedArrayTemp[event.keyCode] = true;
-                triggeredArrayTemp[event.keyCode] = true;
+                if (triggeredArrayAccepting[event.keyCode] === undefined || triggeredArrayAccepting[event.keyCode] === true) {
+                    triggeredArrayTemp[event.keyCode] = true;
+                    triggeredArrayAccepting[event.keyCode] = false;
+                }
             });
             window.addEventListener("keyup", function (event) {
                 pressedArrayTemp[event.keyCode] = false;
                 triggeredArrayTemp[event.keyCode] = false;
+                triggeredArrayAccepting[event.keyCode] = true;
             });
             resolve();
         });

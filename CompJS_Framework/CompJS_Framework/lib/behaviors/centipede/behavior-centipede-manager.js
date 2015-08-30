@@ -3,27 +3,27 @@
         var BehaviorCentipedeManager = function (entity) {
             this.instanceId = entity.instanceId;
 
-            var totalSegments = 1;
+            var totalSegments = 10;
             var activeSegments = 0;
 
             var messengerEngine = globalMessengerEngine;
 
             this.update = function () {
-                if (activeSegments == 0) {
-                    messengerEngine.queueForPosting("nextLevel");
-                    createCentipede();
-                }
+            };
+
+            var nextWave = function () {
+                createCentipede();
             };
 
             var createCentipede = function () {
                 activeSegments = totalSegments;
                 messengerEngine.queueForPosting("createEntityInstance", "CentipedeSegment", {
                     position: {
-                        x: 0,
-                        y: 0
+                        x: 503,
+                        y: 8
                     },
                     data: {
-                        parentSegment: null,
+                        nextSegment: null,
                         segmentId: 0,
                         totalSegments: totalSegments
                     }
@@ -31,14 +31,13 @@
             };
 
             var centipedeSegmentDestroyed = function () {
-                if (--activeSegments == totalSegments) {
+                if (--activeSegments == 0) {
                     globalMessengerEngine.queueForPosting("nextWave", true);
                 }
             };
 
+            messengerEngine.register("nextWave", this, nextWave);
             messengerEngine.register("centipedeSegmentDestroyed", this, centipedeSegmentDestroyed);
-
-            createCentipede();
         };
 
         globalMessengerEngine.postImmediate("setBehaviorConstructor", "BehaviorCentipedeManager", BehaviorCentipedeManager);

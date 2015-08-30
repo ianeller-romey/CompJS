@@ -6,17 +6,14 @@
 
             this.physComp = null;
 
-            var numRows = 18;
-            var viewportHeight = 1024;
-            var mushroomHeight = 52;
-            var rowStartPoint = ((viewportHeight - (numRows * mushroomHeight)) / 2) + (mushroomHeight);
+            var numRows = 31;
+            var viewportHeight = 512;
+            var mushroomHeight = 16;
+            var rowStartPoint = mushroomHeight / 2;
             var rowEndPoint = rowStartPoint + (numRows * mushroomHeight) - mushroomHeight * 2;
-            
-            var readyToDrop = false;
-            var readyTimer = 0.0;
-            var getReadyTimer = function () {
-                return Math.random() * 1000;
-            };
+
+            var canDrop = false;
+            var dropChance = .75;
 
             var hitState = 0;
 
@@ -28,32 +25,25 @@
                 if (this.data["playerBulletDamage"] !== undefined) {
                     this.playerBulletDamage();
                 } else if (this.physComp != null) {
-                    if (this.transformation.position.y >= 1034) {
+                    if (this.transformation.position.y >= 530) {
                         // fell off the map
                         messengerEngine.queueForPosting("removeEntityInstance", this.instanceId);
+
+                        messengerEngine.unregisterAll(this);
                     } else {
-                        var distance = (this.transformation.position.y - rowStartPoint) % 52;
-                        if (readyToDrop){
-                            if (distance <= 1.0) {
-                                // ready to drop a mushroom, and close enough to drop a mushroom
-                                var createAt = {
-                                    x: this.transformation.position.x,
-                                    y: this.transformation.position.y - distance
-                                };
-                                messengerEngine.queueForPosting("createEntityInstance", "Mushroom", createAt);
-                                readyToDrop = false;
+                        var distance = (this.transformation.position.y - rowStartPoint) % 16;
+                        if (distance <= .1) {
+                            if (canDrop && Math.random() <= dropChance) {
+                                messengerEngine.queueForPosting("createEntityInstance", "Mushroom", {
+                                    position: {
+                                        x: this.transformation.position.x,
+                                        y: this.transformation.position.y - distance
+                                    }
+                                });
+                                canDrop = false;
                             }
                         } else {
-                            if (distance > 1.0 && readyTimer <= 0.0) {
-                                // too far to drop a mushroom, and need to start the timer
-                                readyTimer = getReadyTimer();
-                            } else {
-                                // timer is running, so update it
-                                readyTimer -= delta;
-                                if (readyTimer <= 0.0) {
-                                    readyToDrop = true;
-                                }
-                            }
+                            canDrop = true;
                         }
                     }
 
@@ -71,6 +61,8 @@
                     this.transformation.velocity.y = this.transformation.velocity.y * 1.5;
                 } else {
                     messengerEngine.queueForPosting("removeEntityInstance", this.instanceId);
+
+                    messengerEngine.unregisterAll(this);
                 }
             };
 

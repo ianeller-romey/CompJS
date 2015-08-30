@@ -231,6 +231,38 @@ BEGIN
 
 END
 
+IF NOT EXISTS (SELECT [Id] FROM [game].[EntityTypes] WHERE [GameId] = @gameId AND [Name] = 'MushroomWaiter')
+BEGIN
+	EXEC @id = [dev].[dev_CreateEntityType]
+		@name = 'MushroomWaiter',
+		@gameId = @gameId
+		
+	IF NOT EXISTS (SELECT [Id] FROM [game].[BhvCompDefinitions] WHERE [EntityTypeId] = @id)
+	BEGIN
+		EXEC @compDefinitionId = [dev].[dev_CreateBhvCompDefinition]
+			@entityTypeId = @id,
+			@stateFile = 'http://arcade/cabinet/compjs/lib/behaviors/centipede/behavior-mushroom-waiter.js',
+			@behaviorConstructor = 'BehaviorMushroomWaiter'
+			
+	END
+		
+	IF NOT EXISTS (SELECT [Id] FROM [game].[PhysCompDefinitions] WHERE [EntityTypeId] = @id)
+	BEGIN
+		SELECT @altId = [Id] FROM [compjs].[PhysTypes] WHERE [Name] = 'Circle'
+		SELECT @altAltId = [Id] FROM [compjs].[CollisionTypes] WHERE [Name] = 'Static'
+	
+		EXEC @compDefinitionId = [dev].[dev_CreatePhysCompDefinitionWithCircleBoundingData]
+			@entityTypeId = @id,
+			@physTypeId = @altId,
+			@collisionTypeId = @altAltId,
+			@originX = 8.0,
+			@originY = 8.0,
+			@radius = 7.5
+	
+	END
+
+END
+
 IF NOT EXISTS (SELECT [Id] FROM [game].[EntityTypes] WHERE [GameId] = @gameId AND [Name] = 'MushroomManager')
 BEGIN
 	EXEC @id = [dev].[dev_CreateEntityType]
@@ -245,10 +277,6 @@ BEGIN
 			@behaviorConstructor = 'BehaviorMushroomManager'
 			
 	END
-		
-	EXEC [dev].[dev_CreateEntityTypesOnAllLevels]
-	@entityTypeId = @id,
-	@gameId = @gameId
 	
 END
 
@@ -305,12 +333,6 @@ BEGIN
 			@radius = 7.0
 	
 	END
-
-	EXEC [dev].[dev_CreateLevelLayout]
-	@levelId = @levelId,
-	@entityTypeId = @id,
-	@x = 256.0,
-	@y = 500.0
 		
 END
 
@@ -371,6 +393,165 @@ BEGIN
 	
 END
 
+IF NOT EXISTS (SELECT [Id] FROM [game].[EntityTypes] WHERE [GameId] = @gameId AND [Name] = 'CentipedeSegment')
+BEGIN
+	EXEC @id = [dev].[dev_CreateEntityType]
+		@name = 'CentipedeSegment',
+		@gameId = @gameId
+		
+	IF NOT EXISTS (SELECT [Id] FROM [game].[BhvCompDefinitions] WHERE [EntityTypeId] = @id)
+	BEGIN
+		EXEC @compDefinitionId = [dev].[dev_CreateBhvCompDefinition]
+			@entityTypeId = @id,
+			@stateFile = 'http://arcade/cabinet/compjs/lib/behaviors/centipede/behavior-centipede-segment.js',
+			@behaviorConstructor = 'BehaviorCentipedeSegment'
+			
+	END
+		
+	IF NOT EXISTS (SELECT [Id] FROM [game].[GfxCompDefinitions] WHERE [EntityTypeId] = @id)
+	BEGIN
+		EXEC @compDefinitionId = [dev].[dev_CreateGfxCompDefinition]
+			@entityTypeId = @id
+	
+		EXEC @altId = [dev].[dev_CreateAnimationStateDefinition]
+			@gfxCompDefinitionId = @compDefinitionId,
+			@state = 0
+			
+		EXEC @altAltId = [dev].[dev_CreateAnimationFrameDefinitionFromPixels]
+			@animationStateDefinitionId = @altId,
+			@frame = 0,
+			@duration = 50,
+			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
+			@width = 16.0,
+			@height = 16.0,
+			@pixCoordTL = 34.0,
+			@pixCoordTR = 16.0,
+			@pixCoordBR = 50.0,
+			@pixCoordBL = 0.0,
+			@textureWidth = 256.0
+			
+		EXEC @altAltId = [dev].[dev_CreateAnimationFrameDefinitionFromPixels]
+			@animationStateDefinitionId = @altId,
+			@frame = 1,
+			@duration = 50,
+			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
+			@width = 16.0,
+			@height = 16.0,
+			@pixCoordTL = 34.0,
+			@pixCoordTR = 33.0,
+			@pixCoordBR = 50.0,
+			@pixCoordBL = 17.0,
+			@textureWidth = 256.0
+	
+		EXEC @altId = [dev].[dev_CreateAnimationStateDefinition]
+			@gfxCompDefinitionId = @compDefinitionId,
+			@state = 1
+			
+		EXEC @altAltId = [dev].[dev_CreateAnimationFrameDefinitionFromPixels]
+			@animationStateDefinitionId = @altId,
+			@frame = 0,
+			@duration = 50,
+			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
+			@width = 16.0,
+			@height = 16.0,
+			@pixCoordTL = 51.0,
+			@pixCoordTR = 16.0,
+			@pixCoordBR = 67.0,
+			@pixCoordBL = 0.0,
+			@textureWidth = 256.0
+			
+		EXEC @altAltId = [dev].[dev_CreateAnimationFrameDefinitionFromPixels]
+			@animationStateDefinitionId = @altId,
+			@frame = 1,
+			@duration = 50,
+			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
+			@width = 16.0,
+			@height = 16.0,
+			@pixCoordTL = 51.0,
+			@pixCoordTR = 33.0,
+			@pixCoordBR = 67.0,
+			@pixCoordBL = 17.0,
+			@textureWidth = 256.0
+	
+		EXEC @altId = [dev].[dev_CreateAnimationStateDefinition]
+			@gfxCompDefinitionId = @compDefinitionId,
+			@state = 2
+			
+		EXEC @altAltId = [dev].[dev_CreateAnimationFrameDefinitionFromPixels]
+			@animationStateDefinitionId = @altId,
+			@frame = 0,
+			@duration = 50,
+			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
+			@width = 16.0,
+			@height = 16.0,
+			@pixCoordTL = 34.0,
+			@pixCoordTR = 50.0,
+			@pixCoordBR = 50.0,
+			@pixCoordBL = 34.0,
+			@textureWidth = 256.0
+			
+		EXEC @altAltId = [dev].[dev_CreateAnimationFrameDefinitionFromPixels]
+			@animationStateDefinitionId = @altId,
+			@frame = 1,
+			@duration = 50,
+			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
+			@width = 16.0,
+			@height = 16.0,
+			@pixCoordTL = 34.0,
+			@pixCoordTR = 67.0,
+			@pixCoordBR = 50.0,
+			@pixCoordBL = 51.0,
+			@textureWidth = 256.0
+	
+		EXEC @altId = [dev].[dev_CreateAnimationStateDefinition]
+			@gfxCompDefinitionId = @compDefinitionId,
+			@state = 3
+			
+		EXEC @altAltId = [dev].[dev_CreateAnimationFrameDefinitionFromPixels]
+			@animationStateDefinitionId = @altId,
+			@frame = 0,
+			@duration = 50,
+			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
+			@width = 16.0,
+			@height = 16.0,
+			@pixCoordTL = 51.0,
+			@pixCoordTR = 50.0,
+			@pixCoordBR = 67.0,
+			@pixCoordBL = 34.0,
+			@textureWidth = 256.0
+			
+		EXEC @altAltId = [dev].[dev_CreateAnimationFrameDefinitionFromPixels]
+			@animationStateDefinitionId = @altId,
+			@frame = 1,
+			@duration = 50,
+			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
+			@width = 16.0,
+			@height = 16.0,
+			@pixCoordTL = 51.0,
+			@pixCoordTR = 67.0,
+			@pixCoordBR = 67.0,
+			@pixCoordBL = 51.0,
+			@textureWidth = 256.0
+			
+	END
+		
+	IF NOT EXISTS (SELECT [Id] FROM [game].[PhysCompDefinitions] WHERE [EntityTypeId] = @id)
+	BEGIN
+		SELECT @altId = [Id] FROM [compjs].[PhysTypes] WHERE [Name] = 'Circle'
+		SELECT @altAltId = [Id] FROM [compjs].[CollisionTypes] WHERE [Name] = 'Ghost'
+	
+		EXEC @compDefinitionId = [dev].[dev_CreatePhysCompDefinitionWithCircleBoundingData]
+			@entityTypeId = @id,
+			@physTypeId = @altId,
+			@collisionTypeId = @altAltId,
+			@originX = 8.0,
+			@originY = 8.0,
+			@radius = 7.5
+	
+	END
+	
+END
+
 IF NOT EXISTS (SELECT [Id] FROM [game].[EntityTypes] WHERE [GameId] = @gameId AND [Name] = 'Spider')
 BEGIN
 	EXEC @id = [dev].[dev_CreateEntityType]
@@ -400,8 +581,8 @@ BEGIN
 			@frame = 0,
 			@duration = 50,
 			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
-			@width = 42.0,
-			@height = 25.0,
+			@width = 32.0,
+			@height = 16.0,
 			@pixCoordTL = 0.0,
 			@pixCoordTR = 127.0,
 			@pixCoordBR = 25.0,
@@ -413,8 +594,8 @@ BEGIN
 			@frame = 1,
 			@duration = 50,
 			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
-			@width = 42.0,
-			@height = 25.0,
+			@width = 32.0,
+			@height = 16.0,
 			@pixCoordTL = 0.0,
 			@pixCoordTR = 170.0,
 			@pixCoordBR = 25.0,
@@ -426,8 +607,8 @@ BEGIN
 			@frame = 2,
 			@duration = 50,
 			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
-			@width = 42.0,
-			@height = 25.0,
+			@width = 32.0,
+			@height = 16.0,
 			@pixCoordTL = 26.0,
 			@pixCoordTR = 127.0,
 			@pixCoordBR = 51.0,
@@ -439,8 +620,8 @@ BEGIN
 			@frame = 3,
 			@duration = 50,
 			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
-			@width = 42.0,
-			@height = 25.0,
+			@width = 32.0,
+			@height = 16.0,
 			@pixCoordTL = 26.0,
 			@pixCoordTR = 170.0,
 			@pixCoordBR = 51.0,
@@ -458,13 +639,70 @@ BEGIN
 			@entityTypeId = @id,
 			@physTypeId = @altId,
 			@collisionTypeId = @altAltId,
-			@originX = 21.0,
-			@originY = 12.5,
-			@halfWidth = 21.0,
-			@halfHeight = 12.5
+			@originX = 16.0,
+			@originY = 8.0,
+			@halfWidth = 16.0,
+			@halfHeight = 8.0
 	
 	END
 	
+END
+
+IF NOT EXISTS (SELECT [Id] FROM [game].[EntityTypes] WHERE [GameId] = @gameId AND [Name] = 'Flea')
+BEGIN
+	EXEC @id = [dev].[dev_CreateEntityType]
+		@name = 'Flea',
+		@gameId = @gameId
+		
+	IF NOT EXISTS (SELECT [Id] FROM [game].[BhvCompDefinitions] WHERE [EntityTypeId] = @id)
+	BEGIN
+		EXEC @compDefinitionId = [dev].[dev_CreateBhvCompDefinition]
+			@entityTypeId = @id,
+			@stateFile = 'http://arcade/cabinet/compjs/lib/behaviors/centipede/behavior-flea.js',
+			@behaviorConstructor = 'BehaviorFlea'
+			
+	END
+		
+	IF NOT EXISTS (SELECT [Id] FROM [game].[GfxCompDefinitions] WHERE [EntityTypeId] = @id)
+	BEGIN
+		EXEC @compDefinitionId = [dev].[dev_CreateGfxCompDefinition]
+			@entityTypeId = @id
+	
+		EXEC @altId = [dev].[dev_CreateAnimationStateDefinition]
+			@gfxCompDefinitionId = @compDefinitionId,
+			@state = 0
+			
+		EXEC @altAltId = [dev].[dev_CreateAnimationFrameDefinitionFromPixels]
+			@animationStateDefinitionId = @altId,
+			@frame = 0,
+			@duration = null,
+			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
+			@width = 19.0,
+			@height = 16.0,
+			@pixCoordTL = 0.0,
+			@pixCoordTR = 190.0,
+			@pixCoordBR = 16.0,
+			@pixCoordBL = 171.0,
+			@textureWidth = 256.0
+			
+	END
+		
+	IF NOT EXISTS (SELECT [Id] FROM [game].[PhysCompDefinitions] WHERE [EntityTypeId] = @id)
+	BEGIN
+		SELECT @altId = [Id] FROM [compjs].[PhysTypes] WHERE [Name] = 'AABB'
+		SELECT @altAltId = [Id] FROM [compjs].[CollisionTypes] WHERE [Name] = 'Ghost'
+	
+		EXEC @compDefinitionId = [dev].[dev_CreatePhysCompDefinitionWithAABBBoundingData]
+			@entityTypeId = @id,
+			@physTypeId = @altId,
+			@collisionTypeId = @altAltId,
+			@originX = 9.5,
+			@originY = 8.0,
+			@halfWidth = 9.5,
+			@halfHeight = 8.0
+	
+	END
+		
 END
 
 IF NOT EXISTS (SELECT [Id] FROM [game].[EntityTypes] WHERE [GameId] = @gameId AND [Name] = 'Scorpion')
@@ -561,7 +799,7 @@ BEGIN
 			@originX = 16.0,
 			@originY = 8.0,
 			@halfWidth = 16.0,
-			@halfHeight = 8.0
+			@halfHeight = 7.0
 	
 	END
 	
@@ -581,10 +819,119 @@ BEGIN
 			@behaviorConstructor = 'BehaviorMinionManager'
 			
 	END
+	
+END
+
+IF NOT EXISTS (SELECT [Id] FROM [game].[EntityTypes] WHERE [GameId] = @gameId AND [Name] = 'CentipedeManager')
+BEGIN
+	EXEC @id = [dev].[dev_CreateEntityType]
+		@name = 'CentipedeManager',
+		@gameId = @gameId
+		
+	IF NOT EXISTS (SELECT [Id] FROM [game].[BhvCompDefinitions] WHERE [EntityTypeId] = @id)
+	BEGIN
+		EXEC @compDefinitionId = [dev].[dev_CreateBhvCompDefinition]
+			@entityTypeId = @id,
+			@stateFile = 'http://arcade/cabinet/compjs/lib/behaviors/centipede/behavior-centipede-manager.js',
+			@behaviorConstructor = 'BehaviorCentipedeManager'
+			
+	END
+	
+END
+
+IF NOT EXISTS (SELECT [Id] FROM [game].[EntityTypes] WHERE [GameId] = @gameId AND [Name] = 'GameStateManager')
+BEGIN
+	EXEC @id = [dev].[dev_CreateEntityType]
+		@name = 'GameStateManager',
+		@gameId = @gameId
+		
+	IF NOT EXISTS (SELECT [Id] FROM [game].[BhvCompDefinitions] WHERE [EntityTypeId] = @id)
+	BEGIN
+		EXEC @compDefinitionId = [dev].[dev_CreateBhvCompDefinition]
+			@entityTypeId = @id,
+			@stateFile = 'http://arcade/cabinet/compjs/lib/behaviors/centipede/behavior-game-state-manager.js',
+			@behaviorConstructor = 'BehaviorGameStateManager'
+			
+	END
 		
 	EXEC [dev].[dev_CreateEntityTypesOnAllLevels]
 	@entityTypeId = @id,
 	@gameId = @gameId
+	
+END
+
+IF NOT EXISTS (SELECT [Id] FROM [game].[EntityTypes] WHERE [GameId] = @gameId AND [Name] = 'Lives')
+BEGIN
+	EXEC @id = [dev].[dev_CreateEntityType]
+		@name = 'Lives',
+		@gameId = @gameId
+		
+	IF NOT EXISTS (SELECT [Id] FROM [game].[BhvCompDefinitions] WHERE [EntityTypeId] = @id)
+	BEGIN
+		EXEC @compDefinitionId = [dev].[dev_CreateBhvCompDefinition]
+			@entityTypeId = @id,
+			@stateFile = 'http://arcade/cabinet/compjs/lib/behaviors/centipede/behavior-lives.js',
+			@behaviorConstructor = 'BehaviorLives'
+			
+	END
+	
+END
+
+IF NOT EXISTS (SELECT [Id] FROM [game].[EntityTypes] WHERE [GameId] = @gameId AND [Name] = 'Life')
+BEGIN
+	EXEC @id = [dev].[dev_CreateEntityType]
+		@name = 'Life',
+		@gameId = @gameId
+		
+	IF NOT EXISTS (SELECT [Id] FROM [game].[BhvCompDefinitions] WHERE [EntityTypeId] = @id)
+	BEGIN
+		EXEC @compDefinitionId = [dev].[dev_CreateBhvCompDefinition]
+			@entityTypeId = @id,
+			@stateFile = 'http://arcade/cabinet/compjs/lib/behaviors/centipede/behavior-life.js',
+			@behaviorConstructor = 'BehaviorLife'
+			
+	END
+		
+	IF NOT EXISTS (SELECT [Id] FROM [game].[GfxCompDefinitions] WHERE [EntityTypeId] = @id)
+	BEGIN
+		EXEC @compDefinitionId = [dev].[dev_CreateGfxCompDefinition]
+			@entityTypeId = @id
+	
+		EXEC @altId = [dev].[dev_CreateAnimationStateDefinition]
+			@gfxCompDefinitionId = @compDefinitionId,
+			@state = 0
+			
+		EXEC @altAltId = [dev].[dev_CreateAnimationFrameDefinitionFromPixels]
+			@animationStateDefinitionId = @altId,
+			@frame = 0,
+			@duration = null,
+			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
+			@width = 16.0,
+			@height = 16.0,
+			@pixCoordTL = 0.0,
+			@pixCoordTR = 81.0,
+			@pixCoordBR = 16.0,
+			@pixCoordBL = 65.0,
+			@textureWidth = 256.0
+			
+	END
+	
+END
+
+IF NOT EXISTS (SELECT [Id] FROM [game].[EntityTypes] WHERE [GameId] = @gameId AND [Name] = 'Score')
+BEGIN
+	EXEC @id = [dev].[dev_CreateEntityType]
+		@name = 'Score',
+		@gameId = @gameId
+		
+	IF NOT EXISTS (SELECT [Id] FROM [game].[BhvCompDefinitions] WHERE [EntityTypeId] = @id)
+	BEGIN
+		EXEC @compDefinitionId = [dev].[dev_CreateBhvCompDefinition]
+			@entityTypeId = @id,
+			@stateFile = 'http://arcade/cabinet/compjs/lib/behaviors/centipede/behavior-score.js',
+			@behaviorConstructor = 'BehaviorScore'
+			
+	END
 	
 END
 

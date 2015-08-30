@@ -70,6 +70,8 @@
     <Content Include="lib\behaviors\centipede\behavior-score.js" />
     <Content Include="lib\behaviors\centipede\behavior-lives.js" />
     <Content Include="lib\behaviors\centipede\behavior-centipede-manager.js" />
+    <Content Include="lib\behaviors\centipede\behavior-mushroom-waiter.js" />
+    <Content Include="lib\behaviors\centipede\behavior-life.js" />
     <Content Include="lib\engines\bhv-engine.js" />
     <Content Include="lib\cheats.js" />
     <Content Include="lib\engines\input-manager.js" />

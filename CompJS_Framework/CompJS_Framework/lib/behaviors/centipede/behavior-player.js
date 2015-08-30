@@ -7,7 +7,7 @@
             var messengerEngine = globalMessengerEngine;
             var inputManager = globalInputManager;
 
-            var godMode = false;
+            var godMode = true;
 
             var controllerLeft = function () {
                 return inputManager.isPressed(inputManager.keys.arrowLeft) || inputManager.isPressed(inputManager.keys.a);

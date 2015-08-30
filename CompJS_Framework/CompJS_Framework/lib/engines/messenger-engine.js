@@ -52,6 +52,21 @@ var MessengerEngine = function () {
         }
     };
 
+    this.unregisterAll = function (object) {
+        messageTypes.forEach(function (messageType) {
+            var messageRegisterer = null;
+            var i = 0;
+            while (i < messageRegistration[messageType].length) {
+                messageRegisterer = messageRegistration[messageType][i];
+                if (messageRegisterer.caller === object) {
+                    messageRegistration[messageType].splice(i, 1);
+                } else {
+                    ++i;
+                }
+            }
+        });
+    };
+
     this.postImmediate = function (messageType) {
         if (!validMessageType(messageType)) {
             return;
@@ -110,6 +125,7 @@ globalMessengerEngine.addMessageType("getGfxCompInstanceForEntityInstanceRespons
 
 globalMessengerEngine.addMessageType("createPhysics");
 globalMessengerEngine.addMessageType("createdPhysicsInstance");
+globalMessengerEngine.addMessageType("setInstancePosition");
 globalMessengerEngine.addMessageType("getPhysCompInstanceForEntityInstanceRequest");
 globalMessengerEngine.addMessageType("getPhysCompInstanceForEntityInstanceResponse");
 

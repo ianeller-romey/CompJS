@@ -141,6 +141,20 @@ var PhysEngine = function () {
         messengerEngine.queueForPosting("createdPhysicsInstance", instance.physComp, instance.instanceId);
     };
 
+    var setInstancePosition = function (instanceId, position) {
+        var physCompInstance = physCompInstances.firstOrNull(function (x) {
+            return x.instanceId == instanceId;
+        });
+        if (physCompInstance != null) {
+            if (position.x !== undefined) {
+                physCompInstance.transformation.position.x = position.x;
+            }
+            if (position.y !== undefined) {
+                physCompInstance.transformation.position.y = position.y;
+            }
+        }
+    };
+
     var getPhysCompInstanceForEntityInstance = function (instanceId) {
         var physCompInstance = physCompInstances.firstOrNull(function (x) {
             return x.instanceId == instanceId;
@@ -161,6 +175,7 @@ var PhysEngine = function () {
     };
 
     messengerEngine.register("createPhysics", this, createPhysCompInstance);
+    messengerEngine.register("setInstancePosition", this, setInstancePosition);
     messengerEngine.register("getPhysCompInstanceForEntityInstanceRequest", this, getPhysCompInstanceForEntityInstance);
     messengerEngine.register("removeEntityInstance", this, removePhysCompInstanceFromMessage);
 };

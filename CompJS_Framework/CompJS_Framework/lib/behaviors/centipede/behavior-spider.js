@@ -19,21 +19,21 @@
                 if (this.data["playerBulletDamage"] !== undefined) {
                     this.playerBulletDamage();
                 } else {
-                    if (this.transformation.position.x >= 1000) {
+                    if (this.transformation.position.x >= 512) {
                         this.switchDirectionX(-velocityAmount);
                         this.switchDirectionY();
                         durationCurrent = 0;
-                    } else if (this.transformation.position.x <= 24) {
+                    } else if (this.transformation.position.x <= 0) {
                         this.switchDirectionX(velocityAmount);
                         this.switchDirectionY();
                         durationCurrent = 0;
                     }
 
-                    if (this.transformation.position.y >= 1000) {
+                    if (this.transformation.position.y >= 512) {
                         this.switchDirectionX();
                         this.switchDirectionY(-velocityAmount);
                         durationCurrent = 0;
-                    } else if (this.transformation.position.y <= 24) {
+                    } else if (this.transformation.position.y <= 0) {
                         this.switchDirectionX();
                         this.switchDirectionY(velocityAmount);
                         durationCurrent = 0;
@@ -56,14 +56,21 @@
 
             this.switchDirectionX = function (x) {
                 if (x === undefined) {
-                    x = (Math.random() * 100 >= 50) ? velocityAmount : -velocityAmount;
+                    var rand = Math.random();
+                    if (rand <= .33) {
+                        x = velocityAmount;
+                    } else if (rand > .33 && rand <= .66) {
+                        x = -velocityAmount;
+                    } else {
+                        x = 0.0;
+                    }
                 }
                 this.transformation.velocity.x = x;
             }
 
             this.switchDirectionY = function (y) {
                 if (y === undefined) {
-                    y = (Math.random() * 100 >= 50) ? velocityAmount : -velocityAmount;
+                    y = (Math.random() < .5)  ? velocityAmount : -velocityAmount;
                 }
                 this.transformation.velocity.y = y;
             }
@@ -75,9 +82,22 @@
 
             this.playerBulletDamage = function () {
                 if (playerPosition != null) {
-                    // Calculate score based on distance
+                    var xDist = this.transformation.position.x - playerPosition.x;
+                    xDist *= xDist;
+                    var yDist = this.transformation.position.y - playerPosition.y;
+                    yDist *= yDist;
+                    var dist = Math.sqrt(xDist + yDist);
+                    if (dist <= 64) {
+                        messengerEngine.queueForPosting("incrementPlayerScore", 900);
+                    } else if (dist > 64 && dist <= 256) {
+                        messengerEngine.queueForPosting("incrementPlayerScore", 600);
+                    } else {
+                        messengerEngine.queueForPosting("incrementPlayerScore", 300);
+                    }
                 }
                 messengerEngine.queueForPosting("removeEntityInstance", this.instanceId);
+
+                messengerEngine.unregisterAll(this);
             };
 
             this.capturePhysicsInstance = function (physComp, instanceId) {
@@ -104,6 +124,8 @@
             messengerEngine.register("createdPhysicsInstance", this, this.capturePhysicsInstance);
             messengerEngine.register("getPlayerInstanceIdResponse", this, getPlayerInstanceId);
             messengerEngine.register("getTransformationForEntityInstanceResponse", this, getPlayerTransformation);
+
+            messengerEngine.queueForPosting("getPlayerInstanceIdRequest", true);
         };
 
         globalMessengerEngine.postImmediate("setBehaviorConstructor", "BehaviorSpider", BehaviorSpider);
