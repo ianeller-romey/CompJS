@@ -86,7 +86,8 @@ IF NOT EXISTS (SELECT 1 FROM [sys].[tables] t
 BEGIN
 	CREATE TABLE [game].[GfxCompDefinitions] (
 		[Id] int PRIMARY KEY NONCLUSTERED IDENTITY,
-		[EntityTypeId] int NOT NULL FOREIGN KEY REFERENCES [game].[EntityTypes]([Id])
+		[EntityTypeId] int NOT NULL FOREIGN KEY REFERENCES [game].[EntityTypes]([Id]),
+		[RenderPass] int NOT NULL
 	)
 	CREATE UNIQUE CLUSTERED INDEX IX__GfxCompDefinitions__EntityTypeId ON [game].[GfxCompDefinitions]([EntityTypeId])
 	DBCC CHECKIDENT ('[game].[GfxCompDefinitions]', RESEED, 0)
@@ -133,11 +134,13 @@ BEGIN
 		[Id] int PRIMARY KEY CLUSTERED IDENTITY,
 		[GfxCompDefinitionId] int NOT NULL FOREIGN KEY REFERENCES [game].[GfxCompDefinitions]([Id]),
 		[Texture] varchar(1000) NOT NULL,
+		[StartT] float NOT NULL,
+		[StartL] float NOT NULL,
 		[CharacterWidth] float NOT NULL,
 		[CharacterHeight] float NOT NULL,
 	)
 	CREATE NONCLUSTERED INDEX IX__FontTextureDefinitions__GfxCompDefinitionId ON [game].[FontTextureDefinitions]([GfxCompDefinitionId])
-	INCLUDE([Texture], [CharacterWidth], [CharacterHeight])
+	INCLUDE([Texture], [StartT], [StartL], [CharacterWidth], [CharacterHeight])
 	DBCC CHECKIDENT ('[game].[FontTextureDefinitions]', RESEED, 0)
 END
 

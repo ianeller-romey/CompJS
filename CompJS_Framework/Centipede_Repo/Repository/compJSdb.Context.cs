@@ -43,23 +43,6 @@ namespace CompJS_Repo.Repository
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<RetrievePhysTypes_Result>("RetrievePhysTypes");
         }
     
-        public virtual int CreateHighScoreForGame(string playerName, Nullable<long> score, Nullable<int> gameId)
-        {
-            var playerNameParameter = playerName != null ?
-                new ObjectParameter("playerName", playerName) :
-                new ObjectParameter("playerName", typeof(string));
-    
-            var scoreParameter = score.HasValue ?
-                new ObjectParameter("score", score) :
-                new ObjectParameter("score", typeof(long));
-    
-            var gameIdParameter = gameId.HasValue ?
-                new ObjectParameter("gameId", gameId) :
-                new ObjectParameter("gameId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("CreateHighScoreForGame", playerNameParameter, scoreParameter, gameIdParameter);
-        }
-    
         public virtual ObjectResult<RetrieveAllAudioForGame_Result> RetrieveAllAudioForGame(Nullable<int> gameId)
         {
             var gameIdParameter = gameId.HasValue ?
@@ -67,92 +50,6 @@ namespace CompJS_Repo.Repository
                 new ObjectParameter("gameId", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<RetrieveAllAudioForGame_Result>("RetrieveAllAudioForGame", gameIdParameter);
-        }
-    
-        public virtual ObjectResult<RetrieveBhvCompDefinition_Result> RetrieveAllBhvCompDefinitionsForGame(Nullable<int> gameId)
-        {
-            var gameIdParameter = gameId.HasValue ?
-                new ObjectParameter("gameId", gameId) :
-                new ObjectParameter("gameId", typeof(int));
-
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<RetrieveBhvCompDefinition_Result>("RetrieveAllBhvCompDefinitionsForGame", gameIdParameter);
-        }
-    
-        public virtual ObjectResult<RetrieveAllEntityTypeDefinitionsForGame_Result> RetrieveAllEntityTypeDefinitionsForGame(Nullable<int> gameId)
-        {
-            var gameIdParameter = gameId.HasValue ?
-                new ObjectParameter("gameId", gameId) :
-                new ObjectParameter("gameId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<RetrieveAllEntityTypeDefinitionsForGame_Result>("RetrieveAllEntityTypeDefinitionsForGame", gameIdParameter);
-        }
-    
-        public virtual ObjectResult<RetrieveAllGames_Result> RetrieveAllGames()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<RetrieveAllGames_Result>("RetrieveAllGames");
-        }
-    
-        public virtual ObjectResult<RetrieveGfxCompDefinition_Result> RetrieveAllGfxCompDefinitionsForGame(Nullable<int> gameId)
-        {
-            var gameIdParameter = gameId.HasValue ?
-                new ObjectParameter("gameId", gameId) :
-                new ObjectParameter("gameId", typeof(int));
-
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<RetrieveGfxCompDefinition_Result>("RetrieveAllGfxCompDefinitionsForGame", gameIdParameter);
-        }
-    
-        public virtual ObjectResult<RetrieveAllHighScoresForGame_Result> RetrieveAllHighScoresForGame(Nullable<int> gameId)
-        {
-            var gameIdParameter = gameId.HasValue ?
-                new ObjectParameter("gameId", gameId) :
-                new ObjectParameter("gameId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<RetrieveAllHighScoresForGame_Result>("RetrieveAllHighScoresForGame", gameIdParameter);
-        }
-    
-        public virtual ObjectResult<RetrieveAllLevelsForGame_Result> RetrieveAllLevelsForGame(Nullable<int> gameId)
-        {
-            var gameIdParameter = gameId.HasValue ?
-                new ObjectParameter("gameId", gameId) :
-                new ObjectParameter("gameId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<RetrieveAllLevelsForGame_Result>("RetrieveAllLevelsForGame", gameIdParameter);
-        }
-    
-        public virtual ObjectResult<RetrievePhysCompDefinition_Result> RetrieveAllPhysCompDefinitionsForGame(Nullable<int> gameId)
-        {
-            var gameIdParameter = gameId.HasValue ?
-                new ObjectParameter("gameId", gameId) :
-                new ObjectParameter("gameId", typeof(int));
-
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<RetrievePhysCompDefinition_Result>("RetrieveAllPhysCompDefinitionsForGame", gameIdParameter);
-        }
-    
-        public virtual ObjectResult<RetrieveAllShadersForGame_Result> RetrieveAllShadersForGame(Nullable<int> gameId)
-        {
-            var gameIdParameter = gameId.HasValue ?
-                new ObjectParameter("gameId", gameId) :
-                new ObjectParameter("gameId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<RetrieveAllShadersForGame_Result>("RetrieveAllShadersForGame", gameIdParameter);
-        }
-    
-        public virtual ObjectResult<RetrieveAnimationFrameDefinitionsForAnimationStateDefinition_Result> RetrieveAnimationFrameDefinitionsForAnimationStateDefinition(Nullable<int> animationStateDefinitionId)
-        {
-            var animationStateDefinitionIdParameter = animationStateDefinitionId.HasValue ?
-                new ObjectParameter("animationStateDefinitionId", animationStateDefinitionId) :
-                new ObjectParameter("animationStateDefinitionId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<RetrieveAnimationFrameDefinitionsForAnimationStateDefinition_Result>("RetrieveAnimationFrameDefinitionsForAnimationStateDefinition", animationStateDefinitionIdParameter);
-        }
-    
-        public virtual ObjectResult<RetrieveAnimationStateDefinitionsForGfxCompDefinition_Result> RetrieveAnimationStateDefinitionsForGfxCompDefinition(Nullable<int> gfxCompDefinitionId)
-        {
-            var gfxCompDefinitionIdParameter = gfxCompDefinitionId.HasValue ?
-                new ObjectParameter("gfxCompDefinitionId", gfxCompDefinitionId) :
-                new ObjectParameter("gfxCompDefinitionId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<RetrieveAnimationStateDefinitionsForGfxCompDefinition_Result>("RetrieveAnimationStateDefinitionsForGfxCompDefinition", gfxCompDefinitionIdParameter);
         }
     
         public virtual ObjectResult<RetrieveBhvCompDefinition_Result> RetrieveBhvCompDefinition(Nullable<int> id)
@@ -163,23 +60,28 @@ namespace CompJS_Repo.Repository
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<RetrieveBhvCompDefinition_Result>("RetrieveBhvCompDefinition", idParameter);
         }
-
+    
         public virtual ObjectResult<RetrieveBhvCompDefinition_Result> RetrieveBhvCompDefinitionForEntity(Nullable<int> entityTypeId)
         {
             var entityTypeIdParameter = entityTypeId.HasValue ?
                 new ObjectParameter("entityTypeId", entityTypeId) :
                 new ObjectParameter("entityTypeId", typeof(int));
-
+    
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<RetrieveBhvCompDefinition_Result>("RetrieveBhvCompDefinitionForEntity", entityTypeIdParameter);
         }
     
-        public virtual ObjectResult<RetrieveEntity_Result> RetrieveEntity(Nullable<int> entityTypeId)
+        public virtual ObjectResult<RetrieveBhvCompDefinition_Result> RetrieveAllBhvCompDefinitionsForGame(Nullable<int> gameId)
         {
-            var entityTypeIdParameter = entityTypeId.HasValue ?
-                new ObjectParameter("entityTypeId", entityTypeId) :
-                new ObjectParameter("entityTypeId", typeof(int));
+            var gameIdParameter = gameId.HasValue ?
+                new ObjectParameter("gameId", gameId) :
+                new ObjectParameter("gameId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<RetrieveEntity_Result>("RetrieveEntity", entityTypeIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<RetrieveBhvCompDefinition_Result>("RetrieveAllBhvCompDefinitionsForGame", gameIdParameter);
+        }
+    
+        public virtual ObjectResult<RetrieveAllGames_Result> RetrieveAllGames()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<RetrieveAllGames_Result>("RetrieveAllGames");
         }
     
         public virtual ObjectResult<RetrieveGfxCompDefinition_Result> RetrieveGfxCompDefinition(Nullable<int> id)
@@ -196,17 +98,35 @@ namespace CompJS_Repo.Repository
             var entityTypeIdParameter = entityTypeId.HasValue ?
                 new ObjectParameter("entityTypeId", entityTypeId) :
                 new ObjectParameter("entityTypeId", typeof(int));
-
+    
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<RetrieveGfxCompDefinition_Result>("RetrieveGfxCompDefinitionForEntity", entityTypeIdParameter);
         }
     
-        public virtual ObjectResult<RetrieveLevelLayoutsForLevel_Result> RetrieveLevelLayoutsForLevel(Nullable<int> levelId)
+        public virtual ObjectResult<RetrieveGfxCompDefinition_Result> RetrieveAllGfxCompDefinitionsForGame(Nullable<int> gameId)
         {
-            var levelIdParameter = levelId.HasValue ?
-                new ObjectParameter("levelId", levelId) :
-                new ObjectParameter("levelId", typeof(int));
+            var gameIdParameter = gameId.HasValue ?
+                new ObjectParameter("gameId", gameId) :
+                new ObjectParameter("gameId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<RetrieveLevelLayoutsForLevel_Result>("RetrieveLevelLayoutsForLevel", levelIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<RetrieveGfxCompDefinition_Result>("RetrieveAllGfxCompDefinitionsForGame", gameIdParameter);
+        }
+    
+        public virtual ObjectResult<RetrieveAnimationStateDefinitionsForGfxCompDefinition_Result> RetrieveAnimationStateDefinitionsForGfxCompDefinition(Nullable<int> gfxCompDefinitionId)
+        {
+            var gfxCompDefinitionIdParameter = gfxCompDefinitionId.HasValue ?
+                new ObjectParameter("gfxCompDefinitionId", gfxCompDefinitionId) :
+                new ObjectParameter("gfxCompDefinitionId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<RetrieveAnimationStateDefinitionsForGfxCompDefinition_Result>("RetrieveAnimationStateDefinitionsForGfxCompDefinition", gfxCompDefinitionIdParameter);
+        }
+    
+        public virtual ObjectResult<RetrieveAnimationFrameDefinitionsForAnimationStateDefinition_Result> RetrieveAnimationFrameDefinitionsForAnimationStateDefinition(Nullable<int> animationStateDefinitionId)
+        {
+            var animationStateDefinitionIdParameter = animationStateDefinitionId.HasValue ?
+                new ObjectParameter("animationStateDefinitionId", animationStateDefinitionId) :
+                new ObjectParameter("animationStateDefinitionId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<RetrieveAnimationFrameDefinitionsForAnimationStateDefinition_Result>("RetrieveAnimationFrameDefinitionsForAnimationStateDefinition", animationStateDefinitionIdParameter);
         }
     
         public virtual ObjectResult<RetrievePhysCompDefinition_Result> RetrievePhysCompDefinition(Nullable<int> id)
@@ -223,8 +143,79 @@ namespace CompJS_Repo.Repository
             var entityTypeIdParameter = entityTypeId.HasValue ?
                 new ObjectParameter("entityTypeId", entityTypeId) :
                 new ObjectParameter("entityTypeId", typeof(int));
-
+    
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<RetrievePhysCompDefinition_Result>("RetrievePhysCompDefinitionForEntity", entityTypeIdParameter);
+        }
+    
+        public virtual ObjectResult<RetrievePhysCompDefinition_Result> RetrieveAllPhysCompDefinitionsForGame(Nullable<int> gameId)
+        {
+            var gameIdParameter = gameId.HasValue ?
+                new ObjectParameter("gameId", gameId) :
+                new ObjectParameter("gameId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<RetrievePhysCompDefinition_Result>("RetrieveAllPhysCompDefinitionsForGame", gameIdParameter);
+        }
+    
+        public virtual ObjectResult<RetrieveEntity_Result> RetrieveEntity(Nullable<int> entityTypeId)
+        {
+            var entityTypeIdParameter = entityTypeId.HasValue ?
+                new ObjectParameter("entityTypeId", entityTypeId) :
+                new ObjectParameter("entityTypeId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<RetrieveEntity_Result>("RetrieveEntity", entityTypeIdParameter);
+        }
+    
+        public virtual ObjectResult<RetrieveAllEntityTypeDefinitionsForGame_Result> RetrieveAllEntityTypeDefinitionsForGame(Nullable<int> gameId)
+        {
+            var gameIdParameter = gameId.HasValue ?
+                new ObjectParameter("gameId", gameId) :
+                new ObjectParameter("gameId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<RetrieveAllEntityTypeDefinitionsForGame_Result>("RetrieveAllEntityTypeDefinitionsForGame", gameIdParameter);
+        }
+    
+        public virtual ObjectResult<RetrieveAllShadersForGame_Result> RetrieveAllShadersForGame(Nullable<int> gameId)
+        {
+            var gameIdParameter = gameId.HasValue ?
+                new ObjectParameter("gameId", gameId) :
+                new ObjectParameter("gameId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<RetrieveAllShadersForGame_Result>("RetrieveAllShadersForGame", gameIdParameter);
+        }
+    
+        public virtual ObjectResult<RetrieveAllLevelsForGame_Result> RetrieveAllLevelsForGame(Nullable<int> gameId)
+        {
+            var gameIdParameter = gameId.HasValue ?
+                new ObjectParameter("gameId", gameId) :
+                new ObjectParameter("gameId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<RetrieveAllLevelsForGame_Result>("RetrieveAllLevelsForGame", gameIdParameter);
+        }
+    
+        public virtual ObjectResult<RetrieveLevelLayoutsForLevel_Result> RetrieveLevelLayoutsForLevel(Nullable<int> levelId)
+        {
+            var levelIdParameter = levelId.HasValue ?
+                new ObjectParameter("levelId", levelId) :
+                new ObjectParameter("levelId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<RetrieveLevelLayoutsForLevel_Result>("RetrieveLevelLayoutsForLevel", levelIdParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<decimal>> CreateHighScoreForGame(string playerName, Nullable<long> score, Nullable<int> gameId)
+        {
+            var playerNameParameter = playerName != null ?
+                new ObjectParameter("playerName", playerName) :
+                new ObjectParameter("playerName", typeof(string));
+    
+            var scoreParameter = score.HasValue ?
+                new ObjectParameter("score", score) :
+                new ObjectParameter("score", typeof(long));
+    
+            var gameIdParameter = gameId.HasValue ?
+                new ObjectParameter("gameId", gameId) :
+                new ObjectParameter("gameId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<decimal>>("CreateHighScoreForGame", playerNameParameter, scoreParameter, gameIdParameter);
         }
     
         public virtual ObjectResult<RetrieveTopHighScoresForGame_Result> RetrieveTopHighScoresForGame(Nullable<int> count, Nullable<int> gameId)
@@ -238,6 +229,24 @@ namespace CompJS_Repo.Repository
                 new ObjectParameter("gameId", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<RetrieveTopHighScoresForGame_Result>("RetrieveTopHighScoresForGame", countParameter, gameIdParameter);
+        }
+    
+        public virtual ObjectResult<RetrieveAllHighScoresForGame_Result> RetrieveAllHighScoresForGame(Nullable<int> gameId)
+        {
+            var gameIdParameter = gameId.HasValue ?
+                new ObjectParameter("gameId", gameId) :
+                new ObjectParameter("gameId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<RetrieveAllHighScoresForGame_Result>("RetrieveAllHighScoresForGame", gameIdParameter);
+        }
+    
+        public virtual ObjectResult<RetrieveFontTextureDefinitionsForGfxComp_Result> RetrieveFontTextureDefinitionsForGfxComp(Nullable<int> gfxCompDefinitionId)
+        {
+            var gfxCompDefinitionIdParameter = gfxCompDefinitionId.HasValue ?
+                new ObjectParameter("gfxCompDefinitionId", gfxCompDefinitionId) :
+                new ObjectParameter("gfxCompDefinitionId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<RetrieveFontTextureDefinitionsForGfxComp_Result>("RetrieveFontTextureDefinitionsForGfxComp", gfxCompDefinitionIdParameter);
         }
     }
 }

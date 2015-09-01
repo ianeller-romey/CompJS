@@ -83,6 +83,7 @@
     <Content Include="lib\engines\messenger-engine.js" />
     <Content Include="lib\engines\phys-engine.js" />
     <Content Include="lib\engines\services-engine.js" />
+    <Content Include="lib\entities\notify-on-changed.js" />
     <Content Include="lib\shaders\centipede\shader-point-light.js" />
     <Content Include="lib\shaders\centipede\shader-emboss.js" />
     <Content Include="lib\shaders\centipede\shader-texture.js" />

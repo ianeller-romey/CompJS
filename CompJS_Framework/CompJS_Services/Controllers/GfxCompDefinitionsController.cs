@@ -24,9 +24,9 @@ namespace CompJS_Services.Controllers
             m_repo = new CompJS_Repo.CompJS_Repo();
         }
 
-        public IEnumerable<GfxCompDefinition> GetForGame(int gameId)
+        public GfxCompDefinitionCollection GetForGame(int gameId)
         {
-            return m_repo.RetrieveAllGfxCompDefinitionsForGame(gameId).Select(x => TypeAdapter.Adapt<GfxCompDefinition>(x)).ToList();
+            return TypeAdapter.Adapt<GfxCompDefinitionCollection>(m_repo.RetrieveAllGfxCompDefinitionsForGame(gameId));
         }
     }
 }

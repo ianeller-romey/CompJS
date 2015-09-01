@@ -4,15 +4,21 @@ var GfxEngine = function (canvasElem) {
     var messengerEngine = globalMessengerEngine;
 
     var textureDefinitions = {};
-    var gfxCompDefinitions = [];
-    var gfxCompInstances = [];
+    var gfx2DAnimationDefinitions = [];
+    var gfx2DAnimationInstances = [];
+    var gfxFontDefinitions = [];
+    var gfxFontInstances = [];
+    var renderPasses = [];
+    var gfxCompTypeDefinitions = {};
+    var gfxCompType2DAnimation = "2DAnimation";
+    var gfxCompTypeFont = "Font";
 
     var shaderList = GfxEngine.shaderList;
 
     var webGL;
-    var webGLShaderProgram;
-    var webGLVertexShaderExtraSteps;
-    var webGLFragmentShaderExtraSteps;
+    var webGLShaderPrograms = [];
+    var webGLVertexShaderExtraSteps = [];
+    var webGLFragmentShaderExtraSteps = [];
     var webGLSquareVerticesBuffer;
     var webGLTexCoordBuffer;
 
@@ -53,8 +59,17 @@ var GfxEngine = function (canvasElem) {
         webGLTexCoordBuffer = webGL.createBuffer();
     };
 
-    var buildGfxCompDefinitions = function (data) {
+    var buildGfx2DAnimationDefinitions = function (data) {
         data.forEach(function (x) {
+
+            var renderPass = x.renderPass;
+            if (!renderPasses.contains(renderPass)) {
+                renderPasses.push(renderPass);
+            }
+            if (gfx2DAnimationDefinitions[renderPass] === undefined || gfx2DAnimationDefinitions[renderPass] === null) {
+                gfx2DAnimationDefinitions[renderPass] = [];
+            }
+
             var animationStates = [];
             for (var i = 0; i < x.animationStateDefinitions.length; ++i) {
                 var animationState = x.animationStateDefinitions[i];
@@ -78,9 +93,36 @@ var GfxEngine = function (canvasElem) {
                     animationFrameDefinitions: animationFrames
                 };
             }
-            gfxCompDefinitions[x.id] = {
+            gfx2DAnimationDefinitions[renderPass][x.id] = {
                 animationStateDefinitions: animationStates
             };
+            gfxCompTypeDefinitions[x.id] = gfxCompType2DAnimation;
+        });
+    };
+
+    var buildGfxFontDefinitions = function (data) {
+        data.forEach(function (x) {
+
+            var renderPass = x.renderPass;
+            if (!renderPasses.contains(renderPass)) {
+                renderPasses.push(renderPass);
+            }
+            if (gfxFontDefinitions[renderPass] === undefined || gfxFontDefinitions[renderPass] === null) {
+                gfxFontDefinitions[renderPass] = [];
+            }
+
+            gfxFontDefinitions[renderPass][x.id] = {
+                renderPass: x.renderPass,
+                fontTextureDefinition: {
+                    id: x.fontTextureDefinition.id,
+                    texture: x.fontTextureDefinition.texture,
+                    startT: x.fontTextureDefinition.startT,
+                    startL: x.fontTextureDefinition.startL,
+                    characterWidth: x.fontTextureDefinition.characterWidth,
+                    characterHeight: x.fontTextureDefinition.characterHeight
+                }
+            };
+            gfxCompTypeDefinitions[x.id] = gfxCompTypeFont;
         });
     };
 
@@ -103,27 +145,23 @@ var GfxEngine = function (canvasElem) {
 
         var loadImagePromises = [];
         for (var i = 0; i < data.length; ++i) {
-            for (var j = 0; j < data[i].animationStateDefinitions.length; ++j) {
-                for (var k = 0; k < data[i].animationStateDefinitions[j].animationFrameDefinitions.length; ++k) {
-                    var animationFrameDefinition = data[i].animationStateDefinitions[j].animationFrameDefinitions[k];
-                    if (textureDefinitions[animationFrameDefinition.texture] === undefined) {
-                        var image = new Image();
-                        var webGLTexture = createWebGLTexture(image);
-                        textureDefinitions[animationFrameDefinition.texture] = {
-                            image: image,
-                            webGLTexture: webGLTexture
-                        };
+            var texture = data[i];
+            if (textureDefinitions[texture] === undefined) {
+                var image = new Image();
+                var webGLTexture = createWebGLTexture(image);
+                textureDefinitions[texture] = {
+                    image: image,
+                    webGLTexture: webGLTexture
+                };
 
-                        var promise = new Promise(function (resolve, reject) {
-                            image.addEventListener("load", function () {
-                                resolve();
-                            });
-                        });
-                        loadImagePromises.push(promise);
+                var promise = new Promise(function (resolve, reject) {
+                    image.addEventListener("load", function () {
+                        resolve();
+                    });
+                });
+                loadImagePromises.push(promise);
 
-                        image.src = animationFrameDefinition.texture;
-                    }
-                }
+                image.src = texture;
             }
         }
         return Promise.all(loadImagePromises);
@@ -136,8 +174,6 @@ var GfxEngine = function (canvasElem) {
             if (initWebGL(canvasElem)) {
                 initShaders();
                 initBuffers();
-
-                setShaderProgram("Texture");
 
                 webGL.clearColor(0.0, 0.0, 0.0, 0.0);
                 webGL.clear(webGL.COLOR_BUFFER_BIT | webGL.DEPTH_BUFFER_BIT);
@@ -152,8 +188,30 @@ var GfxEngine = function (canvasElem) {
         });
         var gfxCompsPromise = new Promise(function(resolve, reject){
             servicesEngine.retrieveAllGfxCompDefinitionsForGame(gameId).then(function (data) {
-                var promises = Promise.all([buildGfxCompDefinitions(data), buildTextureDefinitions(data)]).then(function () {
-                    resolve();
+                // Initialize animations first ...
+                var textures2DAnimation = data.gfx2DAnimations.select(function (x) {
+                    return x.animationStateDefinitions.select(function (y) {
+                        return y.animationFrameDefinitions.select(function (z) {
+                            return z.texture;
+                        }).distinct();
+                    }).aggregate(function (a, b) {
+                        return a.addRange(b);
+                    });
+                }).aggregate(function (a, b) {
+                    return a.addRange(b);
+                }).distinct();
+                Promise.all([buildGfx2DAnimationDefinitions(data.gfx2DAnimations), buildTextureDefinitions(textures2DAnimation)]).then(function () {
+                    // ... then fonts
+                    var texturesFonts = data.gfxFonts.select(function (x) {
+                        return x.fontTextureDefinition.texture;
+                    }).distinct();
+                    Promise.all([buildGfxFontDefinitions(data.gfxFonts), buildTextureDefinitions(texturesFonts)]).then(function () {
+
+                        for (var i = 0; i < renderPasses.length; ++i) {
+                            setShaderProgram("Texture", i);
+                        }
+                        resolve();
+                    });
                 });
             });
         });
@@ -170,24 +228,73 @@ var GfxEngine = function (canvasElem) {
     };
 
     var getAnimationStateDefinitionOfGfxComp = function (gfxComp) {
-        return gfxCompDefinitions[gfxComp.id].animationStateDefinitions[gfxComp.animationState];
+        return gfx2DAnimationDefinitions[gfxComp.id].animationStateDefinitions[gfxComp.animationState];
     };
 
     var getAnimationFrameDefinitionOfGfxComp = function (gfxComp) {
-        return gfxCompDefinitions[gfxComp.id].animationStateDefinitions[gfxComp.animationState].animationFrameDefinitions[gfxComp.animationFrame];
+        return gfx2DAnimationDefinitions[gfxComp.id].animationStateDefinitions[gfxComp.animationState].animationFrameDefinitions[gfxComp.animationFrame];
     };
 
-    this.update = function (delta) {
-        webGL.clear(webGL.COLOR_BUFFER_BIT | webGL.DEPTH_BUFFER_BIT);
+    var draw = function (vertexVerts, textureVerts, webGLShaderProgram, webGLVertexShaderExtraStep, webGLFragmentShaderExtraStep, texture) {
+        webGL.useProgram(webGLShaderProgram);
 
-        if (gfxCompInstances.length === 0) {
-            return;
+        // vertex buffer
+        webGL.bindBuffer(webGL.ARRAY_BUFFER, webGLSquareVerticesBuffer);
+        webGL.bufferData(webGL.ARRAY_BUFFER, new Float32Array(vertexVerts), webGL.STATIC_DRAW);
+
+        // vertex shader
+        var positionLocation = webGL.getAttribLocation(webGLShaderProgram, "a_position")
+        if (positionLocation > -1) {
+            webGL.enableVertexAttribArray(positionLocation);
+            webGL.vertexAttribPointer(positionLocation, 2, webGL.FLOAT, false, 0, 0);
         }
+
+        var resolutionLocation = webGL.getUniformLocation(webGLShaderProgram, "u_resolution");
+        if (resolutionLocation != null) {
+            webGL.uniform2f(resolutionLocation, width, height);
+        }
+
+        if (webGLVertexShaderExtraStep != null) {
+            webGLVertexShaderExtraStep(webGL, webGLShaderProgram);
+        }
+
+        // texture buffer
+        webGL.bindBuffer(webGL.ARRAY_BUFFER, webGLTexCoordBuffer);
+        webGL.bufferData(webGL.ARRAY_BUFFER, new Float32Array(textureVerts), webGL.STATIC_DRAW);
+
+        // texture shader
+        var texCoordLocation = webGL.getAttribLocation(webGLShaderProgram, "a_texCoord");
+        if (texCoordLocation > -1) {
+            webGL.enableVertexAttribArray(texCoordLocation);
+            webGL.vertexAttribPointer(texCoordLocation, 2, webGL.FLOAT, false, 0, 0);
+        }
+
+        if (webGLFragmentShaderExtraStep != null) {
+            webGLFragmentShaderExtraStep(webGL, webGLShaderProgram);
+        }
+
+        // bind active texture
+        if (texture != activeTexture) {
+            webGL.bindTexture(webGL.TEXTURE_2D, textureDefinitions[texture].webGLTexture);
+
+            activeTexture = texture;
+        }
+
+        // draw
+        webGL.drawArrays(webGL.TRIANGLES, 0, vertexVerts.length / 2);
+    };
+
+    var draw2DAnimation = function (renderPass) {
+        var webGLShaderProgram = webGLShaderPrograms[renderPass];
+        var webGLVertexShaderExtraStep = webGLVertexShaderExtraSteps[renderPass];
+        var webGLFragmentShaderExtraStep = webGLFragmentShaderExtraSteps[renderPass];
 
         var vertexVerts = [];
         var textureVerts = [];
-        for (var i = 0; i < gfxCompInstances.length; ++i) {
-            var g = gfxCompInstances[i];
+
+        // draw 2d animation
+        for (var i = 0; i < gfx2DAnimationInstances[renderPass].length; ++i) {
+            var g = gfx2DAnimationInstances[i];
             var gfxComp = g.gfxComp;
             var animationFrameDefinition = getAnimationFrameDefinitionOfGfxComp(gfxComp);
 
@@ -231,53 +338,10 @@ var GfxEngine = function (canvasElem) {
             });
 
             // same texture? don't draw yet
-            var nextGfxComp = (i != gfxCompInstances.length - 1) ? gfxCompInstances[i + 1].gfxComp : null;
+            var nextGfxComp = (i != gfx2DAnimationInstances.length - 1) ? gfx2DAnimationInstances[i + 1].gfxComp : null;
             var nextAnimationFrame = (nextGfxComp != null) ? getAnimationFrameDefinitionOfGfxComp(nextGfxComp) : null;
             if (nextAnimationFrame == null || animationFrameDefinition.texture != nextAnimationFrame.texture) {
-                // vertex buffer
-                webGL.bindBuffer(webGL.ARRAY_BUFFER, webGLSquareVerticesBuffer);
-                webGL.bufferData(webGL.ARRAY_BUFFER, new Float32Array(vertexVerts), webGL.STATIC_DRAW);
-
-                // vertex shader
-                var positionLocation = webGL.getAttribLocation(webGLShaderProgram, "a_position")
-                if (positionLocation > -1) {
-                    webGL.enableVertexAttribArray(positionLocation);
-                    webGL.vertexAttribPointer(positionLocation, 2, webGL.FLOAT, false, 0, 0);
-                }
-
-                var resolutionLocation = webGL.getUniformLocation(webGLShaderProgram, "u_resolution");
-                if (resolutionLocation != null) {
-                    webGL.uniform2f(resolutionLocation, width, height);
-                }
-
-                if (webGLVertexShaderExtraSteps != null) {
-                    webGLVertexShaderExtraSteps(webGL, webGLShaderProgram);
-                }
-
-                // texture buffer
-                webGL.bindBuffer(webGL.ARRAY_BUFFER, webGLTexCoordBuffer);
-                webGL.bufferData(webGL.ARRAY_BUFFER, new Float32Array(textureVerts), webGL.STATIC_DRAW);
-
-                // texture shader
-                var texCoordLocation = webGL.getAttribLocation(webGLShaderProgram, "a_texCoord");
-                if (texCoordLocation > -1) {
-                    webGL.enableVertexAttribArray(texCoordLocation);
-                    webGL.vertexAttribPointer(texCoordLocation, 2, webGL.FLOAT, false, 0, 0);
-                }
-
-                if (webGLFragmentShaderExtraSteps != null) {
-                    webGLFragmentShaderExtraSteps(webGL, webGLShaderProgram);
-                }
-
-                // bind active texture
-                if (animationFrameDefinition.texture != activeTexture) {
-                    webGL.bindTexture(webGL.TEXTURE_2D, textureDefinitions[animationFrameDefinition.texture].webGLTexture);
-
-                    activeTexture = animationFrameDefinition.texture;
-                }
-
-                // draw
-                webGL.drawArrays(webGL.TRIANGLES, 0, vertexVerts.length / 2);
+                draw(vertexVerts, textureVerts, webGLShaderProgram, webGLVertexShaderExtraStep, webGLFragmentShaderExtraStep, animationFrameDefinition.texture);
 
                 vertexVerts = [];
                 textureVerts = [];
@@ -285,9 +349,15 @@ var GfxEngine = function (canvasElem) {
         }
     };
 
-    var createGfxCompInstance = function (entity, gfxCompId) {
-        var animationState = gfxCompDefinitions[gfxCompId].animationStateDefinitions[0].id;
-        var animationFrame = gfxCompDefinitions[gfxCompId].animationStateDefinitions
+    this.update = function (delta) {
+        webGL.clear(webGL.COLOR_BUFFER_BIT | webGL.DEPTH_BUFFER_BIT);
+
+        renderPasses.forEach(function (renderPass) {
+            draw2DAnimation(renderPass);
+        });
+    };
+
+    var createGfx2DAnimationInstance = function (entity, gfxCompId) {
         var instance = {
             instanceId: entity.instanceId,
             transformation: entity.transformation,
@@ -298,25 +368,47 @@ var GfxEngine = function (canvasElem) {
                 currentDuration: 0
             }
         };
-        // TODO: sort based on texture
-        gfxCompInstances.push(instance);
+        gfx2DAnimationInstances.push(instance);
         messengerEngine.queueForPosting("createdGraphicsInstance", instance.gfxComp, instance.instanceId);
     };
 
-    var setShaderProgram = function (programName) {
+    var createGfxFontInstance = function (entity, gfxCompId) {
+        var instance = {
+            instanceId: entity.instanceId,
+            transformation: entity.transformation,
+            gfxComp: {
+                id: gfxCompId
+            }
+        };
+        gfxFontInstances.push(instance);
+        messengerEngine.queueForPosting("createdGraphicsInstance", instance.gfxComp, instance.instanceId);
+    };
+
+    var createGfxCompInstance = function (entity, gfxCompId) {
+        switch (gfxCompTypeDefinitions[gfxCompId]) {
+            case gfxCompType2DAnimation:
+                createGfxCompInstance(entity, gfxCompId);
+                break;
+
+            case gfxCompTypeFont:
+                createGfxFontInstance(entity, gfxCompId);
+                break;
+        }
+    };
+
+    var setShaderProgram = function (programName, renderPass) {
         var shaderDefinition = shaderList.firstOrNull(function (x) {
             return x.name === programName;
         });
         if (shaderDefinition !== undefined && shaderDefinition !== null) {
-            webGLShaderProgram = shaderDefinition.program;
-            webGLVertexShaderExtraSteps = shaderDefinition.vertexShaderExtraSteps;
-            webGLFragmentShaderExtraSteps = shaderDefinition.fragmentShaderExtraSteps;
-            webGL.useProgram(webGLShaderProgram);
+            webGLShaderPrograms[renderPass] = shaderDefinition.program;
+            webGLVertexShaderExtraSteps[renderPass] = shaderDefinition.vertexShaderExtraSteps;
+            webGLFragmentShaderExtraSteps[renderPass] = shaderDefinition.fragmentShaderExtraSteps;
         }
     };
 
     var setInstanceAnimationState = function (instanceId, animationState) {
-        var gfxInstance = gfxCompInstances.firstOrNull(function (x) {
+        var gfxInstance = gfx2DAnimationInstances.firstOrNull(function (x) {
             return x.instanceId == instanceId;
         });
         if (gfxInstance != null) {
@@ -325,7 +417,7 @@ var GfxEngine = function (canvasElem) {
     };
 
     var setInstanceAnimationFrame = function (instanceId, animationFrame) {
-        var gfxInstance = gfxCompInstances.firstOrNull(function (x) {
+        var gfxInstance = gfx2DAnimationInstances.firstOrNull(function (x) {
             return x.instanceId == instanceId;
         });
         if (gfxInstance != null) {
@@ -334,7 +426,7 @@ var GfxEngine = function (canvasElem) {
     };
 
     var getGfxCompInstanceForEntityInstance = function (instanceId) {
-        var gfxCompInstance = gfxCompInstances.firstOrNull(function (x) {
+        var gfxCompInstance = gfx2DAnimationInstances.firstOrNull(function (x) {
             return x.instanceId == instanceId;
         });
         if (gfxCompInstance != null) {
@@ -343,10 +435,10 @@ var GfxEngine = function (canvasElem) {
     };
 
     var removeGfxCompInstanceFromMessage = function (instanceId) {
-        for (var i = 0; i < gfxCompInstances.length; ++i) {
-            var instance = gfxCompInstances[i];
+        for (var i = 0; i < gfx2DAnimationInstances.length; ++i) {
+            var instance = gfx2DAnimationInstances[i];
             if (instance.instanceId == instanceId) {
-                gfxCompInstances.splice(i, 1);
+                gfx2DAnimationInstances.splice(i, 1);
                 break;
             }
         }

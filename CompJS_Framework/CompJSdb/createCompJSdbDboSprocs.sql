@@ -204,6 +204,7 @@ BEGIN
 	SELECT
 		[Id]
 		,[EntityTypeId]
+		,[RenderPass]
 	FROM [game].[GfxCompDefinitions]
 	WHERE [EntityTypeId] = @entityTypeId
 
@@ -226,6 +227,7 @@ BEGIN
 	SELECT
 		[Id]
 		,[EntityTypeId]
+		,[RenderPass]
 	FROM [game].[GfxCompDefinitions]
 	WHERE [Id] = @id
 
@@ -248,6 +250,7 @@ BEGIN
 	SELECT
 		gfx.[Id]
 		,gfx.[EntityTypeId]
+		,[RenderPass]
 	FROM [game].[GfxCompDefinitions] gfx
 	INNER JOIN [game].[EntityTypes] ent
 	ON gfx.[EntityTypeId] = ent.[Id]
@@ -285,7 +288,20 @@ BEGIN
 	ON gfx.[EntityTypeId] = ent.[Id]
 	WHERE ent.[GameId] = @gameId
 	
-	/* TODO: SELECT FONTS */
+	SELECT
+		ftd.[Id]
+		,ftd.[GfxCompDefinitionId]
+		,ftd.[Texture]
+		,ftd.[StartT]
+		,ftd.[StartL]
+		,ftd.[CharacterWidth]
+		,ftd.[CharacterHeight]
+	FROM [game].[FontTextureDefinitions] ftd
+	INNER JOIN [game].[GfxCompDefinitions] gfx
+	ON ftd.[GfxCompDefinitionId] = gfx.[Id]
+	INNER JOIN [game].[EntityTypes] ent
+	ON gfx.[EntityTypeId] = ent.[Id]
+	WHERE ent.[GameId] = @gameId
 
 END
 GO
@@ -361,6 +377,8 @@ BEGIN
 		[Id]
 		,[GfxCompDefinitionId]
 		,[Texture]
+		,[StartT]
+		,[StartL]
 		,[CharacterWidth]
 		,[CharacterHeight]
 	FROM [game].[FontTextureDefinitions]

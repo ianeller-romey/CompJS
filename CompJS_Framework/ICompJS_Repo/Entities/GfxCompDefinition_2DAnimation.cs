@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CompJS_Repo.Entities
 {
-    public class GfxCompDefinition
+    public class GfxCompDefinition_2DAnimation
     {
         public int Id
         {
@@ -22,6 +22,12 @@ namespace CompJS_Repo.Entities
         }
 
         public int RenderPass
+        {
+            get;
+            set;
+        }
+
+        public IEnumerable<AnimationStateDefinition> AnimationStateDefinitions
         {
             get;
             set;

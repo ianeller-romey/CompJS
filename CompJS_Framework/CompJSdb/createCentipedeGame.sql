@@ -99,7 +99,8 @@ BEGIN
 	IF NOT EXISTS (SELECT [Id] FROM [game].[GfxCompDefinitions] WHERE [EntityTypeId] = @id)
 	BEGIN
 		EXEC @compDefinitionId = [dev].[dev_CreateGfxCompDefinition]
-			@entityTypeId = @id
+			@entityTypeId = @id,
+			@renderPass = 0
 	
 		EXEC @altId = [dev].[dev_CreateAnimationStateDefinition]
 			@gfxCompDefinitionId = @compDefinitionId,
@@ -298,7 +299,8 @@ BEGIN
 	IF NOT EXISTS (SELECT [Id] FROM [game].[GfxCompDefinitions] WHERE [EntityTypeId] = @id)
 	BEGIN
 		EXEC @compDefinitionId = [dev].[dev_CreateGfxCompDefinition]
-			@entityTypeId = @id
+			@entityTypeId = @id,
+			@renderPass = 0
 	
 		EXEC @altId = [dev].[dev_CreateAnimationStateDefinition]
 			@gfxCompDefinitionId = @compDefinitionId,
@@ -354,7 +356,8 @@ BEGIN
 	IF NOT EXISTS (SELECT [Id] FROM [game].[GfxCompDefinitions] WHERE [EntityTypeId] = @id)
 	BEGIN
 		EXEC @compDefinitionId = [dev].[dev_CreateGfxCompDefinition]
-			@entityTypeId = @id
+			@entityTypeId = @id,
+			@renderPass = 0
 	
 		EXEC @altId = [dev].[dev_CreateAnimationStateDefinition]
 			@gfxCompDefinitionId = @compDefinitionId,
@@ -411,7 +414,8 @@ BEGIN
 	IF NOT EXISTS (SELECT [Id] FROM [game].[GfxCompDefinitions] WHERE [EntityTypeId] = @id)
 	BEGIN
 		EXEC @compDefinitionId = [dev].[dev_CreateGfxCompDefinition]
-			@entityTypeId = @id
+			@entityTypeId = @id,
+			@renderPass = 0
 	
 		EXEC @altId = [dev].[dev_CreateAnimationStateDefinition]
 			@gfxCompDefinitionId = @compDefinitionId,
@@ -570,7 +574,8 @@ BEGIN
 	IF NOT EXISTS (SELECT [Id] FROM [game].[GfxCompDefinitions] WHERE [EntityTypeId] = @id)
 	BEGIN
 		EXEC @compDefinitionId = [dev].[dev_CreateGfxCompDefinition]
-			@entityTypeId = @id
+			@entityTypeId = @id,
+			@renderPass = 0
 	
 		EXEC @altId = [dev].[dev_CreateAnimationStateDefinition]
 			@gfxCompDefinitionId = @compDefinitionId,
@@ -666,7 +671,8 @@ BEGIN
 	IF NOT EXISTS (SELECT [Id] FROM [game].[GfxCompDefinitions] WHERE [EntityTypeId] = @id)
 	BEGIN
 		EXEC @compDefinitionId = [dev].[dev_CreateGfxCompDefinition]
-			@entityTypeId = @id
+			@entityTypeId = @id,
+			@renderPass = 0
 	
 		EXEC @altId = [dev].[dev_CreateAnimationStateDefinition]
 			@gfxCompDefinitionId = @compDefinitionId,
@@ -723,7 +729,8 @@ BEGIN
 	IF NOT EXISTS (SELECT [Id] FROM [game].[GfxCompDefinitions] WHERE [EntityTypeId] = @id)
 	BEGIN
 		EXEC @compDefinitionId = [dev].[dev_CreateGfxCompDefinition]
-			@entityTypeId = @id
+			@entityTypeId = @id,
+			@renderPass = 0
 	
 		EXEC @altId = [dev].[dev_CreateAnimationStateDefinition]
 			@gfxCompDefinitionId = @compDefinitionId,
@@ -895,7 +902,8 @@ BEGIN
 	IF NOT EXISTS (SELECT [Id] FROM [game].[GfxCompDefinitions] WHERE [EntityTypeId] = @id)
 	BEGIN
 		EXEC @compDefinitionId = [dev].[dev_CreateGfxCompDefinition]
-			@entityTypeId = @id
+			@entityTypeId = @id,
+			@renderPass = 1
 	
 		EXEC @altId = [dev].[dev_CreateAnimationStateDefinition]
 			@gfxCompDefinitionId = @compDefinitionId,
@@ -930,6 +938,72 @@ BEGIN
 			@entityTypeId = @id,
 			@stateFile = 'http://arcade/cabinet/compjs/lib/behaviors/centipede/behavior-score.js',
 			@behaviorConstructor = 'BehaviorScore'
+			
+	END
+	
+END
+
+IF NOT EXISTS (SELECT [Id] FROM [game].[EntityTypes] WHERE [GameId] = @gameId AND [Name] = 'Text_LargeRedFont')
+BEGIN
+	EXEC @id = [dev].[dev_CreateEntityType]
+		@name = 'Text_LargeRedFont',
+		@gameId = @gameId
+		
+	IF NOT EXISTS (SELECT [Id] FROM [game].[BhvCompDefinitions] WHERE [EntityTypeId] = @id)
+	BEGIN
+		EXEC @compDefinitionId = [dev].[dev_CreateBhvCompDefinition]
+			@entityTypeId = @id,
+			@stateFile = 'http://arcade/cabinet/compjs/lib/behaviors/centipede/behavior-text.js',
+			@behaviorConstructor = 'BehaviorText'
+			
+	END
+		
+	IF NOT EXISTS (SELECT [Id] FROM [game].[GfxCompDefinitions] WHERE [EntityTypeId] = @id)
+	BEGIN
+		EXEC @compDefinitionId = [dev].[dev_CreateGfxCompDefinition]
+			@entityTypeId = @id,
+			@renderPass = 1
+			
+		EXEC @altAltId = [dev].[dev_CreateFontTextureDefinition]
+			@gfxCompDefinitionId = @compDefinitionId,
+			@texture = 'http://arcade/cabinet/compjs/images/centipede/fonts.png',
+			@startT = 0.0,
+			@startL = 0.0,
+			@characterWidth = 16.0,
+			@characterHeight = 16.0
+			
+	END
+	
+END
+
+IF NOT EXISTS (SELECT [Id] FROM [game].[EntityTypes] WHERE [GameId] = @gameId AND [Name] = 'Text_SmallWhiteFont')
+BEGIN
+	EXEC @id = [dev].[dev_CreateEntityType]
+		@name = 'Text_SmallWhiteFont',
+		@gameId = @gameId
+		
+	IF NOT EXISTS (SELECT [Id] FROM [game].[BhvCompDefinitions] WHERE [EntityTypeId] = @id)
+	BEGIN
+		EXEC @compDefinitionId = [dev].[dev_CreateBhvCompDefinition]
+			@entityTypeId = @id,
+			@stateFile = 'http://arcade/cabinet/compjs/lib/behaviors/centipede/behavior-text.js',
+			@behaviorConstructor = 'Text'
+			
+	END
+		
+	IF NOT EXISTS (SELECT [Id] FROM [game].[GfxCompDefinitions] WHERE [EntityTypeId] = @id)
+	BEGIN
+		EXEC @compDefinitionId = [dev].[dev_CreateGfxCompDefinition]
+			@entityTypeId = @id,
+			@renderPass = 1
+			
+		EXEC @altAltId = [dev].[dev_CreateFontTextureDefinition]
+			@gfxCompDefinitionId = @compDefinitionId,
+			@texture = 'http://arcade/cabinet/compjs/images/centipede/fonts.png',
+			@startT = 64.0,
+			@startL = 0.0,
+			@characterWidth = 8.0,
+			@characterHeight = 8.0
 			
 	END
 	

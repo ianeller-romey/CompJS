@@ -7,21 +7,15 @@ using System.Threading.Tasks;
 
 namespace CompJS_Repo.Entities
 {
-    public class GfxCompDefinition
+    public class GfxCompDefinitionCollection
     {
-        public int Id
+        public IEnumerable<GfxCompDefinition_2DAnimation> Gfx2DAnimations
         {
             get;
             set;
         }
 
-        public int EntityTypeId
-        {
-            get;
-            set;
-        }
-
-        public int RenderPass
+        public IEnumerable<GfxCompDefinition_Font> GfxFonts
         {
             get;
             set;

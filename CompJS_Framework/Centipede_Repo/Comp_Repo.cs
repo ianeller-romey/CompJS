@@ -87,11 +87,14 @@ namespace CompJS_Repo
             return bhvComponents;
         }
 
-        public IEnumerable<GfxCompDefinition> RetrieveAllGfxCompDefinitionsForGame(int gameId)
+        public GfxCompDefinitionCollection RetrieveAllGfxCompDefinitionsForGame(int gameId)
         {
             IEnumerable<GfxCompDefinition> gfxComponents;
             IEnumerable<AnimationStateDefinition> animationStates;
             IEnumerable<AnimationFrameDefinition> animationFrames;
+            IEnumerable<FontTextureDefinition> fonts;
+
+            var gfxCompDefinitionCollection = new GfxCompDefinitionCollection();
             using (var db = new CompJSdbEntities())
             {
                 var gResults = db.RetrieveAllGfxCompDefinitionsForGame(gameId);
@@ -102,16 +105,40 @@ namespace CompJS_Repo
 
                 var afResults = asResults.GetNextResult<RetrieveAnimationFrameDefinitionsForAnimationStateDefinition_Result>();
                 animationFrames = afResults.Select(x => TypeAdapter.Adapt<AnimationFrameDefinition>(x)).ToList();
+
+                var fResults = afResults.GetNextResult<RetrieveFontTextureDefinitionsForGfxComp_Result>();
+                fonts = fResults.Select(x => TypeAdapter.Adapt<FontTextureDefinition>(x)).ToList();
             }
+
             foreach (var a in animationStates)
             {
                 a.AnimationFrameDefinitions = animationFrames.Where(x => x.AnimationStateDefinitionId == a.Id).ToList();
             }
-            foreach (var g in gfxComponents)
-            {
-                g.AnimationStateDefinitions = animationStates.Where(x => x.GfxCompDefinitionId == g.Id).ToList();
-            }
-            return gfxComponents;
+            gfxCompDefinitionCollection.Gfx2DAnimations = (from a in animationStates.Select(x => x.GfxCompDefinitionId).Distinct()
+                                                          join g in gfxComponents
+                                                          on a equals g.Id
+                                                          select new GfxCompDefinition_2DAnimation()
+                                                          {
+                                                              Id = g.Id,
+                                                              EntityTypeId = g.EntityTypeId,
+                                                              RenderPass = g.RenderPass,
+                                                              AnimationStateDefinitions = (from aa in animationStates
+                                                                                           where aa.GfxCompDefinitionId == g.Id
+                                                                                           select aa).ToList()
+                                                          }).ToList();
+            gfxCompDefinitionCollection.GfxFonts = (from f in fonts.Select(x => x.GfxCompDefinitionId).Distinct()
+                                                    join g in gfxComponents
+                                                    on f equals g.Id
+                                                    select new GfxCompDefinition_Font()
+                                                    {
+                                                        Id = g.Id,
+                                                        EntityTypeId = g.EntityTypeId,
+                                                        RenderPass = g.RenderPass,
+                                                        FontTextureDefinition = (from ff in fonts
+                                                                                where ff.GfxCompDefinitionId == g.Id
+                                                                                select ff).FirstOrDefault()
+                                                    }).ToList();
+            return gfxCompDefinitionCollection;
         }
 
         public IEnumerable<PhysCompDefinition> RetrieveAllPhysCompDefinitionsForGame(int gameId)
@@ -188,12 +215,12 @@ namespace CompJS_Repo
             }
         }
 
-        public GfxCompDefinition RetrieveGfxComp(int id)
+        public GfxCompDefinition_2DAnimation RetrieveGfxComp(int id)
         {
             using (var db = new CompJSdbEntities())
             {
                 var result = db.RetrieveGfxCompDefinition(id);
-                return (result != null) ? TypeAdapter.Adapt<GfxCompDefinition>(result) : null;
+                return (result != null) ? TypeAdapter.Adapt<GfxCompDefinition_2DAnimation>(result) : null;
             }
         }
 
@@ -215,12 +242,12 @@ namespace CompJS_Repo
             }
         }
 
-        public GfxCompDefinition RetrieveGfxCompForEntity(int entityId)
+        public GfxCompDefinition_2DAnimation RetrieveGfxCompForEntity(int entityId)
         {
             using (var db = new CompJSdbEntities())
             {
                 var result = db.RetrieveGfxCompDefinitionForEntity(entityId);
-                return (result != null) ? TypeAdapter.Adapt<GfxCompDefinition>(result) : null;
+                return (result != null) ? TypeAdapter.Adapt<GfxCompDefinition_2DAnimation>(result) : null;
             }
         }
 

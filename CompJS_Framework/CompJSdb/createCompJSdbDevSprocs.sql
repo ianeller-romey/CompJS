@@ -193,15 +193,16 @@ GO
 -- Description:	
 -- =============================================
 ALTER PROCEDURE [dev].[dev_CreateGfxCompDefinition]
-	@entityTypeId int
+	@entityTypeId int,
+	@renderPass int
 AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
 
-	INSERT INTO [game].[GfxCompDefinitions] ([EntityTypeId])
-	VALUES (@entityTypeId)
+	INSERT INTO [game].[GfxCompDefinitions] ([EntityTypeId], [RenderPass])
+	VALUES (@entityTypeId, @renderPass)
 	
 	RETURN SCOPE_IDENTITY()
 
@@ -321,6 +322,8 @@ GO
 ALTER PROCEDURE [dev].[dev_CreateFontTextureDefinition]
 	@gfxCompDefinitionId int,
 	@texture varchar(1000),
+	@startT float,
+	@startL float,
 	@characterWidth float,
 	@characterHeight float
 AS
@@ -329,8 +332,8 @@ BEGIN
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
 
-	INSERT INTO [game].[FontTextureDefinitions] ([GfxCompDefinitionId], [Texture], [CharacterWidth], [CharacterHeight])
-	VALUES (@gfxCompDefinitionId, @texture, @characterWidth, @characterHeight)
+	INSERT INTO [game].[FontTextureDefinitions] ([GfxCompDefinitionId], [Texture], [StartT], [StartL], [CharacterWidth], [CharacterHeight])
+	VALUES (@gfxCompDefinitionId, @texture, @startT, @startL, @characterWidth, @characterHeight)
 	
 	RETURN SCOPE_IDENTITY()
 

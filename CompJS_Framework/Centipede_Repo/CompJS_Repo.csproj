@@ -107,6 +107,9 @@
     <Compile Include="Repository\RetrieveEntity_Result.cs">
       <DependentUpon>compJSdb.tt</DependentUpon>
     </Compile>
+    <Compile Include="Repository\RetrieveFontTextureDefinitionsForGfxComp_Result.cs">
+      <DependentUpon>compJSdb.tt</DependentUpon>
+    </Compile>
     <Compile Include="Repository\RetrieveGfxCompDefinition_Result.cs">
       <DependentUpon>compJSdb.tt</DependentUpon>
     </Compile>

@@ -46,6 +46,10 @@
     <Compile Include="Entities\AudioType.cs" />
     <Compile Include="Entities\Audio.cs" />
     <Compile Include="Entities\AnimationStateDefinition.cs" />
+    <Compile Include="Entities\GfxCompDefinition.cs" />
+    <Compile Include="Entities\GfxCompDefinitionCollection.cs" />
+    <Compile Include="Entities\FontTextureDefinition.cs" />
+    <Compile Include="Entities\GfxCompDefinition_Font.cs" />
     <Compile Include="Entities\Level.cs" />
     <Compile Include="Entities\Shader.cs" />
     <Compile Include="Entities\EntityType.cs" />
@@ -53,7 +57,7 @@
     <Compile Include="Entities\HighScore.cs" />
     <Compile Include="Entities\PhysType.cs" />
     <Compile Include="Entities\PhysCompDefinition.cs" />
-    <Compile Include="Entities\GfxCompDefinition.cs" />
+    <Compile Include="Entities\GfxCompDefinition_2DAnimation.cs" />
     <Compile Include="Entities\EntityTypeDefinition.cs" />
     <Compile Include="Entities\LevelPosition.cs" />
     <Compile Include="Entities\LevelStartData.cs" />

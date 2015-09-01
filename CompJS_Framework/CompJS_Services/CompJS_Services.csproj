@@ -141,6 +141,10 @@
     <Compile Include="Models\AudioType.cs" />
     <Compile Include="Models\BhvCompDefinition.cs" />
     <Compile Include="Models\CollisionType.cs" />
+    <Compile Include="Models\FontTextureDefinition.cs" />
+    <Compile Include="Models\GfxCompDefinitionCollection.cs" />
+    <Compile Include="Models\GfxCompDefinition_2DAnimation.cs" />
+    <Compile Include="Models\GfxCompDefinition_Font.cs" />
     <Compile Include="Models\Level.cs" />
     <Compile Include="Models\Shader.cs" />
     <Compile Include="Models\Game.cs" />
@@ -148,7 +152,6 @@
     <Compile Include="Models\EntityTypeDefinition.cs" />
     <Compile Include="Models\AnimationStateDefinition.cs" />
     <Compile Include="Models\AnimationFrameDefinition.cs" />
-    <Compile Include="Models\GfxCompDefinition.cs" />
     <Compile Include="Models\HighScore.cs" />
     <Compile Include="Models\LevelPosition.cs" />
     <Compile Include="Models\LevelStartData.cs" />
