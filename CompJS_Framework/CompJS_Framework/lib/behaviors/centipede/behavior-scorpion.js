@@ -13,13 +13,13 @@
 
             if (this.transformation.position.x > 256) {
                 messengerEngine.queueForPosting("setInstanceAnimationState", this.instanceId, 0);
-                this.transformation.velocity.x = -velocityAmount;
+                this.transformation.setVelocity(-velocityAmount, 0.0);
                 this.xDirection = function () {
                     return this.transformation.position.x <= -10;
                 };
             } else {
                 messengerEngine.queueForPosting("setInstanceAnimationState", this.instanceId, 1);
-                this.transformation.velocity.x = velocityAmount;
+                this.transformation.setVelocity(velocityAmount, 0.0);
                 this.xDirection = function () {
                     return this.transformation.position.x >= 528;
                 };

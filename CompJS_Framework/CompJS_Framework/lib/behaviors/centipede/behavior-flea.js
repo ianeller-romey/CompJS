@@ -19,7 +19,7 @@
 
             var messengerEngine = globalMessengerEngine;
 
-            this.transformation.velocity.y = 0.30;
+            this.transformation.setVelocity(0.0, 0.30);
 
             this.update = function (delta) {
                 if (this.data["playerBulletDamage"] !== undefined) {
@@ -58,7 +58,7 @@
                 messengerEngine.queueForPosting("incrementPlayerScore", 200);
                 if (hitState == 0) {
                     hitState = 1;
-                    this.transformation.velocity.y = this.transformation.velocity.y * 1.5;
+                    this.transformation.setVelocity(0, this.transformation.velocity.y * 1.5);
                 } else {
                     messengerEngine.queueForPosting("removeEntityInstance", this.instanceId);
 

@@ -1,21 +1,10 @@
 ﻿
-var Entity = function (instanceId, entityTypeId, entityTypeName, position) {
+var Entity = function (instanceId, entityTypeId, entityTypeName, position, rotation, scale, velocity) {
     this.instanceId = instanceId;
     this.typeId = entityTypeId;
     this.typeName = entityTypeName;
 
-    this.transformation = {
-        position: position,
-        rotation: 0,
-        scale: {
-            x: 1,
-            y: 1
-        },
-        velocity: {
-            x: 0,
-            y: 0
-        }
-    };
+    this.transformation = new TransformationInstance(position, rotation, scale, velocity);
 };
 
 Entity.hasBehavior = function (ent) {

@@ -1,4 +1,6 @@
 ﻿
+// TODO: setAndNotify for all animation changes, etc.
+
 var GfxEngine = function (canvasElem) {
     var servicesEngine = globalServicesEngine;
     var messengerEngine = globalMessengerEngine;
@@ -295,7 +297,7 @@ var GfxEngine = function (canvasElem) {
         // draw 2d animation
         for (var i = 0; i < gfx2DAnimationInstances[renderPass].length; ++i) {
             var g = gfx2DAnimationInstances[i];
-            var gfxComp = g.gfxComp;
+            var gfxComp = g.graphics;
             var animationFrameDefinition = getAnimationFrameDefinitionOfGfxComp(gfxComp);
 
             // animate
@@ -338,7 +340,7 @@ var GfxEngine = function (canvasElem) {
             });
 
             // same texture? don't draw yet
-            var nextGfxComp = (i != gfx2DAnimationInstances.length - 1) ? gfx2DAnimationInstances[i + 1].gfxComp : null;
+            var nextGfxComp = (i != gfx2DAnimationInstances.length - 1) ? gfx2DAnimationInstances[i + 1].graphics : null;
             var nextAnimationFrame = (nextGfxComp != null) ? getAnimationFrameDefinitionOfGfxComp(nextGfxComp) : null;
             if (nextAnimationFrame == null || animationFrameDefinition.texture != nextAnimationFrame.texture) {
                 draw(vertexVerts, textureVerts, webGLShaderProgram, webGLVertexShaderExtraStep, webGLFragmentShaderExtraStep, animationFrameDefinition.texture);
@@ -358,30 +360,21 @@ var GfxEngine = function (canvasElem) {
     };
 
     var createGfx2DAnimationInstance = function (entity, gfxCompId) {
-        var instance = {
-            instanceId: entity.instanceId,
-            transformation: entity.transformation,
-            gfxComp: {
-                id: gfxCompId,
-                animationState: 0,
-                animationFrame: 0,
-                currentDuration: 0
-            }
-        };
+        var instance = new GraphicsComponentInstance2DAnimation(entity, gfxCompId);
         gfx2DAnimationInstances.push(instance);
-        messengerEngine.queueForPosting("createdGraphicsInstance", instance.gfxComp, instance.instanceId);
+        messengerEngine.queueForPosting("createdGraphicsInstance", instance.graphics, instance.instanceId);
     };
 
     var createGfxFontInstance = function (entity, gfxCompId) {
         var instance = {
             instanceId: entity.instanceId,
             transformation: entity.transformation,
-            gfxComp: {
+            graphics: {
                 id: gfxCompId
             }
         };
         gfxFontInstances.push(instance);
-        messengerEngine.queueForPosting("createdGraphicsInstance", instance.gfxComp, instance.instanceId);
+        messengerEngine.queueForPosting("createdGraphicsInstance", instance.graphics, instance.instanceId);
     };
 
     var createGfxCompInstance = function (entity, gfxCompId) {
@@ -409,19 +402,19 @@ var GfxEngine = function (canvasElem) {
 
     var setInstanceAnimationState = function (instanceId, animationState) {
         var gfxInstance = gfx2DAnimationInstances.firstOrNull(function (x) {
-            return x.instanceId == instanceId;
+            return x.instanceId === instanceId;
         });
         if (gfxInstance != null) {
-            gfxInstance.gfxComp.animationState = animationState;
+            gfxInstance.graphics.animationState = animationState;
         }
     };
 
     var setInstanceAnimationFrame = function (instanceId, animationFrame) {
         var gfxInstance = gfx2DAnimationInstances.firstOrNull(function (x) {
-            return x.instanceId == instanceId;
+            return x.instanceId === instanceId;
         });
         if (gfxInstance != null) {
-            gfxInstance.gfxComp.animationFrame = animationFrame;
+            gfxInstance.graphics.animationFrame = animationFrame;
         }
     };
 

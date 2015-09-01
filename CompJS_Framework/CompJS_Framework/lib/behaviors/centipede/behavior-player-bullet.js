@@ -10,7 +10,7 @@
 
             var messengerEngine = globalMessengerEngine;
 
-            this.transformation.velocity.y = -0.35;
+            this.transformation.setVelocity(0, -.35);
 
             this.update = function () {
                 if (this.physComp != null) {

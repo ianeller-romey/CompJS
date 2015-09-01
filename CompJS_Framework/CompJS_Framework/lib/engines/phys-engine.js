@@ -62,29 +62,26 @@ var PhysEngine = function () {
     };
 
     var addColliders = function (instance, otherInstance) {
-        instance.physComp.colliders.push({
+        instance.physics.colliders.push({
             instanceId: otherInstance.instanceId,
             entityTypeName: otherInstance.entityTypeName,
-            position: {
-                x: otherInstance.transformation.position.x,
-                y: otherInstance.transformation.position.y
-            }
+            position: new Vector2D(otherInstance.transformation.position.x, otherInstance.transformation.position.y)
         });
     };
 
     this.update = function (delta) {
         for (var i = 0; i < physCompInstances.length; ++i) {
             var instance = physCompInstances[i];
-            instance.physComp.colliders = [];
+            instance.physics.colliders = [];
 
-            var collisionTypeDefinition = collisionTypeDefinitions[instance.physComp.collisionTypeId];
+            var collisionTypeDefinition = collisionTypeDefinitions[instance.physics.collisionTypeId];
             if (collisionTypeDefinition != "Static") {
                 var transformation = instance.transformation;
                 var newPosition = {
                     x: transformation.position.x + transformation.velocity.x * delta,
                     y: transformation.position.y + transformation.velocity.y * delta
                 };
-                var newBounding = instance.physComp.boundingData.clone();
+                var newBounding = instance.physics.boundingData.clone();
                 newBounding.setPosition(newPosition);
 
                 var hasNonGhostCollider = false;
@@ -94,20 +91,20 @@ var PhysEngine = function () {
                     }
                     // TODO: Optimize so we don't check the same two instances twice
                     var otherInstance = physCompInstances[j];
-                    var otherBounding = otherInstance.physComp.boundingData.clone();
+                    var otherBounding = otherInstance.physics.boundingData.clone();
                     otherBounding.setPosition(otherInstance.transformation.position);
 
                     // TODO: Tidy up math in collision functions, because right now it is bad and duplicated
-                    if (physTypeDefinitions[otherInstance.physComp.physTypeId] == "Circle") {
+                    if (physTypeDefinitions[otherInstance.physics.physTypeId] == "Circle") {
                         if (newBounding.collideWithBoundingCircle(otherBounding)) {
-                            if (!hasNonGhostCollider && collisionTypeDefinitions[otherInstance.physComp.collisionTypeId] != "Ghost") {
+                            if (!hasNonGhostCollider && collisionTypeDefinitions[otherInstance.physics.collisionTypeId] != "Ghost") {
                                 hasNonGhostCollider = true;
                             }
                             addColliders(instance, otherInstance);
                         }
-                    } else if (physTypeDefinitions[otherInstance.physComp.physTypeId] == "AABB") {
+                    } else if (physTypeDefinitions[otherInstance.physics.physTypeId] == "AABB") {
                         if (newBounding.collideWithBoundingAABB(otherBounding)) {
-                            if (!hasNonGhostCollider && collisionTypeDefinitions[otherInstance.physComp.collisionTypeId] != "Ghost") {
+                            if (!hasNonGhostCollider && collisionTypeDefinitions[otherInstance.physics.collisionTypeId] != "Ghost") {
                                 hasNonGhostCollider = true;
                             }
                             addColliders(instance, otherInstance);
@@ -117,8 +114,7 @@ var PhysEngine = function () {
                 }
 
                 if (!hasNonGhostCollider || collisionTypeDefinition == "Ghost") {
-                    instance.transformation.position.x = newPosition.x;
-                    instance.transformation.position.y = newPosition.y;
+                    instance.transformation.setPosition(newPosition.x, newPosition.y);
                 }
             }
         }
@@ -126,38 +122,31 @@ var PhysEngine = function () {
 
     var createPhysCompInstance = function (entity, physCompId) {
         var physCompDefinition = physCompDefinitions[physCompId];
-        var instance = {
-            instanceId: entity.instanceId,
-            entityTypeName: entity.typeName,
-            transformation: entity.transformation,
-            physComp: {
-                physTypeId: physCompDefinition.physTypeId,
-                collisionTypeId: physCompDefinition.collisionTypeId,
-                boundingData: physCompDefinition.boundingData,
-                colliders: []
-            }
-        };
+        var instance = new PhysicsComponentInstance(entity, physCompDefinition);
         physCompInstances.push(instance);
-        messengerEngine.queueForPosting("createdPhysicsInstance", instance.physComp, instance.instanceId);
+        messengerEngine.queueForPosting("createdPhysicsInstance", instance.physics, instance.instanceId);
     };
 
     var setInstancePosition = function (instanceId, position) {
         var physCompInstance = physCompInstances.firstOrNull(function (x) {
-            return x.instanceId == instanceId;
+            return x.instanceId === instanceId;
         });
         if (physCompInstance != null) {
+            var xPos = physCompInstance.transformation.position.x;
+            var yPos = physCompInstance.transformation.position.y;
             if (position.x !== undefined) {
-                physCompInstance.transformation.position.x = position.x;
+                xPos = position.x;
             }
             if (position.y !== undefined) {
-                physCompInstance.transformation.position.y = position.y;
+                yPos = position.y;
             }
+            physCompInstance.transformation.setPosition(xPos, yPos);
         }
     };
 
     var getPhysCompInstanceForEntityInstance = function (instanceId) {
         var physCompInstance = physCompInstances.firstOrNull(function (x) {
-            return x.instanceId == instanceId;
+            return x.instanceId === instanceId;
         });
         if (physCompInstance != null) {
             messengerEngine.queueForPosting("getPhysCompInstanceForEntityInstanceResponse", physCompInstance);

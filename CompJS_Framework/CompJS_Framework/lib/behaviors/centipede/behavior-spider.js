@@ -20,22 +20,18 @@
                     this.playerBulletDamage();
                 } else {
                     if (this.transformation.position.x >= 512) {
-                        this.switchDirectionX(-velocityAmount);
-                        this.switchDirectionY();
+                        this.transformation.setVelocity(this.switchDirectionX(-velocityAmount), this.switchDirectionY());
                         durationCurrent = 0;
                     } else if (this.transformation.position.x <= 0) {
-                        this.switchDirectionX(velocityAmount);
-                        this.switchDirectionY();
+                        this.transformation.setVelocity(this.switchDirectionX(velocityAmount), this.switchDirectionY());
                         durationCurrent = 0;
                     }
 
                     if (this.transformation.position.y >= 512) {
-                        this.switchDirectionX();
-                        this.switchDirectionY(-velocityAmount);
+                        this.transformation.setVelocity(this.switchDirectionX(), this.switchDirectionY(-velocityAmount));
                         durationCurrent = 0;
                     } else if (this.transformation.position.y <= 0) {
-                        this.switchDirectionX();
-                        this.switchDirectionY(velocityAmount);
+                        this.transformation.setVelocity(this.switchDirectionX(), this.switchDirectionY(velocityAmount));
                         durationCurrent = 0;
                     } else {
                         durationCurrent += delta;
@@ -65,28 +61,23 @@
                         x = 0.0;
                     }
                 }
-                this.transformation.velocity.x = x;
+                return x;
             }
 
             this.switchDirectionY = function (y) {
                 if (y === undefined) {
                     y = (Math.random() < .5)  ? velocityAmount : -velocityAmount;
                 }
-                this.transformation.velocity.y = y;
+                return y;
             }
 
             this.switchDirection = function () {
-                this.switchDirectionX();
-                this.switchDirectionY();
+                this.transformation.setVelocity(this.switchDirectionX(), this.switchDirectionY());
             };
 
             this.playerBulletDamage = function () {
                 if (playerPosition != null) {
-                    var xDist = this.transformation.position.x - playerPosition.x;
-                    xDist *= xDist;
-                    var yDist = this.transformation.position.y - playerPosition.y;
-                    yDist *= yDist;
-                    var dist = Math.sqrt(xDist + yDist);
+                    var dist = this.transformation.position.distance(playerPosition);
                     if (dist <= 64) {
                         messengerEngine.queueForPosting("incrementPlayerScore", 900);
                     } else if (dist > 64 && dist <= 256) {

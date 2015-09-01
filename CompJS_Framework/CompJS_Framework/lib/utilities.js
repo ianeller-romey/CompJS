@@ -4,6 +4,10 @@ String.prototype.isNullOrWhitespace = function () {
     return this === null || this.match(/^\s*$/) !== null;
 };
 
+
+/****************/
+/* Linq-esque behavior */
+/****************/
 Array.prototype.addRange = function (range) {
     for (var i = 0, len = range.length; i < len; ++i) {
         this.push(range[i]);
@@ -76,4 +80,175 @@ Array.prototype.aggregate = function (predicate) {
         }
     }
     return aggregateValue;
+};
+
+/****************/
+/* Notify on Changed */
+/****************/
+String.prototype.notifyMe = function (callback) {
+    if (this._notifyMe == null) {
+        this._notifyMe = [];
+    }
+
+    this._notifyMe.push(callback);
+};
+
+String.prototype.notifyAll = function () {
+    if (this._notifyMe != null && this._notifyMe.length > 0) {
+        var that = this.valueOf();
+        this._notifyMe.forEach(function (x) {
+            x(that);
+        });
+    }
+};
+
+String.prototype.setAndNotify = function (value) {
+    var newValue = new String(value);
+    newValue._notifyMe = this._notifyMe;
+    newValue.notifyAll();
+    return newValue;
+};
+
+Number.prototype.notifyMe = function (callback) {
+    if (this._notifyMe == null) {
+        this._notifyMe = [];
+    }
+
+    this._notifyMe.push(callback);
+};
+
+Number.prototype.notifyAll = function () {
+    if (this._notifyMe != null && this._notifyMe.length > 0) {
+        var that = this.valueOf();
+        this._notifyMe.forEach(function (x) {
+            x(that);
+        });
+    }
+};
+
+Number.prototype.setAndNotify = function (value) {
+    var newValue = new Number(value);
+    newValue._notifyMe = this._notifyMe;
+    newValue.notifyAll();
+    return newValue;
+};
+
+Boolean.prototype.notifyMe = function (callback) {
+    if (this._notifyMe == null) {
+        this._notifyMe = [];
+    }
+
+    this._notifyMe.push(callback);
+};
+
+Boolean.prototype.notifyAll = function () {
+    if (this._notifyMe != null && this._notifyMe.length > 0) {
+        var that = this.valueOf();
+        this._notifyMe.forEach(function (x) {
+            x(that);
+        });
+    }
+};
+
+Boolean.prototype.setAndNotify = function (value) {
+    var newValue = new Boolean(value);
+    newValue._notifyMe = this._notifyMe;
+    newValue.notifyAll();
+    return newValue;
+};
+
+Object.prototype.notifyMe = function (callback) {
+    if (this._notifyMe == null) {
+        this._notifyMe = [];
+    }
+
+    this._notifyMe.push(callback);
+};
+
+Object.prototype.notifyAll = function () {
+    if (this._notifyMe != null && this._notifyMe.length > 0) {
+        var that = this.valueOf();
+        this._notifyMe.forEach(function (x) {
+            x(that);
+        });
+    }
+};
+
+Object.prototype.setAndNotify = function (value) {
+    var newValue = value;
+    newValue._notifyMe = this._notifyMe;
+    newValue.notifyAll();
+    return newValue;
+};
+
+Date.prototype.notifyMe = function (callback) {
+    if (this._notifyMe == null) {
+        this._notifyMe = [];
+    }
+
+    this._notifyMe.push(callback);
+};
+
+Date.prototype.notifyAll = function () {
+    if (this._notifyMe != null && this._notifyMe.length > 0) {
+        var that = this.valueOf();
+        this._notifyMe.forEach(function (x) {
+            x(that);
+        });
+    }
+};
+
+Date.prototype.setAndNotify = function (value) {
+    var newValue = new Date(value);
+    newValue._notifyMe = this._notifyMe;
+    newValue.notifyAll();
+    return newValue;
+};
+
+Array.prototype.notifyMe = function (callback) {
+    if (this._notifyMe == null) {
+        this._notifyMe = [];
+    }
+
+    this._notifyMe.push(callback);
+};
+
+Array.prototype.notifyAll = function () {
+    if (this._notifyMe != null && this._notifyMe.length > 0) {
+        var that = this.valueOf();
+        this._notifyMe.forEach(function (x) {
+            x(that);
+        });
+    }
+};
+
+Array.prototype.setAndNotify = function (value) {
+    var newValue = value;
+    newValue._notifyMe = this._notifyMe;
+    newValue.notifyAll();
+    return newValue;
+};
+
+Function.prototype.notifyMe = function (callback) {
+    if (this._notifyMe == null) {
+        this._notifyMe = [];
+    }
+
+    this._notifyMe.push(callback);
+};
+
+Function.prototype.notifyAll = function () {
+    if (this._notifyMe != null && this._notifyMe.length > 0) {
+        var that = this.valueOf();
+        this._notifyMe.forEach(function (x) {
+            x(that);
+        });
+    }
+};
+
+Function.prototype.setAndNotify = function (value) {
+    var newValue = value;
+    newValue._notifyMe = this._notifyMe;
+    newValue.notifyAll();
+    return newValue;
 };

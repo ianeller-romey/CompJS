@@ -27,23 +27,16 @@ var BhvEngine = function (headElem) {
 
     this.update = function (delta) {
         for (var i = 0; i < bhvCompInstances.length; ++i) {
-            bhvCompInstances[i].bhvComp.update(delta);
-            bhvCompInstances[i].bhvComp.data = {};
+            bhvCompInstances[i].behavior.update(delta);
+            bhvCompInstances[i].behavior.data = {};
         }
     };
 
     var createBhvCompInstance = function (entity, bhvCompId) {
-        var bhvComp = new bhvConstructors[bhvCompDefinitions[bhvCompId].behaviorConstructor](entity);
-        // if the behavior doesn't define its own data, do it for them
-        if (bhvComp.data === undefined) {
-            bhvComp.data = {};
-        }
-        var instance = {
-            instanceId: entity.instanceId,
-            bhvComp: bhvComp
-        };
+        var behavior = new bhvConstructors[bhvCompDefinitions[bhvCompId].behaviorConstructor](entity);
+        var instance = new BehaviorComponentInstance(entity, behavior);
         bhvCompInstances.push(instance);
-        messengerEngine.queueForPosting("createdBehaviorInstance", instance.bhvComp, instance.instanceId);
+        messengerEngine.queueForPosting("createdBehaviorInstance", instance.behavior, instance.instanceId);
     };
 
     var setBehaviorInstanceData = function (instanceId, data) {

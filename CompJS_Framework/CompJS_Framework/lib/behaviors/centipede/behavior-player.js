@@ -40,28 +40,25 @@
                     playerDeath();
                 }
 
+                var xVel = 0.0;
                 if (controllerLeft() && this.transformation.position.x > 4) {
-                    this.transformation.velocity.x = -0.25;
+                    xVel = -0.25;
                 } else if (controllerRight() && this.transformation.position.x < 500) {
-                    this.transformation.velocity.x = 0.25;
-                } else {
-                    this.transformation.velocity.x = 0.0;
+                    xVel = 0.25;
                 }
 
+                var yVel = 0.0;
                 if (controllerUp() && this.transformation.position.y > 402) {
-                    this.transformation.velocity.y = -0.25;
+                    yVel = -0.25;
                 } else if (controllerDown() && this.transformation.position.y < 500) {
-                    this.transformation.velocity.y = 0.25;
-                } else {
-                    this.transformation.velocity.y = 0.0;
+                    yVel = 0.25;
                 }
+
+                this.transformation.setVelocity(xVel, yVel);
 
                 if (controllerShoot()) {
                     messengerEngine.queueForPosting("createEntityInstance", "PlayerBullet", {
-                        position: {
-                            x: this.transformation.position.x + 7,
-                            y: this.transformation.position.y - 7
-                        }
+                        position: new Vector2D(this.transformation.position.x + 7, this.transformation.position.y - 7)
                     });
                 }
             };

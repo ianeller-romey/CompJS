@@ -43,10 +43,7 @@
                 var nextSegmentId = segmentId + 1;
                 if (nextSegmentId < totalSegments) {
                     messengerEngine.queueForPosting("createEntityInstance", "CentipedeSegment", {
-                        position: {
-                            x: this.transformation.position.x + segmentWidth,
-                            y: this.transformation.position.y
-                        },
+                        position: new Vector2D(this.transformation.position.x + segmentWidth, this.transformation.position.y),
                         data: {
                             nextSegment: segmentId,
                             segmentId: nextSegmentId,
@@ -70,8 +67,7 @@
 
             this.setMovingHorizontal = function () {
                 velocityAmountX = -velocityAmountX;
-                this.transformation.velocity.x = velocityAmountX;
-                this.transformation.velocity.y = 0.0;
+                this.transformation.setVelocity(velocityAmountX, 0.0);
                 state = stateMovingHorizontal;
 
                 this.setAnimationState();
@@ -82,9 +78,7 @@
                     (this.transformation.position.y <= 8 && velocityAmountY < 0)) {
                     velocityAmountY = -velocityAmountY;
                 }
-
-                this.transformation.velocity.x = 0.0;
-                this.transformation.velocity.y = velocityAmountY;
+                this.transformation.setVelocity(0.0, velocityAmountY);
                 state = stateMovingVertical;
             };
 
@@ -127,7 +121,7 @@
                                 if (this.transformation.position.y === turnaroundPosition.y) {
                                     if ((this.transformation.velocity.x > 0 && this.transformation.position.x >= turnaroundPosition.x) ||
                                         (this.transformation.velocity.x < 0 && this.transformation.position.x <= turnaroundPosition.x)) {
-                                        this.transformation.position.x = turnaroundPosition.x;
+                                        this.transformation.setPosition(turnaroundPosition.x, this.transformation.position.y);
 
                                         this.setMovingVertical();
                                     }
@@ -142,7 +136,7 @@
                         if (this.transformation.velocity.y > 0) {
                             var turnaroundFinalY = turnaroundPosition.y + segmentHeight;
                             if (this.transformation.position.y >= turnaroundFinalY) {
-                                this.transformation.position.y = turnaroundFinalY;
+                                this.transformation.setPosition(this.transformation.position.x, turnaroundFinalY);
 
                                 this.setMovingHorizontal();
 
@@ -151,7 +145,7 @@
                         } else {
                             var turnaroundFinalY = turnaroundPosition.y - segmentHeight;
                             if (this.transformation.position.y <= turnaroundFinalY) {
-                                this.transformation.position.y = turnaroundFinalY;
+                                this.transformation.setPosition(this.transformation.position.x, turnaroundFinalY);
 
                                 this.setMovingHorizontal();
 
@@ -190,13 +184,13 @@
             this.jerkBackX = function (x) {
                 var jerkOffset = (this.transformation.velocity.x > 0) ? -1 : 1;
                 jerkOffset = segmentWidth * jerkOffset;
-                this.transformation.position.x = x + jerkOffset;
+                this.transformation.setPosition(x + jerkOffset, this.transformation.position.y);
             };
 
             this.jerkBackY = function (y) {
                 var jerkOffset = (this.transformation.velocity.y > 0) ? -1 : 1;
                 jerkOffset = segmentWidth * jerkOffset;
-                this.transformation.position.y = y + jerkOffset;
+                this.transformation.setPosition(this.transformation.position.x, y + jerkOffset);
             };
             
             this.jerkBackInPlace = function (seg) {
