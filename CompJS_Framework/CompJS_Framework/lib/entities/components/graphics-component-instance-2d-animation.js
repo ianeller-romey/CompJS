@@ -34,6 +34,7 @@ var GraphicsComponent2DAnimation = function (gfxCompId, transformation) {
             that.textureCoords = newCoords;
         });
     };
+    initTransformationNotification();
 };
 
 var GraphicsComponentInstance2DAnimation = function (entity, gfxCompId) {
