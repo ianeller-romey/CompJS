@@ -74,6 +74,7 @@
     <Content Include="lib\behaviors\centipede\behavior-life.js" />
     <Content Include="lib\engines\bhv-engine.js" />
     <Content Include="lib\cheats.js" />
+    <Content Include="lib\engines\aud-engine.js" />
     <Content Include="lib\engines\input-manager.js" />
     <Content Include="lib\engines\entity-manager.js" />
     <Content Include="lib\engines\gfx-engine.js" />
