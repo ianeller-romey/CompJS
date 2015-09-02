@@ -16,6 +16,7 @@ namespace CompJS_Repo.Repository
         public int Id { get; set; }
         public int GfxCompDefinitionId { get; set; }
         public string Texture { get; set; }
+        public double TextureWidth { get; set; }
         public double StartT { get; set; }
         public double StartL { get; set; }
         public double CharacterWidth { get; set; }

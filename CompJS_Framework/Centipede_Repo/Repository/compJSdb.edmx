@@ -117,7 +117,7 @@
           <Parameter Name="animationStateDefinitionId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="RetrieveFontTextureDefinitionsForGfxComp" ReturnType="Collection(CompJSdbModel.RetrieveFontTextureDefinitionsForGfxComp_Result)">
-            <Parameter Name="gfxCompDefinitionId" Mode="In" Type="Int32" />
+          <Parameter Name="gfxCompDefinitionId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="RetrievePhysCompDefinition" ReturnType="Collection(CompJSdbModel.RetrievePhysCompDefinition_Result)">
           <Parameter Name="id" Mode="In" Type="Int32" />
@@ -209,6 +209,16 @@
           <Property Type="Double" Name="TexCoordBR" Nullable="false" />
           <Property Type="Double" Name="TexCoordBL" Nullable="false" />
         </ComplexType>
+        <ComplexType Name="RetrieveFontTextureDefinitionsForGfxComp_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="Int32" Name="GfxCompDefinitionId" Nullable="false" />
+          <Property Type="String" Name="Texture" Nullable="false" MaxLength="1000" />
+          <Property Type="Double" Name="TextureWidth" Nullable="false" />
+          <Property Type="Double" Name="StartT" Nullable="false" />
+          <Property Type="Double" Name="StartL" Nullable="false" />
+          <Property Type="Double" Name="CharacterWidth" Nullable="false" />
+          <Property Type="Double" Name="CharacterHeight" Nullable="false" />
+        </ComplexType>
         <ComplexType Name="RetrievePhysCompDefinition_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
           <Property Type="Int32" Name="EntityTypeId" Nullable="false" />
@@ -258,15 +268,6 @@
           <Property Type="String" Name="PlayerName" Nullable="false" MaxLength="100" />
           <Property Type="Int64" Name="Score" Nullable="false" />
           <Property Type="Int32" Name="GameId" Nullable="false" />
-        </ComplexType>
-        <ComplexType Name="RetrieveFontTextureDefinitionsForGfxComp_Result">
-          <Property Type="Int32" Name="Id" Nullable="false" />
-          <Property Type="Int32" Name="GfxCompDefinitionId" Nullable="false" />
-          <Property Type="String" Name="Texture" Nullable="false" MaxLength="1000" />
-          <Property Type="Double" Name="StartT" Nullable="false" />
-          <Property Type="Double" Name="StartL" Nullable="false" />
-          <Property Type="Double" Name="CharacterWidth" Nullable="false" />
-          <Property Type="Double" Name="CharacterHeight" Nullable="false" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -399,6 +400,7 @@
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="GfxCompDefinitionId" ColumnName="GfxCompDefinitionId" />
                 <ScalarProperty Name="Texture" ColumnName="Texture" />
+                <ScalarProperty Name="TextureWidth" ColumnName="TextureWidth" />
                 <ScalarProperty Name="StartT" ColumnName="StartT" />
                 <ScalarProperty Name="StartL" ColumnName="StartL" />
                 <ScalarProperty Name="CharacterWidth" ColumnName="CharacterWidth" />
@@ -438,6 +440,7 @@
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="GfxCompDefinitionId" ColumnName="GfxCompDefinitionId" />
                 <ScalarProperty Name="Texture" ColumnName="Texture" />
+                <ScalarProperty Name="TextureWidth" ColumnName="TextureWidth" />
                 <ScalarProperty Name="StartT" ColumnName="StartT" />
                 <ScalarProperty Name="StartL" ColumnName="StartL" />
                 <ScalarProperty Name="CharacterWidth" ColumnName="CharacterWidth" />

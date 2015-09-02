@@ -127,6 +127,7 @@
     <Compile Include="Controllers\AudioTypesController.cs" />
     <Compile Include="Controllers\CollisionTypesController.cs" />
     <Compile Include="Controllers\BhvCompDefinitionsController.cs" />
+    <Compile Include="Controllers\AudioController.cs" />
     <Compile Include="Controllers\ShadersController.cs" />
     <Compile Include="Controllers\GamesController.cs" />
     <Compile Include="Controllers\EntityTypeDefinitionsController.cs" />

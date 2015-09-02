@@ -35,6 +35,8 @@ var GfxEngine = function (canvasElem) {
         1.0, 1.0
     ];
     var activeTexture = "";
+
+    var texture
     
     var initWebGL = function (canvas) {  
         try {
@@ -118,6 +120,7 @@ var GfxEngine = function (canvasElem) {
                 fontTextureDefinition: {
                     id: x.fontTextureDefinition.id,
                     texture: x.fontTextureDefinition.texture,
+                    textureWidth: x.fontTextureDefinition.textureWidth,
                     startT: x.fontTextureDefinition.startT,
                     startL: x.fontTextureDefinition.startL,
                     characterWidth: x.fontTextureDefinition.characterWidth,
@@ -360,7 +363,7 @@ var GfxEngine = function (canvasElem) {
     };
 
     var createGfx2DAnimationInstance = function (entity, gfxCompId) {
-        var instance = new GraphicsComponentInstance2DAnimation(entity, gfxCompId);
+        var instance = new GraphicsComponentInstance2DAnimation(entity, 1, 1, gfxCompId);
         gfx2DAnimationInstances.push(instance);
         messengerEngine.queueForPosting("createdGraphicsInstance", instance.graphics, instance.instanceId);
     };

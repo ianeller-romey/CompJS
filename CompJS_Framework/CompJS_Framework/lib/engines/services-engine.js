@@ -77,6 +77,10 @@ var ServicesEngine = function () {
         return sendHttpGetJSONRequest("http://arcade/cabinet/compjs/compjsservices/game/" + gameId + "/ent/")
     };
 
+    this.retrieveAllAudioForGame = function (gameId) {
+        return sendHttpGetJSONRequest("http://arcade/cabinet/compjs/compjsservices/game/" + gameId + "/aud/");
+    };
+
     this.retrieveAllBhvCompDefinitionsForGame = function (gameId) {
         return sendHttpGetJSONRequest("http://arcade/cabinet/compjs/compjsservices/game/" + gameId + "/bhv/");
     };

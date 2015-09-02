@@ -967,6 +967,7 @@ BEGIN
 		EXEC @altAltId = [dev].[dev_CreateFontTextureDefinition]
 			@gfxCompDefinitionId = @compDefinitionId,
 			@texture = 'http://arcade/cabinet/compjs/images/centipede/fonts.png',
+			@textureWidth = 512.0,
 			@startT = 0.0,
 			@startL = 0.0,
 			@characterWidth = 16.0,
@@ -1000,6 +1001,7 @@ BEGIN
 		EXEC @altAltId = [dev].[dev_CreateFontTextureDefinition]
 			@gfxCompDefinitionId = @compDefinitionId,
 			@texture = 'http://arcade/cabinet/compjs/images/centipede/fonts.png',
+			@textureWidth = 512.0,
 			@startT = 64.0,
 			@startL = 0.0,
 			@characterWidth = 8.0,

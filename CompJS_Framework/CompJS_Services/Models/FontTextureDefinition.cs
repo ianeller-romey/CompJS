@@ -27,6 +27,12 @@ namespace CompJS_Services.Models
             set;
         }
 
+        public double TextureWidth
+        {
+            get;
+            set;
+        }
+
         public double StartT
         {
             get;

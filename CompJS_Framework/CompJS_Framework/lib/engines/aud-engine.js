@@ -4,6 +4,8 @@ var AudEngine = function () {
     var messengerEngine = globalMessengerEngine;
 
     var audioDefinitions = {};
+    var audioSources = [];
+    var numDesiredSources = 10;
 
     var audioContext;
 
@@ -43,6 +45,26 @@ var AudEngine = function () {
         return Promise.all(loadAudioPromises);
     };
 
+    var buildAudioSoures = function () {
+        var createSourceEndedEvent = function (i) {
+            return function () {
+                audioSources[i].available = true;
+            };
+        };
+
+        return new Promise(function (resolve, reject) {
+            for (var i = 0; i < numDesiredSources; ++i) {
+                var source = audioContext.createBufferSource();
+                source.connect(audioContext.destination);
+                source.onended = createSourceEndedEvent(i);
+                audioSources.push({
+                    source: source,
+                    available: true
+                });
+            }
+        });
+    };
+
     this.init = function (gameId) {
         var promise = new Promise(function (resolve, reject) {
             if (initAudioContext()) {
@@ -61,13 +83,21 @@ var AudEngine = function () {
     this.update = function (delta) {
     };
 
+    var getFirstAvailableSource = function () {
+        return audioSources.firstOrNull(function (x) {
+            return x.available;
+        });
+    };
+
     var playAudio = function (audioName) {
         var audioDefinition = audioDefinitions[audioName];
         if (audioDefinition != null) {
-            var source = audioContext.createBufferSource();
-            source.buffer = audioDefinition.buffer;
-            source.connect(audioContext.destination);
-            source.start(0);
+            var audioSource = getFirstAvailableSource();
+            if (audioSource != null) {
+                audioSource.available = false;
+                audioSource.buffer = audioDefinition.buffer;
+                audioSource.start(0);
+            }
         }
     };
     

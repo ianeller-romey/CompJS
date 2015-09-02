@@ -22,6 +22,12 @@ namespace CompJS_Services
                 new { httpMethod = new HttpMethodConstraint("GET") }
             );
             config.Routes.MapHttpRoute(
+                "game-aud-get",
+                "game/{gameId}/aud",
+                new { controller = "Audio", action = "GetForGame" },
+                new { httpMethod = new HttpMethodConstraint("GET") }
+            );
+            config.Routes.MapHttpRoute(
                 "game-bhv-get",
                 "game/{gameId}/bhv",
                 new { controller = "BhvCompDefinitions", action = "GetForGame" },

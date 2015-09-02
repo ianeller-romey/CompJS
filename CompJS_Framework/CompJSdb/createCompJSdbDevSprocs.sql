@@ -322,6 +322,7 @@ GO
 ALTER PROCEDURE [dev].[dev_CreateFontTextureDefinition]
 	@gfxCompDefinitionId int,
 	@texture varchar(1000),
+	@textureWidth float,
 	@startT float,
 	@startL float,
 	@characterWidth float,
@@ -332,8 +333,8 @@ BEGIN
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
 
-	INSERT INTO [game].[FontTextureDefinitions] ([GfxCompDefinitionId], [Texture], [StartT], [StartL], [CharacterWidth], [CharacterHeight])
-	VALUES (@gfxCompDefinitionId, @texture, @startT, @startL, @characterWidth, @characterHeight)
+	INSERT INTO [game].[FontTextureDefinitions] ([GfxCompDefinitionId], [Texture], [TextureWidth], [StartT], [StartL], [CharacterWidth], [CharacterHeight])
+	VALUES (@gfxCompDefinitionId, @texture, @textureWidth, @startT, @startL, @characterWidth, @characterHeight)
 	
 	RETURN SCOPE_IDENTITY()
 

@@ -116,18 +116,20 @@
                 });
                 Promise.all([loadScriptsPromise, loadShadersPromise]).then(function () {
                     var messengerEngine = globalMessengerEngine;
+                    var audEngine;
                     var bhvEngine;
                     var gfxEngine;
                     var physEngine;
                     var entManager;
                     var inputManager;
                     var run = function () {
+                        audEngine = new AudEngine();
                         bhvEngine = new BhvEngine(headElem);
                         gfxEngine = new GfxEngine(canvasElem);
                         entManager = new EntityManager();
                         physEngine = new PhysEngine();
                         inputManager = globalInputManager;
-                        var initPromise = Promise.all([bhvEngine.init(gameId), gfxEngine.init(gameId), entManager.init(gameId), physEngine.init(gameId), inputManager.init()]);
+                        var initPromise = Promise.all([audEngine.init(gameId), bhvEngine.init(gameId), gfxEngine.init(gameId), entManager.init(gameId), physEngine.init(gameId), inputManager.init()]);
                         initPromise.then(function () {
                             servicesEngine.retrieveAllLevelsForGame(gameId).then(function (data) {
                                 entManager.loadLevel(gameId, data[0].id);
@@ -141,12 +143,14 @@
                                     n = newN;
                                     inputManager.update(delta);
                                     messengerEngine.update(delta);
+                                    audEngine.update(delta);
                                     gfxEngine.update(delta);
                                     bhvEngine.update(delta);
                                     physEngine.update(delta);
 
                                     if (inputManager.isTriggered(inputManager.keys.escape)) {
-                                        // TODO: Destroy webGL
+                                        // TODO: Destroy webGL, AudioContext, etc.
+                                        // Do we need to?
                                         Promise.all([BhvEngine.unloadStateScripts(), GfxEngine.unloadShaderScripts()]).then(function () {
                                             setTimeout(displayMenu, 1);
                                         });

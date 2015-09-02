@@ -129,6 +129,15 @@ namespace CompJS_Repo.Repository
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<RetrieveAnimationFrameDefinitionsForAnimationStateDefinition_Result>("RetrieveAnimationFrameDefinitionsForAnimationStateDefinition", animationStateDefinitionIdParameter);
         }
     
+        public virtual ObjectResult<RetrieveFontTextureDefinitionsForGfxComp_Result> RetrieveFontTextureDefinitionsForGfxComp(Nullable<int> gfxCompDefinitionId)
+        {
+            var gfxCompDefinitionIdParameter = gfxCompDefinitionId.HasValue ?
+                new ObjectParameter("gfxCompDefinitionId", gfxCompDefinitionId) :
+                new ObjectParameter("gfxCompDefinitionId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<RetrieveFontTextureDefinitionsForGfxComp_Result>("RetrieveFontTextureDefinitionsForGfxComp", gfxCompDefinitionIdParameter);
+        }
+    
         public virtual ObjectResult<RetrievePhysCompDefinition_Result> RetrievePhysCompDefinition(Nullable<int> id)
         {
             var idParameter = id.HasValue ?
@@ -238,15 +247,6 @@ namespace CompJS_Repo.Repository
                 new ObjectParameter("gameId", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<RetrieveAllHighScoresForGame_Result>("RetrieveAllHighScoresForGame", gameIdParameter);
-        }
-    
-        public virtual ObjectResult<RetrieveFontTextureDefinitionsForGfxComp_Result> RetrieveFontTextureDefinitionsForGfxComp(Nullable<int> gfxCompDefinitionId)
-        {
-            var gfxCompDefinitionIdParameter = gfxCompDefinitionId.HasValue ?
-                new ObjectParameter("gfxCompDefinitionId", gfxCompDefinitionId) :
-                new ObjectParameter("gfxCompDefinitionId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<RetrieveFontTextureDefinitionsForGfxComp_Result>("RetrieveFontTextureDefinitionsForGfxComp", gfxCompDefinitionIdParameter);
         }
     }
 }

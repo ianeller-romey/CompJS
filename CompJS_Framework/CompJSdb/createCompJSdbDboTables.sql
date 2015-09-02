@@ -134,13 +134,14 @@ BEGIN
 		[Id] int PRIMARY KEY CLUSTERED IDENTITY,
 		[GfxCompDefinitionId] int NOT NULL FOREIGN KEY REFERENCES [game].[GfxCompDefinitions]([Id]),
 		[Texture] varchar(1000) NOT NULL,
+		[TextureWidth] float NOT NULL,
 		[StartT] float NOT NULL,
 		[StartL] float NOT NULL,
 		[CharacterWidth] float NOT NULL,
 		[CharacterHeight] float NOT NULL,
 	)
 	CREATE NONCLUSTERED INDEX IX__FontTextureDefinitions__GfxCompDefinitionId ON [game].[FontTextureDefinitions]([GfxCompDefinitionId])
-	INCLUDE([Texture], [StartT], [StartL], [CharacterWidth], [CharacterHeight])
+	INCLUDE([Texture], [TextureWidth], [StartT], [StartL], [CharacterWidth], [CharacterHeight])
 	DBCC CHECKIDENT ('[game].[FontTextureDefinitions]', RESEED, 0)
 END
 
