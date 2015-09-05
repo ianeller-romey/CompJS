@@ -12,6 +12,7 @@ Array.prototype.addRange = function (range) {
     for (var i = 0, len = range.length; i < len; ++i) {
         this.push(range[i]);
     }
+    return this;
 };
 
 Array.prototype.any = function (predicate) {
@@ -103,6 +104,9 @@ String.prototype.notifyAll = function () {
 };
 
 String.prototype.setAndNotify = function (value) {
+    if (this.valueOf() === value.valueOf()) {
+        return this;
+    }
     var newValue = new String(value);
     newValue._notifyMe = this._notifyMe;
     newValue.notifyAll();
@@ -127,6 +131,9 @@ Number.prototype.notifyAll = function () {
 };
 
 Number.prototype.setAndNotify = function (value) {
+    if (this.valueOf() === value.valueOf()) {
+        return this;
+    }
     var newValue = new Number(value);
     newValue._notifyMe = this._notifyMe;
     newValue.notifyAll();
@@ -151,6 +158,9 @@ Boolean.prototype.notifyAll = function () {
 };
 
 Boolean.prototype.setAndNotify = function (value) {
+    if (this.valueOf() === value.valueOf()) {
+        return this;
+    }
     var newValue = new Boolean(value);
     newValue._notifyMe = this._notifyMe;
     newValue.notifyAll();
@@ -175,6 +185,9 @@ Object.prototype.notifyAll = function () {
 };
 
 Object.prototype.setAndNotify = function (value) {
+    if (this.valueOf() === value.valueOf()) {
+        return this;
+    }
     var newValue = value;
     newValue._notifyMe = this._notifyMe;
     newValue.notifyAll();
@@ -199,6 +212,9 @@ Date.prototype.notifyAll = function () {
 };
 
 Date.prototype.setAndNotify = function (value) {
+    if (this.valueOf() === value.valueOf()) {
+        return this;
+    }
     var newValue = new Date(value);
     newValue._notifyMe = this._notifyMe;
     newValue.notifyAll();
@@ -223,6 +239,9 @@ Array.prototype.notifyAll = function () {
 };
 
 Array.prototype.setAndNotify = function (value) {
+    if (this.valueOf() === value.valueOf()) {
+        return this;
+    }
     var newValue = value;
     newValue._notifyMe = this._notifyMe;
     newValue.notifyAll();
@@ -247,6 +266,9 @@ Function.prototype.notifyAll = function () {
 };
 
 Function.prototype.setAndNotify = function (value) {
+    if (this.valueOf() === value.valueOf()) {
+        return this;
+    }
     var newValue = value;
     newValue._notifyMe = this._notifyMe;
     newValue.notifyAll();

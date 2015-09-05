@@ -949,15 +949,6 @@ BEGIN
 		@name = 'Text_LargeRedFont',
 		@gameId = @gameId
 		
-	IF NOT EXISTS (SELECT [Id] FROM [game].[BhvCompDefinitions] WHERE [EntityTypeId] = @id)
-	BEGIN
-		EXEC @compDefinitionId = [dev].[dev_CreateBhvCompDefinition]
-			@entityTypeId = @id,
-			@stateFile = 'http://arcade/cabinet/compjs/lib/behaviors/centipede/behavior-text.js',
-			@behaviorConstructor = 'BehaviorText'
-			
-	END
-		
 	IF NOT EXISTS (SELECT [Id] FROM [game].[GfxCompDefinitions] WHERE [EntityTypeId] = @id)
 	BEGIN
 		EXEC @compDefinitionId = [dev].[dev_CreateGfxCompDefinition]
@@ -983,15 +974,6 @@ BEGIN
 		@name = 'Text_SmallWhiteFont',
 		@gameId = @gameId
 		
-	IF NOT EXISTS (SELECT [Id] FROM [game].[BhvCompDefinitions] WHERE [EntityTypeId] = @id)
-	BEGIN
-		EXEC @compDefinitionId = [dev].[dev_CreateBhvCompDefinition]
-			@entityTypeId = @id,
-			@stateFile = 'http://arcade/cabinet/compjs/lib/behaviors/centipede/behavior-text.js',
-			@behaviorConstructor = 'Text'
-			
-	END
-		
 	IF NOT EXISTS (SELECT [Id] FROM [game].[GfxCompDefinitions] WHERE [EntityTypeId] = @id)
 	BEGIN
 		EXEC @compDefinitionId = [dev].[dev_CreateGfxCompDefinition]
@@ -1016,6 +998,15 @@ BEGIN
 	EXEC [dev].[dev_CreateShader]
 		@name = 'Texture',
 		@shaderFile = 'http://arcade/cabinet/compjs/lib/shaders/centipede/shader-texture.js',
+		@gameId = @gameId
+	
+END
+
+IF NOT EXISTS (SELECT [Id] FROM [game].[Shaders] WHERE [GameId] = @gameId AND [Name] = 'TextureColorChange')
+BEGIN
+	EXEC [dev].[dev_CreateShader]
+		@name = 'TextureColorChange',
+		@shaderFile = 'http://arcade/cabinet/compjs/lib/shaders/centipede/shader-texture-color-change.js',
 		@gameId = @gameId
 	
 END

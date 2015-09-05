@@ -46,7 +46,7 @@ var BhvEngine = function (headElem) {
         if (instance != null) {
             for (var key in data) {
                 if (data.hasOwnProperty(key)) {
-                    instance.bhvComp.data[key] = data[key];
+                    instance.behavior.data[key] = data[key];
                 }
             }
         }

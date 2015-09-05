@@ -10,7 +10,7 @@ var PhysicsComponent = function (physCompDefinition, transformation) {
 };
 
 var PhysicsComponentInstance = function (entity, physCompDefinition) {
-    this.instanceId = instanceId;
+    this.instanceId = entity.instanceId;
     this.entityTypeName = entity.typeName;
     this.transformation = entity.transformation;
     this.physics = new PhysicsComponent(physCompDefinition);

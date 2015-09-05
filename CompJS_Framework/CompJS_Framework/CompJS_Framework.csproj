@@ -82,7 +82,7 @@
     <Content Include="lib\engines\phys-engine.js" />
     <Content Include="lib\engines\services-engine.js" />
     <Content Include="lib\entities\components\behavior-component-instance.js" />
-    <Content Include="lib\entities\components\graphics-component-font.js" />
+    <Content Include="lib\entities\components\graphics-component-instance-font.js" />
     <Content Include="lib\entities\components\graphics-component-instance-2d-animation.js" />
     <Content Include="lib\entities\components\physics-component-instance.js" />
     <Content Include="lib\entities\components\transformation-instance.js" />
@@ -90,6 +90,7 @@
     <Content Include="lib\entities\math\bounding-aabb.js" />
     <Content Include="lib\entities\math\bounding-circle.js" />
     <Content Include="lib\entities\math\vector-2d.js" />
+    <Content Include="lib\shaders\centipede\shader-texture-color-change.js" />
     <Content Include="lib\shaders\centipede\shader-point-light.js" />
     <Content Include="lib\shaders\centipede\shader-emboss.js" />
     <Content Include="lib\shaders\centipede\shader-texture.js" />

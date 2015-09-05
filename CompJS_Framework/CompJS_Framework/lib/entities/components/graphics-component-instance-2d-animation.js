@@ -30,9 +30,10 @@ var GraphicsComponent2DAnimation = function (gfxCompId, width, height, transform
     this.width = width;
     this.height = height;
     this.vertices = [];
+    this.textureCoords = [];
 
+    var that = this;
     var init = function () {
-        var that = this;
         var verts = VERTICES;
         var scaledVertices = [];
         var translatedVertices = [];
@@ -58,11 +59,11 @@ var GraphicsComponent2DAnimation = function (gfxCompId, width, height, transform
             }
         };
 
-        this.width.notifyMe(function (newWidth) {
+        that.width.notifyMe(function (newWidth) {
             updateScaledVertices(newWidth, that.height, transformation.scale);
         });
 
-        this.height.notifyMe(function (newHeight) {
+        that.height.notifyMe(function (newHeight) {
             updateScaledVertices(that.width, newHeight, transformation.scale);
         });
 
@@ -77,9 +78,30 @@ var GraphicsComponent2DAnimation = function (gfxCompId, width, height, transform
     init();
 };
 
-var GraphicsComponentInstance2DAnimation = function (entity, gfxCompId) {
+GraphicsComponent2DAnimation.prototype.setWidth = function (newWidth) {
+    this.width = this.width.setAndNotify(newWidth);
+};
+
+GraphicsComponent2DAnimation.prototype.setHeight = function (newHeight) {
+    this.height = this.height.setAndNotify(newHeight);
+};
+
+GraphicsComponent2DAnimation.prototype.setTextureCoords = function () {
+    var top = arguments[0];
+    var rgt = arguments[1];
+    var bot = arguments[2];
+    var lft = arguments[3];
+    this.textureCoords = [lft, top,
+            lft + (rgt - lft), top,
+                          lft, top + (bot - top),
+                          lft, top + (bot - top),
+            lft + (rgt - lft), top,
+            lft + (rgt - lft), top + (bot - top)];
+};
+
+var GraphicsComponentInstance2DAnimation = function (entity, gfxCompId, width, height) {
     this.instanceId = entity.instanceId;
     this.entityTypeName = entity.typeName;
     this.transformation = entity.transformation;
-    this.graphics = new GraphicsComponent2DAnimation(gfxCompId, this.transformation);
+    this.graphics = new GraphicsComponent2DAnimation(gfxCompId, width, height, this.transformation);
 };

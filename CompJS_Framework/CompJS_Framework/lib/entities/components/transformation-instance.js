@@ -1,5 +1,7 @@
 ﻿
 var TransformationInstance = function (position, rotation, scale, velocity) {
+    var that = this;
+
     this.position = null;
     var initPosition = function () {
         var x = 0;
@@ -12,7 +14,7 @@ var TransformationInstance = function (position, rotation, scale, velocity) {
                 y = position.y;
             }
         }
-        this.position = new Vector2D(x, y);
+        that.position = new Vector2D(x, y);
     };
 
     this.rotation = null;
@@ -21,7 +23,7 @@ var TransformationInstance = function (position, rotation, scale, velocity) {
         if (rotation != null) {
             rot = rotation;
         }
-        this.rotation = new Number(rot);
+        that.rotation = new Number(rot);
     };
 
     this.scale = null;
@@ -36,7 +38,7 @@ var TransformationInstance = function (position, rotation, scale, velocity) {
                 y = scale.y;
             }
         }
-        this.scale = new Vector2D(x, y);
+        that.scale = new Vector2D(x, y);
     };
 
     this.velocity = null;
@@ -51,7 +53,7 @@ var TransformationInstance = function (position, rotation, scale, velocity) {
                 y = velocity.y;
             }
         }
-        this.velocity = new Vector2D(x, y);
+        that.velocity = new Vector2D(x, y);
     };
 
     initPosition();
@@ -60,18 +62,18 @@ var TransformationInstance = function (position, rotation, scale, velocity) {
     initVelocity();
 };
 
-Transformation.prototype.setPosition = function (x, y) {
+TransformationInstance.prototype.setPosition = function (x, y) {
     this.position = this.position.setAndNotify(new Vector2D(x, y));
 };
 
-Transformation.prototype.setRotation = function (rot) {
+TransformationInstance.prototype.setRotation = function (rot) {
     this.rotation = this.rotation.setAndNotify(rot);
 };
 
-Transformation.prototype.setScale = function (x, y) {
+TransformationInstance.prototype.setScale = function (x, y) {
     this.scale = this.scale.setAndNotify(new Vector2D(x, y));
 };
 
-Transformation.prototype.setVelocity = function (x, y) {
+TransformationInstance.prototype.setVelocity = function (x, y) {
     this.velocity = this.velocity.setAndNotify(new Vector2D(x, y));
 };

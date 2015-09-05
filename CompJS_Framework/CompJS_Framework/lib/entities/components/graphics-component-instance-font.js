@@ -277,131 +277,131 @@ if (FONT_DICTIONARY === undefined) {
             row: 2
         },
         ",": {
-            column: asdfasdf,
+            column: 0,
             row: 3
         },
         ".": {
-            column: asdfasdf,
+            column: 1,
             row: 3
         },
         "/": {
-            column: asdfasdf,
+            column: 2,
             row: 3
         },
         "<": {
-            column: asdfasdf,
+            column: 3,
             row: 3
         },
         ">": {
-            column: asdfasdf,
+            column: 4,
             row: 3
         },
         "?": {
-            column: asdfasdf,
+            column: 5,
             row: 3
         },
         ";": {
-            column: asdfasdf,
+            column: 6,
             row: 3
         },
         "'": {
-            column: asdfasdf,
+            column: 7,
             row: 3
         },
         ":": {
-            column: asdfasdf,
+            column: 8,
             row: 3
         },
         '"': {
-            column: asdfasdf,
+            column: 9,
             row: 3
         },
         "[": {
-            column: asdfasdf,
+            column: 10,
             row: 3
         },
         "]": {
-            column: asdfasdf,
+            column: 11,
             row: 3
         },
         "\\": {
-            column: asdfasdf,
+            column: 12,
             row: 3
         },
         "{": {
-            column: asdfasdf,
+            column: 13,
             row: 3
         },
         "}": {
-            column: asdfasdf,
+            column: 14,
             row: 3
         },
         "|": {
-            column: asdfasdf,
+            column: 15,
             row: 3
         },
         "`": {
-            column: asdfasdf,
+            column: 16,
             row: 3
         },
         "-": {
-            column: asdfasdf,
+            column: 17,
             row: 3
         },
         "=": {
-            column: asdfasdf,
+            column: 18,
             row: 3
         },
         "~": {
-            column: asdfasdf,
+            column: 19,
             row: 3
         },
         "!": {
-            column: asdfasdf,
+            column: 20,
             row: 3
         },
         "@": {
-            column: asdfasdf,
+            column: 21,
             row: 3
         },
         "#": {
-            column: asdfasdf,
+            column: 22,
             row: 3
         },
         "$": {
-            column: asdfasdf,
+            column: 23,
             row: 3
         },
         "%": {
-            column: asdfasdf,
+            column: 24,
             row: 3
         },
         "^": {
-            column: asdfasdf,
+            column: 25,
             row: 3
         },
         "&": {
-            column: asdfasdf,
+            column: 26,
             row: 3
         },
         "*": {
-            column: asdfasdf,
+            column: 27,
             row: 3
         },
         "(": {
-            column: asdfasdf,
+            column: 28,
             row: 3
         },
         ")": {
-            column: asdfasdf,
+            column: 29,
             row: 3
         },
         "_": {
-            column: asdfasdf,
+            column: 30,
             row: 3
         },
         "+": {
-            column: asdfasdf,
+            column: 31,
             row: 3
         }
     };
@@ -417,8 +417,8 @@ var GraphicsComponentFont = function (gfxCompId, startT, startL, characterWidth,
     this.vertices = [];
     this.textureCoords = [];
 
+    var that = this;
     var init = function () {
-        var that = this;
         var verts = VERTICES;
         var fonts = FONT_DICTIONARY;
         var scaledVertices = [];
