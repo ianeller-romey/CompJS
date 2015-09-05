@@ -35,7 +35,7 @@ var EntityManager = function () {
         });
     };
 
-    var createEntityInstance = function (xEntityType, data) {
+    var createEntityInstance = function (xEntityType, data, callback) {
         var entity = new Entity(entityIdGenerator++, xEntityType.entityTypeId, xEntityType.entityTypeName, {
             x: xEntityType.x,
             y: xEntityType.y
@@ -45,7 +45,7 @@ var EntityManager = function () {
 
         if (entityHasBehavior(entityDefinition)) {
             messengerEngine.postImmediate("createBehavior", entity, entityDefinition.behavior);
-            if (data !== undefined) {
+            if (data != null) {
                 messengerEngine.postImmediate("setBehaviorInstanceData", entity.instanceId, data);
             }
         }
@@ -55,9 +55,13 @@ var EntityManager = function () {
         if (entityHasPhysics(entityDefinition)) {
             messengerEngine.postImmediate("createPhysics", entity, entityDefinition.physics);
         }
+
+        if (callback != null) {
+            callback(entity.instanceId);
+        }
     };
 
-    var createEntityInstanceFromMessage = function (name, additional) {
+    var createEntityInstanceFromMessage = function (name, additional, callback) {
         var entityTypeNamedId = entityTypeNamedIds[name];
         if (entityTypeNamedId != null) {
             var xEntityType = {
@@ -69,9 +73,9 @@ var EntityManager = function () {
                     xEntityType.x = additional.position.x;
                     xEntityType.y = additional.position.y;
                 }
-                createEntityInstance(xEntityType, additional.data);
+                createEntityInstance(xEntityType, additional.data, callback);
             } else {
-                createEntityInstance(xEntityType);
+                createEntityInstance(xEntityType, null, callback);
             }
         }
     };

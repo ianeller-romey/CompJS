@@ -961,7 +961,7 @@ BEGIN
 			@textureWidth = 512.0,
 			@startT = 0.0,
 			@startL = 0.0,
-			@characterWidth = 16.0,
+			@characterWidth = 11.0,
 			@characterHeight = 16.0
 			
 	END
@@ -986,7 +986,7 @@ BEGIN
 			@textureWidth = 512.0,
 			@startT = 64.0,
 			@startL = 0.0,
-			@characterWidth = 8.0,
+			@characterWidth = 5.0,
 			@characterHeight = 8.0
 			
 	END

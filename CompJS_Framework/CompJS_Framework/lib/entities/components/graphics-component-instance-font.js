@@ -416,6 +416,7 @@ var GraphicsComponentFont = function (gfxCompId, startT, startL, characterWidth,
     this.characterHeight = characterHeight;
     this.vertices = [];
     this.textureCoords = [];
+    this.text = new String();
 
     var that = this;
     var init = function () {
@@ -476,16 +477,16 @@ var GraphicsComponentFont = function (gfxCompId, startT, startL, characterWidth,
                     that.textureCoords[i][1].y = calculateTextureCoordinates(yOff);
 
                     that.textureCoords[i][2].x = calculateTextureCoordinates(xOff);
-                    that.textureCoords[i][2].y = calculateTextureCoordinates(yOff + that.characterHeight);
+                    that.textureCoords[i][2].y = calculateTextureCoordinates(yOff + that.characterHeight - .5);
 
                     that.textureCoords[i][3].x = calculateTextureCoordinates(xOff);
-                    that.textureCoords[i][3].y = calculateTextureCoordinates(yOff + that.characterHeight);
+                    that.textureCoords[i][3].y = calculateTextureCoordinates(yOff + that.characterHeight - .5);
 
                     that.textureCoords[i][4].x = calculateTextureCoordinates(xOff + that.characterWidth);
                     that.textureCoords[i][4].y = calculateTextureCoordinates(yOff);
 
                     that.textureCoords[i][5].x = calculateTextureCoordinates(xOff + that.characterWidth);
-                    that.textureCoords[i][5].y = calculateTextureCoordinates(yOff + that.characterHeight);
+                    that.textureCoords[i][5].y = calculateTextureCoordinates(yOff + that.characterHeight - .5);
 
             }
         };
@@ -522,16 +523,16 @@ var GraphicsComponentFont = function (gfxCompId, startT, startL, characterWidth,
     };
     init();
 
-    this.text = text;
+    this.text = this.text.setAndNotify(text);
 };
 
 GraphicsComponentFont.prototype.setText = function (text) {
     this.text = this.text.setAndNotify(text);
 };
 
-var GraphicsComponentInstanceFont = function (entity, gfxCompId) {
+var GraphicsComponentInstanceFont = function (entity, gfxCompId, fontTextureDefinition, text) {
     this.instanceId = entity.instanceId;
     this.entityTypeName = entity.typeName;
     this.transformation = entity.transformation;
-    this.graphics = new GraphicsComponent2DAnimation(gfxCompId, this.transformation);
+    this.graphics = new GraphicsComponentFont(gfxCompId, fontTextureDefinition.startT, fontTextureDefinition.startL, fontTextureDefinition.characterWidth, fontTextureDefinition.characterHeight, fontTextureDefinition.textureWidth, text, this.transformation);
 };
