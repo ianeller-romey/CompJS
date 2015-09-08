@@ -27,8 +27,8 @@
                         x: 0,
                         y: 0
                     }}, function (x) {
-                    that.scoreTextInstanceId = x;
-                    messengerEngine.queueForPosting("setInstanceText", that.scoreTextInstanceId, "TEST");
+                        that.scoreTextInstanceId = x;
+                        incrementPlayerScore(0);
                 });
             };
 
@@ -37,11 +37,11 @@
 
             var incrementPlayerScore = function (scoreIncr) {
                 score += scoreIncr;
+                messengerEngine.queueForPosting("setInstanceText", that.scoreTextInstanceId, "SCORE: " + score);
                 /*scoreElem.innerHTML = "SCORE: " + score;*/
             };
 
             init();
-            incrementPlayerScore(0);
 
             messengerEngine.register("incrementPlayerScore", this, incrementPlayerScore);
         };
