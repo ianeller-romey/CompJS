@@ -4,6 +4,13 @@ var Vector2D = function (x, y) {
     this.y = new Number(y);
 };
 
+Vector2D.prototype.toXYObject = function () {
+    return {
+        x: new Number(this.x),
+        y: new Number(this.y)
+    };
+};
+
 Vector2D.prototype.distance2 = function (other) {
     var xDist = this.x - other.x;
     var yDist = this.y - other.y;

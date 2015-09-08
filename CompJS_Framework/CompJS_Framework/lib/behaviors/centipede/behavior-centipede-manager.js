@@ -19,7 +19,7 @@
                 activeSegments = totalSegments;
                 messengerEngine.queueForPosting("createEntityInstance", "CentipedeSegment", {
                     position: {
-                        x: 256,
+                        x: 512,
                         y: 8
                     },
                     data: {
