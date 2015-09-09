@@ -125,11 +125,15 @@ globalMessengerEngine.addMessageType("getGfxCompInstanceForEntityInstanceRespons
 
 globalMessengerEngine.addMessageType("createPhysics");
 globalMessengerEngine.addMessageType("createdPhysicsInstance");
-globalMessengerEngine.addMessageType("setInstancePosition");
 globalMessengerEngine.addMessageType("getPhysCompInstanceForEntityInstanceRequest");
 globalMessengerEngine.addMessageType("getPhysCompInstanceForEntityInstanceResponse");
 
 globalMessengerEngine.addMessageType("createEntityInstance");
 globalMessengerEngine.addMessageType("removeEntityInstance");
+globalMessengerEngine.addMessageType("removeAllEntityInstancesButOne");
+globalMessengerEngine.addMessageType("setInstancePosition");
+globalMessengerEngine.addMessageType("setInstanceScale");
 globalMessengerEngine.addMessageType("getTransformationForEntityInstanceRequest");
 globalMessengerEngine.addMessageType("getTransformationForEntityInstanceResponse");
+globalMessengerEngine.addMessageType("getGameIdRequest");
+globalMessengerEngine.addMessageType("getGameIdRequest");

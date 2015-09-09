@@ -26,5 +26,11 @@ namespace CompJS_Repo.Entities
             get;
             set;
         }
+
+        public int GameId
+        {
+            get;
+            set;
+        }
     }
 }

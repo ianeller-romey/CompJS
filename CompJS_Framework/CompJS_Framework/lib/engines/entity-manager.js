@@ -1,5 +1,7 @@
 ﻿
-var EntityManager = function () {
+var EntityManager = function (gameId) {
+    this.gameId = gameId;
+
     var servicesEngine = globalServicesEngine;
     var messengerEngine = globalMessengerEngine;
 
@@ -45,10 +47,7 @@ var EntityManager = function () {
     };
 
     var createEntityInstance = function (xEntityType, data, callback) {
-        var entity = new Entity(entityIdGenerator++, xEntityType.entityTypeId, xEntityType.entityTypeName, {
-            x: xEntityType.x,
-            y: xEntityType.y
-        });
+        var entity = new Entity(entityIdGenerator++, xEntityType.entityTypeId, xEntityType.entityTypeName, xEntityType.position, xEntityType.rotation, xEntityType.scale, xEntityType.velocity);
         entityInstances.push(entity);
         var entityDefinition = entityTypeDefinitions[entity.typeId];
 
@@ -79,8 +78,28 @@ var EntityManager = function () {
             };
             if (additional != undefined) {
                 if (additional.position !== undefined) {
-                    xEntityType.x = additional.position.x;
-                    xEntityType.y = additional.position.y;
+                    xEntityType.position = {
+                        x: additional.position.x,
+                        y: additional.position.y
+                    };
+                }
+                if (additional.rotation !== undefined) {
+                    xEntityType.rotation = {
+                        x: additional.rotation.x,
+                        y: additional.rotation.y
+                    };
+                }
+                if (additional.scale !== undefined) {
+                    xEntityType.scale = {
+                        x: additional.scale.x,
+                        y: additional.scale.y
+                    };
+                }
+                if (additional.velocity !== undefined) {
+                    xEntityType.velocity = {
+                        x: additional.velocity.x,
+                        y: additional.velocity.y
+                    };
                 }
                 createEntityInstance(xEntityType, additional.data, callback);
             } else {
@@ -99,14 +118,59 @@ var EntityManager = function () {
         }
     };
 
+    var removeAllEntityInstancesButOne = function (instanceId) {
+        while (entityInstances.length > 1) {
+            var index = (entityInstances[0].instanceId === instanceId) ? 1 : 0;
+            messengerEngine.postImmediate("removeEntityInstance", entityInstances[index].instanceId);
+        }
+    };
+
     var getTransformationForEntityInstance = function (instanceId) {
         var entityInstance = entityInstances.firstOrNull(function (x) {
             return x.instanceId == instanceId;
         });
         if (entityInstance != null) {
-            messengerEngine.queueForPosting("getTransformationForEntityInstanceResponse", instanceId, entityInstance.transformation);
+            messengerEngine.postImmediate("getTransformationForEntityInstanceResponse", instanceId, entityInstance.transformation);
         }
     };
+
+    var setInstancePosition = function (instanceId, position) {
+        var instance = entityInstances.firstOrNull(function (x) {
+            return x.instanceId === instanceId;
+        });
+        if (instance != null) {
+            var xPos = instance.transformation.position.x;
+            var yPos = instance.transformation.position.y;
+            if (position.x !== undefined) {
+                xPos = position.x;
+            }
+            if (position.y !== undefined) {
+                yPos = position.y;
+            }
+            instance.transformation.setPosition(xPos, yPos);
+        }
+    };
+
+    var setInstanceScale = function (instanceId, scale) {
+        var instance = entityInstances.firstOrNull(function (x) {
+            return x.instanceId === instanceId;
+        });
+        if (instance != null) {
+            var xPos = instance.transformation.scale.x;
+            var yPos = instance.transformation.scale.y;
+            if (scale.x !== undefined) {
+                xPos = scale.x;
+            }
+            if (scale.y !== undefined) {
+                yPos = scale.y;
+            }
+            instance.transformation.setScale(xPos, yPos);
+        }
+    };
+
+    this.getGameId = function () {
+        messengerEngine.postImmediate("getGameIdResponse", this.gameId);
+    }
 
     this.loadLevel = function (gameId, levelId) {
         servicesEngine.loadLevel(gameId, levelId).then(function (data) {
@@ -132,6 +196,10 @@ var EntityManager = function () {
 
     messengerEngine.register("createEntityInstance", this, createEntityInstanceFromMessage);
     messengerEngine.register("removeEntityInstance", this, removeEntityInstanceFromMessage);
+    messengerEngine.register("removeAllEntityInstancesButOne", this, removeAllEntityInstancesButOne);
+    messengerEngine.register("setInstancePosition", this, setInstancePosition);
+    messengerEngine.register("setInstanceScale", this, setInstanceScale);
     messengerEngine.register("getTransformationForEntityInstanceRequest", this, getTransformationForEntityInstance);
+    messengerEngine.register("getGameIdRequest", this, this.getGameId);
 
 };

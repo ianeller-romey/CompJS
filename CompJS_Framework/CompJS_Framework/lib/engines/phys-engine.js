@@ -139,29 +139,12 @@ var PhysEngine = function () {
         messengerEngine.queueForPosting("createdPhysicsInstance", instance.physics, instance.instanceId);
     };
 
-    var setInstancePosition = function (instanceId, position) {
-        var physCompInstance = physCompInstances.firstOrNull(function (x) {
-            return x.instanceId === instanceId;
-        });
-        if (physCompInstance != null) {
-            var xPos = physCompInstance.transformation.position.x;
-            var yPos = physCompInstance.transformation.position.y;
-            if (position.x !== undefined) {
-                xPos = position.x;
-            }
-            if (position.y !== undefined) {
-                yPos = position.y;
-            }
-            physCompInstance.transformation.setPosition(xPos, yPos);
-        }
-    };
-
     var getPhysCompInstanceForEntityInstance = function (instanceId) {
         var physCompInstance = physCompInstances.firstOrNull(function (x) {
             return x.instanceId === instanceId;
         });
         if (physCompInstance != null) {
-            messengerEngine.queueForPosting("getPhysCompInstanceForEntityInstanceResponse", physCompInstance);
+            messengerEngine.postImmediate("getPhysCompInstanceForEntityInstanceResponse", physCompInstance);
         }
     };
 
@@ -177,7 +160,6 @@ var PhysEngine = function () {
     };
 
     messengerEngine.register("createPhysics", this, createPhysCompInstance);
-    messengerEngine.register("setInstancePosition", this, setInstancePosition);
     messengerEngine.register("getPhysCompInstanceForEntityInstanceRequest", this, getPhysCompInstanceForEntityInstance);
     messengerEngine.register("removeEntityInstance", this, removePhysCompInstanceFromMessage);
 };

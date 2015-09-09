@@ -2,7 +2,23 @@
     if (BehaviorGameStateManager === undefined) {
         var BehaviorGameStateManager = function (entity) {
             this.instanceId = entity.instanceId;
+            var that = this;
 
+            var state;
+            var stateMainMenu = 1;
+            var stateDisplayHighScores = 2;
+            var stateInGame = 3;
+            var statePostGame = 4;
+
+            var activeEntities = [];
+            var entityMenuCursorState;
+            var entityMenuCursorIndex = null;
+            var entityStartGameIndex = null;
+            var entityHighScoresIndex = null;
+            var entityLivesIndex = null;
+            var entityLivesBehavior = null;
+
+            var resumeAfterHalftime = true;
             var currentWave = -1;
             var waveColors = [{
                 r: 0,
@@ -23,14 +39,244 @@
             }];
 
             var messengerEngine = globalMessengerEngine;
+            var servicesEngine = globalServicesEngine;
+            var inputManager = globalInputManager;
 
-            var playerDeath = function () {
-                messengerEngine.queueForPosting("playerModifyLives", -1);
-                messengerEngine.queueForPosting("halftime", true);
+            var addToActiveEntities = function (id) {
+                activeEntities.push(id);
             };
 
-            var halftime = function (start) {
-                if (!start) {
+            var clearActiveEntities = function() {
+                activeEntities.forEach(function(x){
+                    messengerEngine.queueForPosting("removeEntityInstance", x);
+                });
+                activeEntities = [];
+            };
+
+            var controllerUp = function () {
+                return inputManager.isTriggered(inputManager.keys.arrowUp) || inputManager.isTriggered(inputManager.keys.w);
+            };
+
+            var controllerDown = function () {
+                return inputManager.isTriggered(inputManager.keys.arrowDown) || inputManager.isTriggered(inputManager.keys.s);
+            };
+
+            var controllerSelect = function () {
+                return inputManager.isTriggered(inputManager.keys.space) || inputManager.isTriggered(inputManager.keys.enter)
+            };
+
+            var moveMainMenuCursor = function (upOrDown) {
+                if (upOrDown) {
+                    entityMenuCursorState = stateInGame;
+                    messengerEngine.queueForPosting("setInstancePosition", activeEntities[entityMenuCursorIndex], {
+                        x: 80,
+                        y: 226
+                    });
+                    messengerEngine.queueForPosting("setInstanceScale", activeEntities[entityStartGameIndex], {
+                        x: 2,
+                        y: 2
+                    });
+                    messengerEngine.queueForPosting("setInstanceScale", activeEntities[entityHighScoresIndex], {
+                        x: 1,
+                        y: 1
+                    });
+                } else {
+                    entityMenuCursorState = stateDisplayHighScores;
+                    messengerEngine.queueForPosting("setInstancePosition", activeEntities[entityMenuCursorIndex], {
+                        x: 80,
+                        y: 276
+                    });
+                    messengerEngine.queueForPosting("setInstanceScale", activeEntities[entityStartGameIndex], {
+                        x: 1,
+                        y: 1
+                    });
+                    messengerEngine.queueForPosting("setInstanceScale", activeEntities[entityHighScoresIndex], {
+                        x: 2,
+                        y: 2
+                    });
+                }
+            };
+
+            var initMainMenu = function () {
+                clearActiveEntities();
+                state = stateMainMenu;
+
+                messengerEngine.postImmediate("createEntityInstance", "Text_LargeGreenFont", {
+                    position: {
+                        x: 4,
+                        y: 0
+                    },
+                    scale: {
+                        x: 3.5,
+                        y: 4
+                    }
+                }, function (id) {
+                    activeEntities.push(id);
+                    messengerEngine.queueForPosting("setInstanceText", id, "CENTIPEDE");
+                });
+                messengerEngine.postImmediate("createEntityInstance", "MenuCursor", {
+                    position: {
+                        x: 80,
+                        y: 226
+                    }
+                }, function (id) {
+                    entityMenuCursorIndex = activeEntities.push(id) - 1;
+                });
+                messengerEngine.postImmediate("createEntityInstance", "Text_LargeGreenFont", {
+                    position: {
+                        x: 100,
+                        y: 206
+                    }
+                }, function (id) {
+                    entityStartGameIndex = activeEntities.push(id) - 1;
+                    messengerEngine.queueForPosting("setInstanceText", id, "Start Game");
+                });
+                messengerEngine.postImmediate("createEntityInstance", "Text_LargeGreenFont", {
+                    position: {
+                        x: 100,
+                        y: 256
+                    }
+                }, function (id) {
+                    entityHighScoresIndex = activeEntities.push(id) - 1;
+                    messengerEngine.queueForPosting("setInstanceText", id, "High Scores");
+                });
+                messengerEngine.postImmediate("createEntityInstance", "Text_LargeRedFont", {
+                    position: {
+                        x: 0,
+                        y: 476
+                    }
+                }, function (id) {
+                    activeEntities.push(id);
+                    messengerEngine.queueForPosting("setInstanceText", id, "Copyright (C) 2015 Microsoft Corporation.\nAll rights reserved.");
+                });
+
+                moveMainMenuCursor(true);
+            };
+
+            var updateMainMenu = function () {
+                if (controllerUp()) {
+                    moveMainMenuCursor(true);
+                } else if (controllerDown()) {
+                    moveMainMenuCursor(false);
+                } else if (controllerSelect()) {
+                    switch (entityMenuCursorState) {
+                        case stateInGame:
+                            initInGame();
+                            break;
+
+                        case stateDisplayHighScores:
+                            initDisplayHighScores();
+                            break;
+                    }
+                }
+            };
+
+            var initDisplayHighScores = function () {
+                clearActiveEntities();
+                state = stateDisplayHighScores;
+
+                messengerEngine.postImmediate("createEntityInstance", "Text_LargeRedFont", {
+                    position: {
+                        x: 91,
+                        y: 0
+                    },
+                    scale: {
+                        x: 2.5,
+                        y: 2.5
+                    }
+                }, function (id) {
+                    activeEntities.push(id);
+                    messengerEngine.queueForPosting("setInstanceText", id, "High Scores");
+                });
+                var getGameIdRetrieveHighScores = function(gameId){
+                    messengerEngine.unregister("getGameIdResponse", getGameIdRetrieveHighScores);
+                    servicesEngine.retrieveHighScoresForGame(gameId, 10).then(function (data) {
+                        var yStart = 100;
+                        var characterHeight = 16;
+                        var s = 1;
+                        for (var i = 0, j = data.length; i < j; ++i) {
+                            messengerEngine.postImmediate("createEntityInstance", "Text_LargeRedFont", {
+                                position: {
+                                    x: 91,
+                                    y: yStart + (i * characterHeight * s) + 10
+                                },
+                                scale: {
+                                    x: s,
+                                    y: s
+                                }
+                            }, function (id) {
+                                activeEntities.push(id);
+                                messengerEngine.queueForPosting("setInstanceText", id, data[i].playerName + ": " + data[i].score);
+                            });
+                        }
+                    });
+                };
+                messengerEngine.register("getGameIdResponse", this, getGameIdRetrieveHighScores);
+                messengerEngine.postImmediate("getGameIdRequest", true);
+            };
+
+            var updateDisplayHighScores = function () {
+                if (inputManager.isAnyTriggered()) {
+                    initMainMenu();
+                }
+            };
+
+            var initInGame = function () {
+                clearActiveEntities();
+                state = stateInGame;
+
+                messengerEngine.postImmediate("createEntityInstance", "MushroomManager", null, addToActiveEntities);
+                messengerEngine.postImmediate("createEntityInstance", "CentipedeManager", null, addToActiveEntities);
+                messengerEngine.postImmediate("createEntityInstance", "MinionManager", null, addToActiveEntities);
+                messengerEngine.postImmediate("createEntityInstance", "Score", null, addToActiveEntities);
+                messengerEngine.postImmediate("createEntityInstance", "Lives", null, function (id) {
+                    entityLivesIndex = activeEntities.push(id) - 1;
+                    var getLivesBehaviorCompInstance = function (bhv) {
+                        messengerEngine.unregister("getBhvCompInstanceForEntityInstanceResponse", getLivesBehaviorCompInstance);
+                        entityLivesBehavior = bhv.behavior;
+                    };
+                    messengerEngine.register("getBhvCompInstanceForEntityInstanceResponse", this, getLivesBehaviorCompInstance);
+                    messengerEngine.postImmediate("getBhvCompInstanceForEntityInstanceRequest", id);
+                });
+                resumeAfterHalftime = true;
+                halftimeEnd();
+            };
+
+            var updateInGame = function () {
+            };
+
+            var initPostGame = function () {
+            };
+
+            var updatePostGame = function () {
+            };
+
+            this.update = function () {
+                switch (state) {
+                    case stateMainMenu:
+                        updateMainMenu();
+                        break;
+
+                    case stateDisplayHighScores:
+                        updateDisplayHighScores();
+                        break;
+
+                    case stateInGame:
+                        updateInGame();
+                        break;
+
+                    case statePostGame:
+                        updatePostGame();
+                        break;
+                }
+            };
+
+            var halftimeStart = function (zeroLives) {
+                resumeAfterHalftime = zeroLives;
+            };
+
+            var halftimeEnd = function () {
+                if (resumeAfterHalftime) {
                     messengerEngine.queueForPosting("nextWave", true);
                     messengerEngine.queueForPosting("createEntityInstance", "Player", {
                         position: {
@@ -38,6 +284,9 @@
                             y: 490
                         }
                     });
+                } else {
+                    messengerEngine.postImmediate("removeAllEntityInstancesButOne", that.instanceId);
+                    initPostGame();
                 }
             };
 
@@ -50,20 +299,12 @@
                     b: waveColors[currentColor].b,
                 });
             };
-
-            this.update = function () {
-            };
-
-            messengerEngine.register("playerDeath", this, playerDeath);
-            messengerEngine.register("halftime", this, halftime);
+            
+            messengerEngine.register("halftimeStart", this, halftimeStart);
+            messengerEngine.register("halftimeEnd", this, halftimeEnd);
             messengerEngine.register("nextWave", this, nextWave);
 
-            messengerEngine.postImmediate("createEntityInstance", "MushroomManager");
-            messengerEngine.postImmediate("createEntityInstance", "CentipedeManager");
-            messengerEngine.postImmediate("createEntityInstance", "MinionManager");
-            messengerEngine.postImmediate("createEntityInstance", "Score");
-            messengerEngine.postImmediate("createEntityInstance", "Lives");
-            halftime(false);
+            initMainMenu();
         };
 
         globalMessengerEngine.postImmediate("setBehaviorConstructor", "BehaviorGameStateManager", BehaviorGameStateManager);

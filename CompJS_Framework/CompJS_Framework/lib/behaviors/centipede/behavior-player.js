@@ -31,6 +31,7 @@
 
             var playerDeath = function () {
                 if (!godMode) {
+                    messengerEngine.queueForPosting("playerModifyLives", -1);
                     messengerEngine.queueForPosting("playerDeath", true);
                 }
             };

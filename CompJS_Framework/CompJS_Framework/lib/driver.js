@@ -4,6 +4,16 @@
     window.addEventListener("load", function load(event) {
         window.removeEventListener("load", load, false);
         initialize();
+
+        function suppressBackspace(event) { // we don't want the delete key to act like the browser back button
+            event = event || window.event;
+            var target = event.target || event.srcElement;
+            if (event.keyCode == 8 && !/input|textarea/i.test(target.nodeName)) {
+                return false;
+            }
+        };
+        document.onkeydown = suppressBackspace;
+        document.onkeypress = suppressBackspace;
     }, false);
 
     var initialize = function () {
@@ -126,7 +136,7 @@
                         audEngine = new AudEngine();
                         bhvEngine = new BhvEngine(headElem);
                         gfxEngine = new GfxEngine(canvasElem);
-                        entManager = new EntityManager();
+                        entManager = new EntityManager(gameId);
                         physEngine = new PhysEngine();
                         inputManager = globalInputManager;
                         var initPromise = Promise.all([audEngine.init(gameId), bhvEngine.init(gameId), gfxEngine.init(gameId), entManager.init(gameId), physEngine.init(gameId), inputManager.init()]);

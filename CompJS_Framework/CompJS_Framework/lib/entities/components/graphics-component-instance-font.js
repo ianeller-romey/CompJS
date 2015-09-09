@@ -116,11 +116,11 @@ if (FONT_DICTIONARY === undefined) {
             column: 22,
             row: 0
         },
-        column: {
+        x: {
             column: 23,
             row: 0
         },
-        row: {
+        y: {
             column: 24,
             row: 0
         },
@@ -422,33 +422,40 @@ var GraphicsComponentFont = function (gfxCompId, startT, startL, characterWidth,
     var init = function () {
         var verts = VERTICES;
         var fonts = FONT_DICTIONARY;
+        var transformationScale = transformation.scale.toXYObject();
+        var transformationPosition = transformation.position.toXYObject();
         var scaledVertices = [];
         var translatedVertices = [];
 
         verts.forEach(function (vert, i) {
-            scaledVertices.push(new Vector2D(vert.x * that.characterWidth * transformation.scale.x, vert.y * that.characterHeight * transformation.scale.y));
+            scaledVertices.push(new Vector2D(vert.x * that.characterWidth * transformationScale.x, vert.y * that.characterHeight * transformationScale.y));
         });
 
         that.vertices = translatedVertices;
         
         var updateScaledVertices = function (scale) {
+            transformationScale.x = scale.x;
+            transformationScale.y = scale.y
             for (var i = 0; i < verts.length; ++i) {
-                scaledVertices[i].x = verts[i].x * that.characterWidth * scale.x;
-                scaledVertices[i].y = verts[i].y * that.characterHeight * scale.y;
+                scaledVertices[i].x = verts[i].x * that.characterWidth * transformationScale.x;
+                scaledVertices[i].y = verts[i].y * that.characterHeight * transformationScale.y;
             }
         };
 
         var updateTranslatedVertices = function (text, position) {
+            transformationPosition.x = position.x;
+            transformationPosition.y = position.y
+
             var yOff = 0;
             var xOff = 0;
             for (var i = 0; i < translatedVertices.length; ++i, ++xOff) {
                 if (text[i] === "\n") {
                     yOff += that.characterHeight;
-                    xOff = 0;
+                    xOff = -1;
                 }
                 for (var j = 0; j < verts.length; ++j) {
-                    translatedVertices[i][j].x = scaledVertices[j].x + position.x + (xOff * that.characterWidth);
-                    translatedVertices[i][j].y = scaledVertices[j].y + position.y + yOff;
+                    translatedVertices[i][j].x = scaledVertices[j].x + (transformationPosition.x) + (xOff * that.characterWidth * transformationScale.x);
+                    translatedVertices[i][j].y = scaledVertices[j].y + (transformationPosition.y) + (yOff * transformationScale.y);
                 }
             }
         };
@@ -459,34 +466,37 @@ var GraphicsComponentFont = function (gfxCompId, startT, startL, characterWidth,
 
         var updateTextureCoords = function (text) {
             for (var i = 0; i < that.textureCoords.length; ++i) {
-                    var letter = text[i];
-                    var xOff = that.startL + (fonts[letter].column * that.characterWidth);
-                    var yOff = that.startT + (fonts[letter].row * that.characterHeight);
+                var letter = text[i];
+                if (letter === "\n") {
+                    letter = " ";
+                }
+                var xOff = that.startL + (fonts[letter].column * that.characterWidth);
+                var yOff = that.startT + (fonts[letter].row * that.characterHeight);
 
-                    /*var texturePixelVerts = [lft, top,
-                                               rgt, top,
-                                               lft, bot,
-                                               lft, bot,
-                                               rgt, top,
-                                               rgt, bot];*/
+                /*var texturePixelVerts = [lft, top,
+                                           rgt, top,
+                                           lft, bot,
+                                           lft, bot,
+                                           rgt, top,
+                                           rgt, bot];*/
 
-                    that.textureCoords[i][0].x = calculateTextureCoordinates(xOff);
-                    that.textureCoords[i][0].y = calculateTextureCoordinates(yOff);
+                that.textureCoords[i][0].x = calculateTextureCoordinates(xOff + .5);
+                that.textureCoords[i][0].y = calculateTextureCoordinates(yOff + .5);
 
-                    that.textureCoords[i][1].x = calculateTextureCoordinates(xOff + that.characterWidth);
-                    that.textureCoords[i][1].y = calculateTextureCoordinates(yOff);
+                that.textureCoords[i][1].x = calculateTextureCoordinates(xOff + that.characterWidth - .5);
+                that.textureCoords[i][1].y = calculateTextureCoordinates(yOff + .5);
 
-                    that.textureCoords[i][2].x = calculateTextureCoordinates(xOff);
-                    that.textureCoords[i][2].y = calculateTextureCoordinates(yOff + that.characterHeight - .5);
+                that.textureCoords[i][2].x = calculateTextureCoordinates(xOff + .5);
+                that.textureCoords[i][2].y = calculateTextureCoordinates(yOff + that.characterHeight - .5);
 
-                    that.textureCoords[i][3].x = calculateTextureCoordinates(xOff);
-                    that.textureCoords[i][3].y = calculateTextureCoordinates(yOff + that.characterHeight - .5);
+                that.textureCoords[i][3].x = calculateTextureCoordinates(xOff + .5);
+                that.textureCoords[i][3].y = calculateTextureCoordinates(yOff + that.characterHeight - .5);
 
-                    that.textureCoords[i][4].x = calculateTextureCoordinates(xOff + that.characterWidth);
-                    that.textureCoords[i][4].y = calculateTextureCoordinates(yOff);
+                that.textureCoords[i][4].x = calculateTextureCoordinates(xOff + that.characterWidth - .5);
+                that.textureCoords[i][4].y = calculateTextureCoordinates(yOff + .5);
 
-                    that.textureCoords[i][5].x = calculateTextureCoordinates(xOff + that.characterWidth);
-                    that.textureCoords[i][5].y = calculateTextureCoordinates(yOff + that.characterHeight - .5);
+                that.textureCoords[i][5].x = calculateTextureCoordinates(xOff + that.characterWidth - .5);
+                that.textureCoords[i][5].y = calculateTextureCoordinates(yOff + that.characterHeight - .5);
 
             }
         };
@@ -511,6 +521,7 @@ var GraphicsComponentFont = function (gfxCompId, startT, startL, characterWidth,
 
         transformation.scale.notifyMe(function (newScale) {
             updateScaledVertices(newScale);
+            updateTranslatedVertices(that.text, transformationPosition);
         });
 
         transformation.position.notifyMe(function (newPosition) {

@@ -30,5 +30,8 @@ namespace CompJS_Repo.Interface
         BhvCompDefinition RetrieveBhvCompForEntity(int entityId);
         GfxCompDefinition_2DAnimation RetrieveGfxCompForEntity(int entityId);
         PhysCompDefinition RetrievePhysCompForEntity(int entityId);
+
+        IEnumerable<HighScore> RetrieveTopHighScoresForGame(int count, int gameId);
+        IEnumerable<HighScore> CreateHighScoreForGame(string playerName, long score, int count, int gameId);
     }
 }

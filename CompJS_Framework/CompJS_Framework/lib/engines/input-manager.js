@@ -16,13 +16,13 @@ var InputManager = function () {
         escape: 27
     };
 
-    var pressedArrayTemp = [];
-    var triggeredArrayTemp = [];
+    var pressedArrayTemp = {};
+    var triggeredArrayTemp = {};
 
-    var pressedArray = [];
-    var triggeredArray = [];
+    var pressedArray = {};
+    var triggeredArray = {};
 
-    var triggeredArrayAccepting = [];
+    var triggeredArrayAccepting = {};
 
     var updateFunction;
 
@@ -46,6 +46,28 @@ var InputManager = function () {
 
     this.isTriggered = function (keyCode) {
         return triggeredArray[keyCode] !== undefined && triggeredArray[keyCode];
+    };
+
+    this.isAnyPressed = function () {
+        for (var keyCode in pressedArray) {
+            if (pressedArray.hasOwnProperty(keyCode) && pressedArray[keyCode] === true) {
+                return true;
+            }
+        }
+        return false;
+    };
+
+    this.isAnyTriggered = function () {
+        for (var keyCode in triggeredArray) {
+            if (triggeredArray.hasOwnProperty(keyCode) && triggeredArray[keyCode] === true) {
+                return true;
+            }
+        }
+        return false;
+    };
+
+    this.isAnyPressedOrTriggered = function () {
+        return this.isAnyPressed() || this.isAnyTriggered();
     };
 
     this.init = function () {

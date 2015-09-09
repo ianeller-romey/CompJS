@@ -4,17 +4,6 @@
     "use strict";
 
     var init = function () {
-        function suppressBackspace(event) { // we don't want the delete key to act like the browser back button
-            event = event || window.event;
-            var target = event.target || event.srcElement;
-            if (event.keyCode == 8 && !/input|textarea/i.test(target.nodeName)) {
-                updateConsoleInput(event);
-                return false;
-            }
-        };
-        document.onkeydown = suppressBackspace;
-        document.onkeypress = suppressBackspace;
-
         var acceptInput = false;
 
         var cheatsElemHeight = "150px";

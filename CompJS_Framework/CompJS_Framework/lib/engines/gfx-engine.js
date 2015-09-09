@@ -525,31 +525,29 @@ var GfxEngine = function (canvasElem) {
             gfxCompInstance = getGfxInstanceFont(instanceId);
         }
         if (gfxCompInstance != null) {
-            messengerEngine.queueForPosting("getGfxCompInstanceForEntityInstanceResponse", gfxCompInstance);
+            messengerEngine.postImmediate("getGfxCompInstanceForEntityInstanceResponse", gfxCompInstance);
         }
     };
 
     var removeGfxCompInstanceFromMessage = function (instanceId) {
-        for (var i = renderPasses[0], j = renderPasses[renderPasses.length - 1]; i < j; ++i) {
-            if (gfx2DAnimationInstances[i].length === 0 || instanceId > gfx2DAnimationInstances[i][gfx2DAnimationInstances[i].length - 1].instanceId) {
-                continue;
-            }
-            for (var k = 0; k < gfx2DAnimationInstances[i].length; ++k) {
-                if (gfx2DAnimationInstances[i][k].instanceId === instanceId) {
-                    gfx2DAnimationInstances[i][k].destroy();
-                    gfx2DAnimationInstances[i].splice(k, 1);
-                    return;
+        for (var i = 0, j = renderPasses.length; i < j; ++i) {
+            if (gfx2DAnimationInstances[i].length > 0 && instanceId <= gfx2DAnimationInstances[i][gfx2DAnimationInstances[i].length - 1].instanceId) {
+                for (var k = 0; k < gfx2DAnimationInstances[i].length; ++k) {
+                    if (gfx2DAnimationInstances[i][k].instanceId === instanceId) {
+                        gfx2DAnimationInstances[i][k].destroy();
+                        gfx2DAnimationInstances[i].splice(k, 1);
+                        return;
+                    }
                 }
             }
 
-            if (gfxFontInstances[i].length === 0 || instanceId > gfxFontInstances[i][gfxFontInstances[i].length - 1].instanceId) {
-                continue;
-            }
-            for (var k = 0; k < gfxFontInstances[i].length; ++k) {
-                if (gfxFontInstances[i][k].instanceId === instanceId) {
-                    gfxFontInstances[i][k].destroy();
-                    gfxFontInstances[i].splice(k, 1);
-                    return;
+            if (gfxFontInstances[i].length > 0 && instanceId <= gfxFontInstances[i][gfxFontInstances[i].length - 1].instanceId) {
+                for (var k = 0; k < gfxFontInstances[i].length; ++k) {
+                    if (gfxFontInstances[i][k].instanceId === instanceId) {
+                        gfxFontInstances[i][k].destroy();
+                        gfxFontInstances[i].splice(k, 1);
+                        return;
+                    }
                 }
             }
         }

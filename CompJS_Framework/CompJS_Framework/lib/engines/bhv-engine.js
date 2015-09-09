@@ -68,7 +68,7 @@ var BhvEngine = function (headElem) {
             return x.instanceId == instanceId;
         });
         if (bhvCompInstance != null) {
-            messengerEngine.queueForPosting("getBhvCompInstanceForEntityInstanceResponse", bhvCompInstance);
+            messengerEngine.postImmediate("getBhvCompInstanceForEntityInstanceResponse", bhvCompInstance);
         }
     };
 
@@ -76,7 +76,7 @@ var BhvEngine = function (headElem) {
         for (var i = 0; i < bhvCompInstances.length; ++i) {
             var instance = bhvCompInstances[i];
             if (instance.instanceId == instanceId) {
-                instanceId[i].destroy();
+                bhvCompInstances[i].destroy();
                 bhvCompInstances.splice(i, 1);
                 break;
             }

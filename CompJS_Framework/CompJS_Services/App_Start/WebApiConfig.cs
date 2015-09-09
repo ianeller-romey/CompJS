@@ -69,6 +69,18 @@ namespace CompJS_Services
                 new { controller = "Levels", action = "Get" },
                 new { httpMethod = new HttpMethodConstraint("GET") }
             );
+            config.Routes.MapHttpRoute(
+                "game-high-scores-get",
+                "game/{gameId}/highscores/{count}",
+                new { controller = "HighScores", action = "Get" },
+                new { httpMethod = new HttpMethodConstraint("GET") }
+            );
+            config.Routes.MapHttpRoute(
+                "game-high-scores-post",
+                "game/{gameId}/highscores/{playerName}/{score}/{count}",
+                new { controller = "HighScores", action = "Post" },
+                new { httpMethod = new HttpMethodConstraint("POST") }
+            );
 
             config.EnableSystemDiagnosticsTracing();
         }

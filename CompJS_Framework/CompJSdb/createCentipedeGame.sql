@@ -943,6 +943,39 @@ BEGIN
 	
 END
 
+IF NOT EXISTS (SELECT [Id] FROM [game].[EntityTypes] WHERE [GameId] = @gameId AND [Name] = 'MenuCursor')
+BEGIN
+	EXEC @id = [dev].[dev_CreateEntityType]
+		@name = 'MenuCursor',
+		@gameId = @gameId
+		
+	IF NOT EXISTS (SELECT [Id] FROM [game].[GfxCompDefinitions] WHERE [EntityTypeId] = @id)
+	BEGIN
+		EXEC @compDefinitionId = [dev].[dev_CreateGfxCompDefinition]
+			@entityTypeId = @id,
+			@renderPass = 1
+	
+		EXEC @altId = [dev].[dev_CreateAnimationStateDefinition]
+			@gfxCompDefinitionId = @compDefinitionId,
+			@state = 0
+			
+		EXEC @altAltId = [dev].[dev_CreateAnimationFrameDefinitionFromPixels]
+			@animationStateDefinitionId = @altId,
+			@frame = 0,
+			@duration = null,
+			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
+			@width = 16.0,
+			@height = 16.0,
+			@pixCoordTL = 0.0,
+			@pixCoordTR = 81.0,
+			@pixCoordBR = 16.0,
+			@pixCoordBL = 65.0,
+			@textureWidth = 256.0
+			
+	END
+	
+END
+
 IF NOT EXISTS (SELECT [Id] FROM [game].[EntityTypes] WHERE [GameId] = @gameId AND [Name] = 'Text_LargeRedFont')
 BEGIN
 	EXEC @id = [dev].[dev_CreateEntityType]
@@ -961,7 +994,7 @@ BEGIN
 			@textureWidth = 512.0,
 			@startT = 0.0,
 			@startL = 0.0,
-			@characterWidth = 11.0,
+			@characterWidth = 12.0,
 			@characterHeight = 16.0
 			
 	END
@@ -986,8 +1019,33 @@ BEGIN
 			@textureWidth = 512.0,
 			@startT = 64.0,
 			@startL = 0.0,
-			@characterWidth = 5.0,
+			@characterWidth = 6.0,
 			@characterHeight = 8.0
+			
+	END
+	
+END
+
+IF NOT EXISTS (SELECT [Id] FROM [game].[EntityTypes] WHERE [GameId] = @gameId AND [Name] = 'Text_LargeGreenFont')
+BEGIN
+	EXEC @id = [dev].[dev_CreateEntityType]
+		@name = 'Text_LargeGreenFont',
+		@gameId = @gameId
+		
+	IF NOT EXISTS (SELECT [Id] FROM [game].[GfxCompDefinitions] WHERE [EntityTypeId] = @id)
+	BEGIN
+		EXEC @compDefinitionId = [dev].[dev_CreateGfxCompDefinition]
+			@entityTypeId = @id,
+			@renderPass = 1
+			
+		EXEC @altAltId = [dev].[dev_CreateFontTextureDefinition]
+			@gfxCompDefinitionId = @compDefinitionId,
+			@texture = 'http://arcade/cabinet/compjs/images/centipede/fonts.png',
+			@textureWidth = 512.0,
+			@startT = 100.0,
+			@startL = 1.0,
+			@characterWidth = 16.0,
+			@characterHeight = 29.0
 			
 	END
 	
@@ -1027,6 +1085,86 @@ BEGIN
 		@shaderFile = 'http://arcade/cabinet/compjs/lib/shaders/centipede/shader-point-light.js',
 		@gameId = @gameId
 	
+END
+
+IF NOT EXISTS (SELECT [Id] FROM [game].[HighScores] WHERE [GameId] = @gameId AND [PlayerName] = 'Dona Bailey')
+BEGIN
+	EXEC [game].[CreateHighScoreForGame]
+		@playerName = 'Dona Bailey',
+		@score = 100000,
+		@gameId = @gameId
+END
+
+IF NOT EXISTS (SELECT [Id] FROM [game].[HighScores] WHERE [GameId] = @gameId AND [PlayerName] = 'Microsoft Bob')
+BEGIN
+	EXEC [game].[CreateHighScoreForGame]
+		@playerName = 'Microsoft Bob',
+		@score = 99999,
+		@gameId = @gameId
+END
+
+IF NOT EXISTS (SELECT [Id] FROM [game].[HighScores] WHERE [GameId] = @gameId AND [PlayerName] = 'Bill Gates')
+BEGIN
+	EXEC [game].[CreateHighScoreForGame]
+		@playerName = 'Bill Gates',
+		@score = 80000,
+		@gameId = @gameId
+END
+
+IF NOT EXISTS (SELECT [Id] FROM [game].[HighScores] WHERE [GameId] = @gameId AND [PlayerName] = 'Paul Allen')
+BEGIN
+	EXEC [game].[CreateHighScoreForGame]
+		@playerName = 'Paul Allen',
+		@score = 75000,
+		@gameId = @gameId
+END
+
+IF NOT EXISTS (SELECT [Id] FROM [game].[HighScores] WHERE [GameId] = @gameId AND [PlayerName] = 'Peter Klaebe')
+BEGIN
+	EXEC [game].[CreateHighScoreForGame]
+		@playerName = 'Peter Klaebe',
+		@score = 50000,
+		@gameId = @gameId
+END
+
+IF NOT EXISTS (SELECT [Id] FROM [game].[HighScores] WHERE [GameId] = @gameId AND [PlayerName] = 'Master Chief')
+BEGIN
+	EXEC [game].[CreateHighScoreForGame]
+		@playerName = 'Master Chief',
+		@score = 20000,
+		@gameId = @gameId
+END
+
+IF NOT EXISTS (SELECT [Id] FROM [game].[HighScores] WHERE [GameId] = @gameId AND [PlayerName] = 'Skele-Tom')
+BEGIN
+	EXEC [game].[CreateHighScoreForGame]
+		@playerName = 'Skele-Tom',
+		@score = 10000,
+		@gameId = @gameId
+END
+
+IF NOT EXISTS (SELECT [Id] FROM [game].[HighScores] WHERE [GameId] = @gameId AND [PlayerName] = 'v-iaelle')
+BEGIN
+	EXEC [game].[CreateHighScoreForGame]
+		@playerName = 'v-iaelle',
+		@score = 5000,
+		@gameId = @gameId
+END
+
+IF NOT EXISTS (SELECT [Id] FROM [game].[HighScores] WHERE [GameId] = @gameId AND [PlayerName] = 'Clippy')
+BEGIN
+	EXEC [game].[CreateHighScoreForGame]
+		@playerName = 'Clippy',
+		@score = 1000,
+		@gameId = @gameId
+END
+
+IF NOT EXISTS (SELECT [Id] FROM [game].[HighScores] WHERE [GameId] = @gameId AND [PlayerName] = 'Marcus Fenix')
+BEGIN
+	EXEC [game].[CreateHighScoreForGame]
+		@playerName = 'Marcus Fenix',
+		@score = 1,
+		@gameId = @gameId
 END
 
 GO

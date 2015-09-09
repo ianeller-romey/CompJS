@@ -260,5 +260,30 @@ namespace CompJS_Repo
             }
         }
 
+        public IEnumerable<HighScore> RetrieveTopHighScoresForGame(int count, int gameId)
+        {
+            IEnumerable<HighScore> highScores;
+            using (var db = new CompJSdbEntities())
+            {
+                var hResults = db.RetrieveTopHighScoresForGame(count, gameId);
+                highScores = hResults.Select(x => TypeAdapter.Adapt<HighScore>(x)).ToList();
+            }
+
+            return highScores;
+        }
+
+        public IEnumerable<HighScore> CreateHighScoreForGame(string playerName, long score, int count, int gameId)
+        {
+            IEnumerable<HighScore> highScores;
+            using (var db = new CompJSdbEntities())
+            {
+                db.CreateHighScoreForGame(playerName, score, gameId);
+                var hResults = db.RetrieveTopHighScoresForGame(count, gameId);
+                highScores = hResults.Select(x => TypeAdapter.Adapt<HighScore>(x)).ToList();
+            }
+
+            return highScores;
+        }
+
     }
 }

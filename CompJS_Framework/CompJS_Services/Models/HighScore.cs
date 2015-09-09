@@ -26,5 +26,11 @@ namespace CompJS_Services.Models
             get;
             set;
         }
+
+        public int GameId
+        {
+            get;
+            set;
+        }
     }
 }

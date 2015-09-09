@@ -5,6 +5,7 @@
 
             var messengerEngine = globalMessengerEngine;
 
+            var resumeAfterHalftime = true;
             var inspectingDamagedMushrooms = false;
             var damagedMushrooms = [];
             var updateInterval = 300;
@@ -23,7 +24,7 @@
                             });
                         }
                     } else {
-                        messengerEngine.queueForPosting("halftime", false);
+                        messengerEngine.queueForPosting("halftimeEnd", true);
                     }
                 }
             };
@@ -73,7 +74,7 @@
                 damagedMushrooms.push(instanceId);
             };
 
-            messengerEngine.register("halftime", this, halftime);
+            messengerEngine.register("halftimeStart", this, halftime);
             messengerEngine.register("getAllDamagedMushroomsResponse", this, getAllDamagedMushrooms);
 
             createMushrooms();

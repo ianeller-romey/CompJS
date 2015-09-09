@@ -1,17 +1,12 @@
 ﻿
 var ServicesEngine = function () {
 
-    var sendHttpGetJSONRequest = function (url, parameters) {
-        var xmlHttp = new XMLHttpRequest();
-        xmlHttp.url = url;
-        xmlHttp.open("GET", url, true);
-        xmlHttp.setRequestHeader("Content-type", "text/plain");
-
+    var httpPromise = function (xmlHttp, parameters, dataFormat) {
         return new Promise(function (resolve, reject) {
             xmlHttp.onreadystatechange = function () {
                 if (xmlHttp.readyState == XMLHttpRequest.DONE) {
                     if (xmlHttp.status == 200) {
-                        var data = JSON.parse(xmlHttp.responseText);
+                        var data = dataFormat(xmlHttp);
                         resolve(data);
                     } else {
                         reject(xmlHttp.status);
@@ -27,29 +22,36 @@ var ServicesEngine = function () {
         });
     };
 
+    var sendHttpGetJSONRequest = function (url, parameters) {
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.url = url;
+        xmlHttp.open("GET", url, true);
+        xmlHttp.setRequestHeader("Content-type", "text/plain");
+
+        return httpPromise(xmlHttp, parameters, function (x) {
+            return JSON.parse(x.responseText);
+        });
+    };
+
     var sendHttpGetAudioRequest = function (url, parameters) {
         var xmlHttp = new XMLHttpRequest();
         xmlHttp.url = url;
         xmlHttp.open("GET", url, true);
         xmlHttp.responseType = "arraybuffer";
 
-        return new Promise(function (resolve, reject) {
-            xmlHttp.onreadystatechange = function () {
-                if (xmlHttp.readyState == XMLHttpRequest.DONE) {
-                    if (xmlHttp.status == 200) {
-                        var data = xmlHttp.response;
-                        resolve(data);
-                    } else {
-                        reject(xmlHttp.status);
-                    }
-                }
-            };
+        return httpPromise(xmlHttp, parameters, function (x) {
+            return x.response;
+        });
+    };
 
-            if (parameters !== undefined) {
-                xmlHttp.send(parameters);
-            } else {
-                xmlHttp.send();
-            }
+    var sendHttpPostJSONRequest = function (url, parameters) {
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.url = url;
+        xmlHttp.open("POST", url, true);
+        xmlHttp.setRequestHeader("Content-type", "text/plain");
+
+        return httpPromise(xmlHttp, parameters, function (x) {
+            return JSON.parse(x.responseText);
         });
     };
 
@@ -95,6 +97,14 @@ var ServicesEngine = function () {
 
     this.retrieveAllPhysCompDefinitionsForGame = function (gameId) {
         return sendHttpGetJSONRequest("http://arcade/cabinet/compjs/compjsservices/game/" + gameId + "/phys/");
+    };
+
+    this.retrieveHighScoresForGame = function (gameId, count) {
+        return sendHttpGetJSONRequest("http://arcade/cabinet/compjs/compjsservices/game/" + gameId + "/highscores/" + count);
+    };
+
+    this.createHighScoreForGame = function (gameId, playerName, score, count) {
+        return sendHttpPostJSONRequest("http://arcade/cabinet/compjs/compjsservices/game/" + gameId + "/highscores/" + playerName + "/" + score + "/" + count);
     };
 
     this.loadLevel = function (gameId, levelId) {

@@ -29,8 +29,6 @@
                 if (lives > 0) {
                     messengerEngine.queueForPosting("removeLife", lives);
                     --lives;
-                } else {
-                    messengerEngine.queueForPosting("gameOver", true);
                 }
             };
             
@@ -46,7 +44,12 @@
                 }
             };
 
+            var checkForGameOver = function () {
+                messengerEngine.queueForPosting("halftimeStart", lives !== 0);
+            };
+
             messengerEngine.register("playerModifyLives", this, playerModifyLives);
+            messengerEngine.register("playerDeath", this, checkForGameOver);
 
             messengerEngine.queueForPosting("playerModifyLives", 2);
         };
