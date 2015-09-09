@@ -536,3 +536,5 @@ var GraphicsComponentInstanceFont = function (entity, gfxCompId, fontTextureDefi
     this.transformation = entity.transformation;
     this.graphics = new GraphicsComponentFont(gfxCompId, fontTextureDefinition.startT, fontTextureDefinition.startL, fontTextureDefinition.characterWidth, fontTextureDefinition.characterHeight, fontTextureDefinition.textureWidth, text, this.transformation);
 };
+
+GraphicsComponentInstanceFont.prototype = new ComponentInstance();

@@ -15,3 +15,5 @@ var PhysicsComponentInstance = function (entity, physCompDefinition) {
     this.transformation = entity.transformation;
     this.physics = new PhysicsComponent(physCompDefinition);
 };
+
+PhysicsComponentInstance.prototype = new ComponentInstance();

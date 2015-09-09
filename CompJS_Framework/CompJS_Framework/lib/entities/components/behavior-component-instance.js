@@ -7,3 +7,14 @@ var BehaviorComponentInstance = function (entity, behavior) {
         this.behavior.data = {};
     }
 };
+
+BehaviorComponentInstance.prototype = new ComponentInstance();
+
+BehaviorComponentInstance.prototype.destroy = function () {
+    if (globalMessengerEngine != null) {
+        globalMessengerEngine.unregisterAll(this);
+        if (this.behavior != null) {
+            globalMessengerEngine.unregisterAll(this.behavior);
+        }
+    }
+};

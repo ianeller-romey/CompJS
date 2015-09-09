@@ -17,8 +17,6 @@
                             y: this.transformation.position.y
                         }
                     });
-
-                    messengerEngine.unregisterAll(this);
                 }
             };
 

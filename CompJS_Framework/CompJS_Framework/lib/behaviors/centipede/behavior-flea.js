@@ -28,8 +28,6 @@
                     if (this.transformation.position.y >= 530) {
                         // fell off the map
                         messengerEngine.queueForPosting("removeEntityInstance", this.instanceId);
-
-                        messengerEngine.unregisterAll(this);
                     } else {
                         var distance = (this.transformation.position.y - rowStartPoint) % 16;
                         if (distance <= .1) {
@@ -61,8 +59,6 @@
                     this.transformation.setVelocity(0, this.transformation.velocity.y * 1.5);
                 } else {
                     messengerEngine.queueForPosting("removeEntityInstance", this.instanceId);
-
-                    messengerEngine.unregisterAll(this);
                 }
             };
 

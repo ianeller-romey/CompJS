@@ -227,7 +227,6 @@
                 });
 
                 messengerEngine.postImmediate("centipedeSegmentDestroyed", segmentId, this.instanceId, turnaroundStarts, turnaroundEnds);
-                messengerEngine.unregisterAll(this);
             };
 
             this.isMovingLeft = function (xVelocity) {

@@ -32,6 +32,17 @@ var BhvEngine = function (headElem) {
         }
     };
 
+    this.shutdown = function (gameId) {
+        return new Promise(function (resolve, reject) {
+            bhvCompDefinitions = [];
+            while (bhvCompInstances.length > 0) {
+                bhvCompInstances[0].destroy();
+                bhvCompInstances.shift();
+            }
+            resolve();
+        });
+    };
+
     var createBhvCompInstance = function (entity, bhvCompId) {
         var behavior = new bhvConstructors[bhvCompDefinitions[bhvCompId].behaviorConstructor](entity);
         var instance = new BehaviorComponentInstance(entity, behavior);
@@ -65,6 +76,7 @@ var BhvEngine = function (headElem) {
         for (var i = 0; i < bhvCompInstances.length; ++i) {
             var instance = bhvCompInstances[i];
             if (instance.instanceId == instanceId) {
+                instanceId[i].destroy();
                 bhvCompInstances.splice(i, 1);
                 break;
             }

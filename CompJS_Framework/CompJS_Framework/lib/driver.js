@@ -149,10 +149,11 @@
                                     physEngine.update(delta);
 
                                     if (inputManager.isTriggered(inputManager.keys.escape)) {
-                                        // TODO: Destroy webGL, AudioContext, etc.
-                                        // Do we need to?
-                                        Promise.all([BhvEngine.unloadStateScripts(), GfxEngine.unloadShaderScripts()]).then(function () {
-                                            setTimeout(displayMenu, 1);
+                                        var shutdownPromise = Promise.all([audEngine.shutdown(gameId), bhvEngine.shutdown(gameId), gfxEngine.shutdown(gameId), entManager.shutdown(gameId), physEngine.shutdown(gameId), inputManager.shutdown()]);
+                                        shutdownPromise.then(function () {
+                                            Promise.all([BhvEngine.unloadStateScripts(), GfxEngine.unloadShaderScripts()]).then(function () {
+                                                setTimeout(displayMenu, 1);
+                                            });
                                         });
                                     } else {
                                         setTimeout(gameLoop, 1);

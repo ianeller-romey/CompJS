@@ -105,3 +105,5 @@ var GraphicsComponentInstance2DAnimation = function (entity, gfxCompId, width, h
     this.transformation = entity.transformation;
     this.graphics = new GraphicsComponent2DAnimation(gfxCompId, width, height, this.transformation);
 };
+
+GraphicsComponentInstance2DAnimation.prototype = new ComponentInstance();

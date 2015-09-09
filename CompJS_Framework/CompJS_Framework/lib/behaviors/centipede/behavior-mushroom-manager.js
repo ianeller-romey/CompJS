@@ -63,7 +63,7 @@
             var halftime = function (start) {
                 if(start){
                     inspectingDamagedMushrooms = true;
-                    messengerEngine.queueForPosting("getAllDamagedMushroomsRequest", true);
+                    messengerEngine.postImmediate("getAllDamagedMushroomsRequest", true);
                 } else {
                     inspectingDamagedMushrooms = false;
                 }

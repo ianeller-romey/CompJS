@@ -35,6 +35,15 @@ var EntityManager = function () {
         });
     };
 
+    this.shutdown = function (gameId) {
+        return new Promise(function (resolve, reject) {
+            entityTypeDefinitions = [];
+            entityTypeNamedIds = [];
+            entityInstances = [];
+            resolve();
+        });
+    };
+
     var createEntityInstance = function (xEntityType, data, callback) {
         var entity = new Entity(entityIdGenerator++, xEntityType.entityTypeId, xEntityType.entityTypeName, {
             x: xEntityType.x,
@@ -83,7 +92,7 @@ var EntityManager = function () {
     var removeEntityInstanceFromMessage = function (instanceId) {
         for (var i = 0; i < entityInstances.length; ++i) {
             var instance = entityInstances[i];
-            if (instance.instanceId == instanceId) {
+            if (instance.instanceId === instanceId) {
                 entityInstances.splice(i, 1);
                 break;
             }

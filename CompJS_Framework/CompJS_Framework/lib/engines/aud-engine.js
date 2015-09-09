@@ -83,6 +83,18 @@ var AudEngine = function () {
     this.update = function (delta) {
     };
 
+    this.shutdown = function (gameId) {
+        return new Promise(function (resolve, reject) {
+            audioDefinitions = {};
+            while (audioSources.length > 0) {
+                audioSources[0].stop(0);
+                audioSources.shift();
+            }
+            audioContext.close();
+            resolve();
+        });
+    };
+
     var getFirstAvailableSource = function () {
         return audioSources.firstOrNull(function (x) {
             return x.available;

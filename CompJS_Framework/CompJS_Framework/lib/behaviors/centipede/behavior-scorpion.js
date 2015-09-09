@@ -31,8 +31,6 @@
                 } else {
                     if (this.xDirection()) {
                         messengerEngine.queueForPosting("removeEntityInstance", this.instanceId);
-
-                        messengerEngine.unregisterAll(this);
                     }
 
                     if (this.physComp != null) {

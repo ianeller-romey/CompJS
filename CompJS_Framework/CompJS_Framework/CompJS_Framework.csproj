@@ -82,6 +82,7 @@
     <Content Include="lib\engines\phys-engine.js" />
     <Content Include="lib\engines\services-engine.js" />
     <Content Include="lib\entities\components\behavior-component-instance.js" />
+    <Content Include="lib\entities\components\component-instance.js" />
     <Content Include="lib\entities\components\graphics-component-instance-font.js" />
     <Content Include="lib\entities\components\graphics-component-instance-2d-animation.js" />
     <Content Include="lib\entities\components\physics-component-instance.js" />

@@ -16,8 +16,6 @@
             this.removeLife = function (lifeToRemove) {
                 if (life === lifeToRemove) {
                     messengerEngine.queueForPosting("removeEntityInstance", this.instanceId);
-
-                    messengerEngine.unregisterAll(this);
                 }
             };
 

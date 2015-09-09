@@ -24,17 +24,7 @@ var GfxEngine = function (canvasElem) {
 
     var width = 512;
     var height = width;
-    var vertices = [
-        0.0, 0.0,
-        1.0, 0.0,
-        0.0, 1.0,
-        0.0, 1.0,
-        1.0, 0.0,
-        1.0, 1.0
-    ];
     var activeTexture = "";
-
-    var texture
     
     var initWebGL = function (canvas) {  
         try {
@@ -224,15 +214,6 @@ var GfxEngine = function (canvasElem) {
         return Promise.all([webGLPromise, gfxCompsPromise]);
     };
 
-    var fakeVectorMatrixMath2d = function (matrix2d, mathFunctionForX, mathFunctionForY) {
-        var outMatrix2d = [];
-        for (var i = 0; i < matrix2d.length; ++i) {
-            var mathFunction = (i % 2) ? mathFunctionForY : mathFunctionForX;
-            outMatrix2d.push(mathFunction(matrix2d[i]));
-        }
-        return outMatrix2d;
-    };
-
     var getAnimationStateDefinition = function (gfxCompId, animationState) {
         var asdf = gfx2DAnimationDefinitions[gfxCompId];
         if (asdf === undefined) {
@@ -406,6 +387,40 @@ var GfxEngine = function (canvasElem) {
         });
     };
 
+    this.shutdown = function (gameId) {
+        return new Promise(function (resolve, reject) {
+            for (var texture in textureDefinitions) {
+                if (textureDefinitions.hasOwnProperty(texture)) {
+                    webGL.deleteTexture(texture.webGLTexture);
+                }
+            }
+            textureDefinitions = {};
+            gfx2DAnimationDefinitions = [];
+            var gfxFontDefinitions = [];
+            while (renderPasses.length > 0) {
+                var renderPass = renderPasses[0];
+                for (var i = 0; i < gfx2DAnimationInstances.length; ++i) {
+                    gfx2DAnimationInstances[renderPass][i].destroy();
+                }
+                for (var i = 0; i < gfxFontInstances.length; ++i) {
+                    gfxFontInstances[renderPass][i].destroy();
+                }
+                renderPasses.shift();
+            }
+            gfx2DAnimationInstances = [];
+            gfxFontInstances = [];
+            gfxCompTypeDefinitions = {};
+
+            webGL = null;
+            webGLShaderPrograms = [];
+            webGLVertexShaderExtraSteps = [];
+            webGLFragmentShaderExtraSteps = [];
+            webGLSquareVerticesBuffer = null;
+            webGLTexCoordBuffer = null;
+            resolve();
+        });
+    };
+
     var createGfx2DAnimationInstance = function (entity, gfxCompId) {
         var afd = getAnimationFrameDefinition(gfxCompId, 0, 0);
         var instance = new GraphicsComponentInstance2DAnimation(entity, gfxCompId, afd.width, afd.height);
@@ -521,6 +536,7 @@ var GfxEngine = function (canvasElem) {
             }
             for (var k = 0; k < gfx2DAnimationInstances[i].length; ++k) {
                 if (gfx2DAnimationInstances[i][k].instanceId === instanceId) {
+                    gfx2DAnimationInstances[i][k].destroy();
                     gfx2DAnimationInstances[i].splice(k, 1);
                     return;
                 }
@@ -531,6 +547,7 @@ var GfxEngine = function (canvasElem) {
             }
             for (var k = 0; k < gfxFontInstances[i].length; ++k) {
                 if (gfxFontInstances[i][k].instanceId === instanceId) {
+                    gfxFontInstances[i][k].destroy();
                     gfxFontInstances[i].splice(k, 1);
                     return;
                 }

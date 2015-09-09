@@ -120,6 +120,18 @@ var PhysEngine = function () {
         }
     };
 
+    this.shutdown = function (gameId) {
+        return new Promise(function (resolve, reject) {
+            var physTypeDefinitions = [];
+            var collisionTypeDefinitions = [];
+            var physCompDefinitions = [];
+            while (physCompInstances.length > 0) {
+                physCompInstances[0].destroy();
+                physCompInstances.shift();
+            }
+        });
+    };
+
     var createPhysCompInstance = function (entity, physCompId) {
         var physCompDefinition = physCompDefinitions[physCompId];
         var instance = new PhysicsComponentInstance(entity, physCompDefinition);
@@ -157,6 +169,7 @@ var PhysEngine = function () {
         for (var i = 0; i < physCompInstances.length; ++i) {
             var instance = physCompInstances[i];
             if (instance.instanceId == instanceId) {
+                physCompInstances[i].destroy();
                 physCompInstances.splice(i, 1);
                 break;
             }

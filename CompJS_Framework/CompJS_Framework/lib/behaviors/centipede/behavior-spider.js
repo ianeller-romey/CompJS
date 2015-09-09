@@ -87,8 +87,6 @@
                     }
                 }
                 messengerEngine.queueForPosting("removeEntityInstance", this.instanceId);
-
-                messengerEngine.unregisterAll(this);
             };
 
             this.capturePhysicsInstance = function (physComp, instanceId) {
@@ -101,11 +99,11 @@
             var getPlayerInstanceId = function (instanceId) {
                 playerInstanceId = instanceId;
                 messengerEngine.unregister("getPlayerInstanceIdResponse", getPlayerInstanceId);
-                messengerEngine.queueForPosting("getTransformationForEntityInstanceRequest", playerInstanceId);
+                messengerEngine.postImmediate("getTransformationForEntityInstanceRequest", playerInstanceId);
             };
 
             var getPlayerTransformation = function (instanceId, transformation) {
-                if (playerInstanceId == instanceId) {
+                if (playerInstanceId === instanceId) {
                     playerPosition = transformation.position;
                     messengerEngine.unregister("getTransformationForEntityInstanceResponse", getPlayerTransformation);
                 }

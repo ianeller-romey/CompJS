@@ -26,6 +26,20 @@ var InputManager = function () {
 
     var updateFunction;
 
+    var keydownEvent = function (event) {
+        pressedArrayTemp[event.keyCode] = true;
+        if (triggeredArrayAccepting[event.keyCode] === undefined || triggeredArrayAccepting[event.keyCode] === true) {
+            triggeredArrayTemp[event.keyCode] = true;
+            triggeredArrayAccepting[event.keyCode] = false;
+        }
+    };
+   
+    var keyupEvent = function (event) {
+        pressedArrayTemp[event.keyCode] = false;
+        triggeredArrayTemp[event.keyCode] = false;
+        triggeredArrayAccepting[event.keyCode] = true;
+    };
+
     this.isPressed = function (keyCode) {
         return pressedArray[keyCode] !== undefined && pressedArray[keyCode];
     };
@@ -36,21 +50,19 @@ var InputManager = function () {
 
     this.init = function () {
         return new Promise(function (resolve, reject) {
-            window.addEventListener("keydown", function (event) {
-                pressedArrayTemp[event.keyCode] = true;
-                if (triggeredArrayAccepting[event.keyCode] === undefined || triggeredArrayAccepting[event.keyCode] === true) {
-                    triggeredArrayTemp[event.keyCode] = true;
-                    triggeredArrayAccepting[event.keyCode] = false;
-                }
-            });
-            window.addEventListener("keyup", function (event) {
-                pressedArrayTemp[event.keyCode] = false;
-                triggeredArrayTemp[event.keyCode] = false;
-                triggeredArrayAccepting[event.keyCode] = true;
-            });
+            window.addEventListener("keydown", keydownEvent);
+            window.addEventListener("keyup", keyupEvent);
             resolve();
         });
     };
+
+    this.shutdown = function () {
+        return new Promise(function (resolve, reject) {
+            window.removeEventListener("keydown", keydownEvent);
+            window.removeEventListener("keyup", keyupEvent);
+            resolve();
+        });
+    }
 
     var enabledUpdate = function () {
         var i;

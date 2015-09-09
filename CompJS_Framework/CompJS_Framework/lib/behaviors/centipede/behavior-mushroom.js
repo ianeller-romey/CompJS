@@ -13,8 +13,6 @@
                 messengerEngine.queueForPosting("incrementPlayerScore", 1);
                 if (++currentAnimationFrame > 3) {
                     messengerEngine.queueForPosting("removeEntityInstance", this.instanceId);
-
-                    messengerEngine.unregisterAll(this);
                 } else {
                     messengerEngine.queueForPosting("setInstanceAnimationFrame", this.instanceId, currentAnimationFrame);
                 }
@@ -36,7 +34,7 @@
 
             this.getAllDamagedMushrooms = function () {
                 if (currentAnimationFrame > 0 || isPoisoned) {
-                    messengerEngine.queueForPosting("getAllDamagedMushroomsResponse", this.instanceId);
+                    messengerEngine.postImmediate("getAllDamagedMushroomsResponse", this.instanceId);
                 }
             }
 
