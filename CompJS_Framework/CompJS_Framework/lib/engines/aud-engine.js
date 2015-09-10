@@ -5,7 +5,7 @@ var AudEngine = function () {
 
     var audioDefinitions = {};
     var audioSources = [];
-    var numDesiredSources = 10;
+    var numDesiredSources = 20;
 
     var audioContext;
 
@@ -37,6 +37,12 @@ var AudEngine = function () {
                                 buffer: buffer
                             };
                         });
+                    }, function (reason) {
+                        var reasonPlus = "Failed to load audio files";
+                        if (reason != null) {
+                            reasonPlus = reasonPlus + "\r\n" + reason;
+                        }
+                        reject(reasonPlus);
                     });
                 });
                 loadAudioPromises.push(promise);
@@ -71,10 +77,22 @@ var AudEngine = function () {
                 servicesEngine.retrieveAllAudioForGame(gameId).then(function (data) {
                     buildAudioDefinitions(data).then(function () {
                         resolve();
+                    }, function (reason) {
+                        var reasonPlus = "Failed to build audio definitions";
+                        if (reason != null) {
+                            reasonPlus = reasonPlus + "\r\n" + reason;
+                        }
+                        reject(reasonPlus);
                     });
+                }, function (reason) {
+                    var reasonPlus = "Failed to load audio definitions";
+                    if (reason != null) {
+                        reasonPlus = reasonPlus + "\r\n" + reason;
+                    }
+                    reject(reasonPlus);
                 });
             } else {
-                reject();
+                reject("Failed to initialize WebAudio API");
             }
         });
         return promise;

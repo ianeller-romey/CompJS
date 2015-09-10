@@ -42,12 +42,24 @@ var PhysEngine = function () {
             servicesEngine.retrievePhysTypes().then(function (data) {
                 buildPhysTypeDefinitions(data);
                 resolve();
+            }, function (reason) {
+                var reasonPlus = "Failed to load physics types";
+                if (reason != null) {
+                    reasonPlus = reasonPlus + "\r\n" + reason;
+                }
+                reject(reasonPlus);
             });
         });
         var collisionTypesPromise = new Promise(function (resolve, reject) {
             servicesEngine.retrieveCollisionTypes().then(function (data) {
                 buildCollisionTypeDefinitions(data);
                 resolve();
+            }, function (reason) {
+                var reasonPlus = "Failed to load collision types";
+                if (reason != null) {
+                    reasonPlus = reasonPlus + "\r\n" + reason;
+                }
+                reject(reasonPlus);
             });
         });
 
@@ -56,7 +68,19 @@ var PhysEngine = function () {
                 servicesEngine.retrieveAllPhysCompDefinitionsForGame(gameId).then(function (data) {
                     buildPhysCompDefinitions(data);
                     resolve();
+                }, function (reason) {
+                    var reasonPlus = "Failed to load physics definitions";
+                    if (reason != null) {
+                        reasonPlus = reasonPlus + "\r\n" + reason;
+                    }
+                    reject(reasonPlus);
                 });
+            }, function (reason) {
+                var reasonPlus = "Failed to load physics and collision types";
+                if (reason != null) {
+                    reasonPlus = reasonPlus + "\r\n" + reason;
+                }
+                reject(reasonPlus);
             });
         });
     };

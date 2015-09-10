@@ -1,6 +1,5 @@
 ﻿
 var ServicesEngine = function () {
-
     var httpPromise = function (xmlHttp, parameters, dataFormat) {
         return new Promise(function (resolve, reject) {
             xmlHttp.onreadystatechange = function () {
@@ -9,7 +8,7 @@ var ServicesEngine = function () {
                         var data = dataFormat(xmlHttp);
                         resolve(data);
                     } else {
-                        reject(xmlHttp.status);
+                        reject("HTTP STATUS: " + xmlHttp.status);
                     }
                 }
             };
@@ -56,59 +55,59 @@ var ServicesEngine = function () {
     };
 
     this.retrieveAudioTypes = function () {
-        return sendHttpGetJSONRequest("http://arcade/cabinet/compjs/compjsservices/compjs/AudioTypes/");
+        return sendHttpGetJSONRequest("compjsservices/compjs/AudioTypes/");
     };
 
     this.retrievePhysTypes = function () {
-        return sendHttpGetJSONRequest("http://arcade/cabinet/compjs/compjsservices/compjs/PhysTypes/");
+        return sendHttpGetJSONRequest("compjsservices/compjs/PhysTypes/");
     };
 
     this.retrieveCollisionTypes = function () {
-        return sendHttpGetJSONRequest("http://arcade/cabinet/compjs/compjsservices/compjs/CollisionTypes/");
+        return sendHttpGetJSONRequest("compjsservices/compjs/CollisionTypes/");
     };
 
     this.retrieveAllGames = function () {
-        return sendHttpGetJSONRequest("http://arcade/cabinet/compjs/compjsservices/game/");
+        return sendHttpGetJSONRequest("compjsservices/game/");
     };
 
     this.retrieveAllLevelsForGame = function (gameId) {
-        return sendHttpGetJSONRequest("http://arcade/cabinet/compjs/compjsservices/game/" + gameId + "/levels");
+        return sendHttpGetJSONRequest("compjsservices/game/" + gameId + "/levels");
     };
 
     this.retrieveAllEntityTypeDefinitionsForGame = function (gameId) {
-        return sendHttpGetJSONRequest("http://arcade/cabinet/compjs/compjsservices/game/" + gameId + "/ent/")
+        return sendHttpGetJSONRequest("compjsservices/game/" + gameId + "/ent/")
     };
 
     this.retrieveAllAudioForGame = function (gameId) {
-        return sendHttpGetJSONRequest("http://arcade/cabinet/compjs/compjsservices/game/" + gameId + "/aud/");
+        return sendHttpGetJSONRequest("compjsservices/game/" + gameId + "/aud/");
     };
 
     this.retrieveAllBhvCompDefinitionsForGame = function (gameId) {
-        return sendHttpGetJSONRequest("http://arcade/cabinet/compjs/compjsservices/game/" + gameId + "/bhv/");
+        return sendHttpGetJSONRequest("compjsservices/game/" + gameId + "/bhv/");
     };
 
     this.retrieveAllGfxCompDefinitionsForGame = function (gameId) {
-        return sendHttpGetJSONRequest("http://arcade/cabinet/compjs/compjsservices/game/" + gameId + "/gfx/");
+        return sendHttpGetJSONRequest("compjsservices/game/" + gameId + "/gfx/");
     };
 
     this.retrieveAllShadersForGame = function (gameId) {
-        return sendHttpGetJSONRequest("http://arcade/cabinet/compjs/compjsservices/game/" + gameId + "/shaders/");
+        return sendHttpGetJSONRequest("compjsservices/game/" + gameId + "/shaders/");
     };
 
     this.retrieveAllPhysCompDefinitionsForGame = function (gameId) {
-        return sendHttpGetJSONRequest("http://arcade/cabinet/compjs/compjsservices/game/" + gameId + "/phys/");
+        return sendHttpGetJSONRequest("compjsservices/game/" + gameId + "/phys/");
     };
 
     this.retrieveHighScoresForGame = function (gameId, count) {
-        return sendHttpGetJSONRequest("http://arcade/cabinet/compjs/compjsservices/game/" + gameId + "/highscores/" + count);
+        return sendHttpGetJSONRequest("compjsservices/game/" + gameId + "/highscores/" + count);
     };
 
     this.createHighScoreForGame = function (gameId, playerName, score, count) {
-        return sendHttpPostJSONRequest("http://arcade/cabinet/compjs/compjsservices/game/" + gameId + "/highscores/" + playerName + "/" + score + "/" + count);
+        return sendHttpPostJSONRequest("compjsservices/game/" + gameId + "/highscores/" + playerName + "/" + score + "/" + count);
     };
 
     this.loadLevel = function (gameId, levelId) {
-        return sendHttpGetJSONRequest("http://arcade/cabinet/compjs/compjsservices/game/" + gameId + "/levels/" + levelId);
+        return sendHttpGetJSONRequest("compjsservices/game/" + gameId + "/levels/" + levelId);
     };
 
     this.loadAudio = function (url) {

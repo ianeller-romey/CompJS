@@ -72,17 +72,25 @@ var InputManager = function () {
 
     this.init = function () {
         return new Promise(function (resolve, reject) {
-            window.addEventListener("keydown", keydownEvent);
-            window.addEventListener("keyup", keyupEvent);
-            resolve();
+            if (window.addEventListener != null) {
+                window.addEventListener("keydown", keydownEvent);
+                window.addEventListener("keyup", keyupEvent);
+                resolve();
+            } else {
+                reject("Browser does not support window.addEventListener");
+            }
         });
     };
 
     this.shutdown = function () {
         return new Promise(function (resolve, reject) {
-            window.removeEventListener("keydown", keydownEvent);
-            window.removeEventListener("keyup", keyupEvent);
-            resolve();
+            if (window.removeEventListener != null) {
+                window.removeEventListener("keydown", keydownEvent);
+                window.removeEventListener("keyup", keyupEvent);
+                resolve();
+            } else {
+                reject("Browser does not support window.removeEventListener");
+            }
         });
     }
 

@@ -21,6 +21,12 @@ var BhvEngine = function (headElem) {
             servicesEngine.retrieveAllBhvCompDefinitionsForGame(gameId).then(function (data) {
                 buildBhvCompDefinitions(data);
                 resolve();
+            }, function (reason) {
+                var reasonPlus = "Failed to load behavior definitions";
+                if (reason != null) {
+                    reasonPlus = reasonPlus + "\r\n" + reason;
+                }
+                reject(reasonPlus);
             });
         });
     };
@@ -113,17 +119,23 @@ BhvEngine.loadStateScripts = function (data, headElem) {
 
     var bhvConstructorList = BhvEngine.bhvConstructors;
     return new Promise(function (resolve, reject) {
+        var iterations = 0;
+        var iterationsMax = 60000; // try for a whole minute!
         var checkScriptsLoaded = function () {
-            var count = 0;
-            for (var key in bhvConstructorList) {
-                if (bhvConstructorList.hasOwnProperty(key)) {
-                    count += 1;
+            if (iterations < iterationsMax) {
+                var count = 0;
+                for (var key in bhvConstructorList) {
+                    if (bhvConstructorList.hasOwnProperty(key)) {
+                        count += 1;
+                    }
                 }
-            }
-            if (count == data.length) {
-                resolve();
+                if (count == data.length) {
+                    resolve();
+                } else {
+                    setTimeout(checkScriptsLoaded, 1);
+                }
             } else {
-                setTimeout(checkScriptsLoaded, 1);
+                reject("Timeout on loading behavior scripts");
             }
         };
         setTimeout(checkScriptsLoaded, 1);

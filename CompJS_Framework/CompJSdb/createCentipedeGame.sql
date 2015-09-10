@@ -91,7 +91,7 @@ BEGIN
 	BEGIN
 		EXEC @compDefinitionId = [dev].[dev_CreateBhvCompDefinition]
 			@entityTypeId = @id,
-			@stateFile = 'http://arcade/cabinet/compjs/lib/behaviors/centipede/behavior-mushroom.js',
+			@stateFile = 'lib/behaviors/centipede/behavior-mushroom.js',
 			@behaviorConstructor = 'BehaviorMushroom'
 			
 	END
@@ -110,7 +110,7 @@ BEGIN
 			@animationStateDefinitionId = @altId,
 			@frame = 0,
 			@duration = null,
-			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
+			@texture = 'images/centipede/textures.png',
 			@width = 16.0,
 			@height = 16.0,
 			@pixCoordTL = 0.0,
@@ -123,7 +123,7 @@ BEGIN
 			@animationStateDefinitionId = @altId,
 			@frame = 1,
 			@duration = null,
-			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
+			@texture = 'images/centipede/textures.png',
 			@width = 16.0,
 			@height = 16.0,
 			@pixCoordTL = 0.0,
@@ -136,7 +136,7 @@ BEGIN
 			@animationStateDefinitionId = @altId,
 			@frame = 2,
 			@duration = null,
-			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
+			@texture = 'images/centipede/textures.png',
 			@width = 16.0,
 			@height = 16.0,
 			@pixCoordTL = 0.0,
@@ -149,7 +149,7 @@ BEGIN
 			@animationStateDefinitionId = @altId,
 			@frame = 3,
 			@duration = null,
-			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
+			@texture = 'images/centipede/textures.png',
 			@width = 16.0,
 			@height = 16.0,
 			@pixCoordTL = 0.0,
@@ -166,7 +166,7 @@ BEGIN
 			@animationStateDefinitionId = @altId,
 			@frame = 0,
 			@duration = null,
-			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
+			@texture = 'images/centipede/textures.png',
 			@width = 16.0,
 			@height = 16.0,
 			@pixCoordTL = 17.0,
@@ -179,7 +179,7 @@ BEGIN
 			@animationStateDefinitionId = @altId,
 			@frame = 1,
 			@duration = null,
-			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
+			@texture = 'images/centipede/textures.png',
 			@width = 16.0,
 			@height = 16.0,
 			@pixCoordTL = 17.0,
@@ -192,7 +192,7 @@ BEGIN
 			@animationStateDefinitionId = @altId,
 			@frame = 2,
 			@duration = null,
-			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
+			@texture = 'images/centipede/textures.png',
 			@width = 16.0,
 			@height = 16.0,
 			@pixCoordTL = 17.0,
@@ -205,7 +205,7 @@ BEGIN
 			@animationStateDefinitionId = @altId,
 			@frame = 3,
 			@duration = null,
-			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
+			@texture = 'images/centipede/textures.png',
 			@width = 16.0,
 			@height = 16.0,
 			@pixCoordTL = 17.0,
@@ -242,7 +242,7 @@ BEGIN
 	BEGIN
 		EXEC @compDefinitionId = [dev].[dev_CreateBhvCompDefinition]
 			@entityTypeId = @id,
-			@stateFile = 'http://arcade/cabinet/compjs/lib/behaviors/centipede/behavior-mushroom-waiter.js',
+			@stateFile = 'lib/behaviors/centipede/behavior-mushroom-waiter.js',
 			@behaviorConstructor = 'BehaviorMushroomWaiter'
 			
 	END
@@ -274,7 +274,7 @@ BEGIN
 	BEGIN
 		EXEC @compDefinitionId = [dev].[dev_CreateBhvCompDefinition]
 			@entityTypeId = @id,
-			@stateFile = 'http://arcade/cabinet/compjs/lib/behaviors/centipede/behavior-mushroom-manager.js',
+			@stateFile = 'lib/behaviors/centipede/behavior-mushroom-manager.js',
 			@behaviorConstructor = 'BehaviorMushroomManager'
 			
 	END
@@ -291,7 +291,7 @@ BEGIN
 	BEGIN
 		EXEC @compDefinitionId = [dev].[dev_CreateBhvCompDefinition]
 			@entityTypeId = @id,
-			@stateFile = 'http://arcade/cabinet/compjs/lib/behaviors/centipede/behavior-player.js',
+			@stateFile = 'lib/behaviors/centipede/behavior-player.js',
 			@behaviorConstructor = 'BehaviorPlayer'
 			
 	END
@@ -310,7 +310,7 @@ BEGIN
 			@animationStateDefinitionId = @altId,
 			@frame = 0,
 			@duration = null,
-			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
+			@texture = 'images/centipede/textures.png',
 			@width = 16.0,
 			@height = 16.0,
 			@pixCoordTL = 0.0,
@@ -348,7 +348,7 @@ BEGIN
 	BEGIN
 		EXEC @compDefinitionId = [dev].[dev_CreateBhvCompDefinition]
 			@entityTypeId = @id,
-			@stateFile = 'http://arcade/cabinet/compjs/lib/behaviors/centipede/behavior-player-bullet.js',
+			@stateFile = 'lib/behaviors/centipede/behavior-player-bullet.js',
 			@behaviorConstructor = 'BehaviorPlayerBullet'
 			
 	END
@@ -367,7 +367,7 @@ BEGIN
 			@animationStateDefinitionId = @altId,
 			@frame = 0,
 			@duration = null,
-			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
+			@texture = 'images/centipede/textures.png',
 			@width = 2.0,
 			@height = 12.0,
 			@pixCoordTL = 0.0,
@@ -406,7 +406,7 @@ BEGIN
 	BEGIN
 		EXEC @compDefinitionId = [dev].[dev_CreateBhvCompDefinition]
 			@entityTypeId = @id,
-			@stateFile = 'http://arcade/cabinet/compjs/lib/behaviors/centipede/behavior-centipede-segment.js',
+			@stateFile = 'lib/behaviors/centipede/behavior-centipede-segment.js',
 			@behaviorConstructor = 'BehaviorCentipedeSegment'
 			
 	END
@@ -425,7 +425,7 @@ BEGIN
 			@animationStateDefinitionId = @altId,
 			@frame = 0,
 			@duration = 50,
-			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
+			@texture = 'images/centipede/textures.png',
 			@width = 16.0,
 			@height = 16.0,
 			@pixCoordTL = 34.0,
@@ -438,7 +438,7 @@ BEGIN
 			@animationStateDefinitionId = @altId,
 			@frame = 1,
 			@duration = 50,
-			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
+			@texture = 'images/centipede/textures.png',
 			@width = 16.0,
 			@height = 16.0,
 			@pixCoordTL = 34.0,
@@ -455,7 +455,7 @@ BEGIN
 			@animationStateDefinitionId = @altId,
 			@frame = 0,
 			@duration = 50,
-			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
+			@texture = 'images/centipede/textures.png',
 			@width = 16.0,
 			@height = 16.0,
 			@pixCoordTL = 51.0,
@@ -468,7 +468,7 @@ BEGIN
 			@animationStateDefinitionId = @altId,
 			@frame = 1,
 			@duration = 50,
-			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
+			@texture = 'images/centipede/textures.png',
 			@width = 16.0,
 			@height = 16.0,
 			@pixCoordTL = 51.0,
@@ -485,7 +485,7 @@ BEGIN
 			@animationStateDefinitionId = @altId,
 			@frame = 0,
 			@duration = 50,
-			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
+			@texture = 'images/centipede/textures.png',
 			@width = 16.0,
 			@height = 16.0,
 			@pixCoordTL = 34.0,
@@ -498,7 +498,7 @@ BEGIN
 			@animationStateDefinitionId = @altId,
 			@frame = 1,
 			@duration = 50,
-			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
+			@texture = 'images/centipede/textures.png',
 			@width = 16.0,
 			@height = 16.0,
 			@pixCoordTL = 34.0,
@@ -515,7 +515,7 @@ BEGIN
 			@animationStateDefinitionId = @altId,
 			@frame = 0,
 			@duration = 50,
-			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
+			@texture = 'images/centipede/textures.png',
 			@width = 16.0,
 			@height = 16.0,
 			@pixCoordTL = 51.0,
@@ -528,7 +528,7 @@ BEGIN
 			@animationStateDefinitionId = @altId,
 			@frame = 1,
 			@duration = 50,
-			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
+			@texture = 'images/centipede/textures.png',
 			@width = 16.0,
 			@height = 16.0,
 			@pixCoordTL = 51.0,
@@ -566,7 +566,7 @@ BEGIN
 	BEGIN
 		EXEC @compDefinitionId = [dev].[dev_CreateBhvCompDefinition]
 			@entityTypeId = @id,
-			@stateFile = 'http://arcade/cabinet/compjs/lib/behaviors/centipede/behavior-spider.js',
+			@stateFile = 'lib/behaviors/centipede/behavior-spider.js',
 			@behaviorConstructor = 'BehaviorSpider'
 			
 	END
@@ -585,7 +585,7 @@ BEGIN
 			@animationStateDefinitionId = @altId,
 			@frame = 0,
 			@duration = 50,
-			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
+			@texture = 'images/centipede/textures.png',
 			@width = 32.0,
 			@height = 16.0,
 			@pixCoordTL = 0.0,
@@ -598,7 +598,7 @@ BEGIN
 			@animationStateDefinitionId = @altId,
 			@frame = 1,
 			@duration = 50,
-			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
+			@texture = 'images/centipede/textures.png',
 			@width = 32.0,
 			@height = 16.0,
 			@pixCoordTL = 0.0,
@@ -611,7 +611,7 @@ BEGIN
 			@animationStateDefinitionId = @altId,
 			@frame = 2,
 			@duration = 50,
-			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
+			@texture = 'images/centipede/textures.png',
 			@width = 32.0,
 			@height = 16.0,
 			@pixCoordTL = 26.0,
@@ -624,7 +624,7 @@ BEGIN
 			@animationStateDefinitionId = @altId,
 			@frame = 3,
 			@duration = 50,
-			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
+			@texture = 'images/centipede/textures.png',
 			@width = 32.0,
 			@height = 16.0,
 			@pixCoordTL = 26.0,
@@ -663,7 +663,7 @@ BEGIN
 	BEGIN
 		EXEC @compDefinitionId = [dev].[dev_CreateBhvCompDefinition]
 			@entityTypeId = @id,
-			@stateFile = 'http://arcade/cabinet/compjs/lib/behaviors/centipede/behavior-flea.js',
+			@stateFile = 'lib/behaviors/centipede/behavior-flea.js',
 			@behaviorConstructor = 'BehaviorFlea'
 			
 	END
@@ -682,7 +682,7 @@ BEGIN
 			@animationStateDefinitionId = @altId,
 			@frame = 0,
 			@duration = null,
-			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
+			@texture = 'images/centipede/textures.png',
 			@width = 19.0,
 			@height = 16.0,
 			@pixCoordTL = 0.0,
@@ -721,7 +721,7 @@ BEGIN
 	BEGIN
 		EXEC @compDefinitionId = [dev].[dev_CreateBhvCompDefinition]
 			@entityTypeId = @id,
-			@stateFile = 'http://arcade/cabinet/compjs/lib/behaviors/centipede/behavior-scorpion.js',
+			@stateFile = 'lib/behaviors/centipede/behavior-scorpion.js',
 			@behaviorConstructor = 'BehaviorScorpion'
 			
 	END
@@ -740,7 +740,7 @@ BEGIN
 			@animationStateDefinitionId = @altId,
 			@frame = 0,
 			@duration = 50,
-			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
+			@texture = 'images/centipede/textures.png',
 			@width = 32.0,
 			@height = 16.0,
 			@pixCoordTL = 61.0,
@@ -753,7 +753,7 @@ BEGIN
 			@animationStateDefinitionId = @altId,
 			@frame = 1,
 			@duration = 50,
-			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
+			@texture = 'images/centipede/textures.png',
 			@width = 32.0,
 			@height = 16.0,
 			@pixCoordTL = 0.0,
@@ -770,7 +770,7 @@ BEGIN
 			@animationStateDefinitionId = @altId,
 			@frame = 0,
 			@duration = 50,
-			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
+			@texture = 'images/centipede/textures.png',
 			@width = 32.0,
 			@height = 16.0,
 			@pixCoordTL = 17.0,
@@ -783,7 +783,7 @@ BEGIN
 			@animationStateDefinitionId = @altId,
 			@frame = 1,
 			@duration = 50,
-			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
+			@texture = 'images/centipede/textures.png',
 			@width = 32.0,
 			@height = 16.0,
 			@pixCoordTL = 17.0,
@@ -822,7 +822,7 @@ BEGIN
 	BEGIN
 		EXEC @compDefinitionId = [dev].[dev_CreateBhvCompDefinition]
 			@entityTypeId = @id,
-			@stateFile = 'http://arcade/cabinet/compjs/lib/behaviors/centipede/behavior-minion-manager.js',
+			@stateFile = 'lib/behaviors/centipede/behavior-minion-manager.js',
 			@behaviorConstructor = 'BehaviorMinionManager'
 			
 	END
@@ -839,7 +839,7 @@ BEGIN
 	BEGIN
 		EXEC @compDefinitionId = [dev].[dev_CreateBhvCompDefinition]
 			@entityTypeId = @id,
-			@stateFile = 'http://arcade/cabinet/compjs/lib/behaviors/centipede/behavior-centipede-manager.js',
+			@stateFile = 'lib/behaviors/centipede/behavior-centipede-manager.js',
 			@behaviorConstructor = 'BehaviorCentipedeManager'
 			
 	END
@@ -856,7 +856,7 @@ BEGIN
 	BEGIN
 		EXEC @compDefinitionId = [dev].[dev_CreateBhvCompDefinition]
 			@entityTypeId = @id,
-			@stateFile = 'http://arcade/cabinet/compjs/lib/behaviors/centipede/behavior-game-state-manager.js',
+			@stateFile = 'lib/behaviors/centipede/behavior-game-state-manager.js',
 			@behaviorConstructor = 'BehaviorGameStateManager'
 			
 	END
@@ -877,7 +877,7 @@ BEGIN
 	BEGIN
 		EXEC @compDefinitionId = [dev].[dev_CreateBhvCompDefinition]
 			@entityTypeId = @id,
-			@stateFile = 'http://arcade/cabinet/compjs/lib/behaviors/centipede/behavior-lives.js',
+			@stateFile = 'lib/behaviors/centipede/behavior-lives.js',
 			@behaviorConstructor = 'BehaviorLives'
 			
 	END
@@ -894,7 +894,7 @@ BEGIN
 	BEGIN
 		EXEC @compDefinitionId = [dev].[dev_CreateBhvCompDefinition]
 			@entityTypeId = @id,
-			@stateFile = 'http://arcade/cabinet/compjs/lib/behaviors/centipede/behavior-life.js',
+			@stateFile = 'lib/behaviors/centipede/behavior-life.js',
 			@behaviorConstructor = 'BehaviorLife'
 			
 	END
@@ -913,7 +913,7 @@ BEGIN
 			@animationStateDefinitionId = @altId,
 			@frame = 0,
 			@duration = null,
-			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
+			@texture = 'images/centipede/textures.png',
 			@width = 16.0,
 			@height = 16.0,
 			@pixCoordTL = 0.0,
@@ -936,7 +936,7 @@ BEGIN
 	BEGIN
 		EXEC @compDefinitionId = [dev].[dev_CreateBhvCompDefinition]
 			@entityTypeId = @id,
-			@stateFile = 'http://arcade/cabinet/compjs/lib/behaviors/centipede/behavior-score.js',
+			@stateFile = 'lib/behaviors/centipede/behavior-score.js',
 			@behaviorConstructor = 'BehaviorScore'
 			
 	END
@@ -963,7 +963,7 @@ BEGIN
 			@animationStateDefinitionId = @altId,
 			@frame = 0,
 			@duration = null,
-			@texture = 'http://arcade/cabinet/compjs/images/centipede/textures.png',
+			@texture = 'images/centipede/textures.png',
 			@width = 16.0,
 			@height = 16.0,
 			@pixCoordTL = 0.0,
@@ -990,7 +990,7 @@ BEGIN
 			
 		EXEC @altAltId = [dev].[dev_CreateFontTextureDefinition]
 			@gfxCompDefinitionId = @compDefinitionId,
-			@texture = 'http://arcade/cabinet/compjs/images/centipede/fonts.png',
+			@texture = 'images/centipede/fonts.png',
 			@textureWidth = 512.0,
 			@startT = 0.0,
 			@startL = 0.0,
@@ -1015,7 +1015,7 @@ BEGIN
 			
 		EXEC @altAltId = [dev].[dev_CreateFontTextureDefinition]
 			@gfxCompDefinitionId = @compDefinitionId,
-			@texture = 'http://arcade/cabinet/compjs/images/centipede/fonts.png',
+			@texture = 'images/centipede/fonts.png',
 			@textureWidth = 512.0,
 			@startT = 64.0,
 			@startL = 0.0,
@@ -1040,7 +1040,7 @@ BEGIN
 			
 		EXEC @altAltId = [dev].[dev_CreateFontTextureDefinition]
 			@gfxCompDefinitionId = @compDefinitionId,
-			@texture = 'http://arcade/cabinet/compjs/images/centipede/fonts.png',
+			@texture = 'images/centipede/fonts.png',
 			@textureWidth = 512.0,
 			@startT = 100.0,
 			@startL = 1.0,
@@ -1055,7 +1055,7 @@ IF NOT EXISTS (SELECT [Id] FROM [game].[Shaders] WHERE [GameId] = @gameId AND [N
 BEGIN
 	EXEC [dev].[dev_CreateShader]
 		@name = 'Texture',
-		@shaderFile = 'http://arcade/cabinet/compjs/lib/shaders/centipede/shader-texture.js',
+		@shaderFile = 'lib/shaders/centipede/shader-texture.js',
 		@gameId = @gameId
 	
 END
@@ -1064,7 +1064,7 @@ IF NOT EXISTS (SELECT [Id] FROM [game].[Shaders] WHERE [GameId] = @gameId AND [N
 BEGIN
 	EXEC [dev].[dev_CreateShader]
 		@name = 'TextureColorChange',
-		@shaderFile = 'http://arcade/cabinet/compjs/lib/shaders/centipede/shader-texture-color-change.js',
+		@shaderFile = 'lib/shaders/centipede/shader-texture-color-change.js',
 		@gameId = @gameId
 	
 END
@@ -1073,7 +1073,7 @@ IF NOT EXISTS (SELECT [Id] FROM [game].[Shaders] WHERE [GameId] = @gameId AND [N
 BEGIN
 	EXEC [dev].[dev_CreateShader]
 		@name = 'Emboss',
-		@shaderFile = 'http://arcade/cabinet/compjs/lib/shaders/centipede/shader-emboss.js',
+		@shaderFile = 'lib/shaders/centipede/shader-emboss.js',
 		@gameId = @gameId
 	
 END
@@ -1082,7 +1082,7 @@ IF NOT EXISTS (SELECT [Id] FROM [game].[Shaders] WHERE [GameId] = @gameId AND [N
 BEGIN
 	EXEC [dev].[dev_CreateShader]
 		@name = 'PointLight',
-		@shaderFile = 'http://arcade/cabinet/compjs/lib/shaders/centipede/shader-point-light.js',
+		@shaderFile = 'lib/shaders/centipede/shader-point-light.js',
 		@gameId = @gameId
 	
 END

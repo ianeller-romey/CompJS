@@ -43,7 +43,11 @@ var GfxEngine = function (canvasElem) {
     var initShaders = function () {
         for (var i = 0; i < shaderList.length; ++i) {
             shaderList[i].init(webGL, i);
+            if (shaderList[i] === null) {
+                return false;
+            }
         }
+        return true;
     };
 
     var initBuffers = function () {
@@ -179,10 +183,10 @@ var GfxEngine = function (canvasElem) {
 
                 resolve();
             } else {
-                reject("Failed to initialize WebGL.");
+                reject("Failed to initialize WebGL");
             }
         });
-        var gfxCompsPromise = new Promise(function(resolve, reject){
+        var gfxCompsPromise = new Promise(function (resolve, reject) {
             servicesEngine.retrieveAllGfxCompDefinitionsForGame(gameId).then(function (data) {
                 // Initialize animations first ...
                 var textures2DAnimation = data.gfx2DAnimations.select(function (x) {
@@ -207,8 +211,26 @@ var GfxEngine = function (canvasElem) {
                             setShaderProgram("Texture", i);
                         }
                         resolve();
+                    }, function (reason) {
+                        var reasonPlus = "Failed to build font definitions";
+                        if (reason != null) {
+                            reasonPlus = reasonPlus + "\r\n" + reason;
+                        }
+                        reject(reasonPlus);
                     });
+                }, function (reason) {
+                    var reasonPlus = "Failed to build 2D animation definitions";
+                    if (reason != null) {
+                        reasonPlus = reasonPlus + "\r\n" + reason;
+                    }
+                    reject(reasonPlus);
                 });
+            }, function (reason) {
+                var reasonPlus = "Failed to load graphics definitions";
+                if (reason != null) {
+                    reasonPlus = reasonPlus + "\r\n" + reason;
+                }
+                reject(reasonPlus);
             });
         });
         return Promise.all([webGLPromise, gfxCompsPromise]);
@@ -635,11 +657,18 @@ GfxEngine.loadShaderScripts = function (data, headElem) {
     });
     var gfxShaderList = GfxEngine.shaderList;
     return new Promise(function (resolve, reject) {
+        var iterations = 0;
+        var iterationsMax = 60000; // try for a whole minute!
         var checkShadersLoaded = function () {
-            if (gfxShaderList.length == data.length) {
-                resolve();
+            if (iterations < iterationsMax) {
+                if (gfxShaderList.length == data.length) {
+                    resolve();
+                } else {
+                    ++iterations;
+                    setTimeout(checkShadersLoaded, 1);
+                }
             } else {
-                setTimeout(checkShadersLoaded, 1);
+                reject("Timeout on loading shaders");
             }
         };
         setTimeout(checkShadersLoaded, 1);

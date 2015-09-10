@@ -33,6 +33,12 @@ var EntityManager = function (gameId) {
             servicesEngine.retrieveAllEntityTypeDefinitionsForGame(gameId).then(function (data) {
                 buildEntityTypeDefinitions(data);
                 resolve();
+            }, function (reason) {
+                var reasonPlus = "Failed to load entity definitions";
+                if (reason != null) {
+                    reasonPlus = reasonPlus + "\r\n" + reason;
+                }
+                reject(reasonPlus);
             });
         });
     };
@@ -191,6 +197,12 @@ var EntityManager = function (gameId) {
                     y: 0
                 });
             });
+        }, function (reason) {
+            var reasonPlus = "Failed to load game level";
+            if (reason != null) {
+                reasonPlus = reasonPlus + "\r\n" + reason;
+            }
+            reject(reasonPlus);
         });
     };
 
