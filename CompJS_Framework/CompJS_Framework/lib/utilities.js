@@ -4,6 +4,10 @@ String.prototype.isNullOrWhitespace = function () {
     return this === null || this.match(/^\s*$/) !== null;
 };
 
+String.prototype.isAlphanumeric = function () {
+    return this !== null && this.match(/^[a-zA-Z0-9]+$/i) !== null;
+}
+
 
 /****************/
 /* Linq-esque behavior */

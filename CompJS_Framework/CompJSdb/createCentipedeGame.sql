@@ -1135,18 +1135,18 @@ BEGIN
 		@gameId = @gameId
 END
 
-IF NOT EXISTS (SELECT [Id] FROM [game].[HighScores] WHERE [GameId] = @gameId AND [PlayerName] = 'Skele-Tom')
+IF NOT EXISTS (SELECT [Id] FROM [game].[HighScores] WHERE [GameId] = @gameId AND [PlayerName] = 'SkeleTom')
 BEGIN
 	EXEC [game].[CreateHighScoreForGame]
-		@playerName = 'Skele-Tom',
+		@playerName = 'SkeleTom',
 		@score = 10000,
 		@gameId = @gameId
 END
 
-IF NOT EXISTS (SELECT [Id] FROM [game].[HighScores] WHERE [GameId] = @gameId AND [PlayerName] = 'v-iaelle')
+IF NOT EXISTS (SELECT [Id] FROM [game].[HighScores] WHERE [GameId] = @gameId AND [PlayerName] = 'v iaelle')
 BEGIN
 	EXEC [game].[CreateHighScoreForGame]
-		@playerName = 'v-iaelle',
+		@playerName = 'v iaelle',
 		@score = 5000,
 		@gameId = @gameId
 END
