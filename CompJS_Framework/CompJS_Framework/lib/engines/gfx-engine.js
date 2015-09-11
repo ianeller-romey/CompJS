@@ -537,7 +537,7 @@ var GfxEngine = function (canvasElem) {
     var setInstanceText = function (instanceId, text) {
         var gfxInstance = getGfxInstanceFont(instanceId);
         if (gfxInstance != null) {
-            gfxInstance.graphics.setText(text);
+            gfxInstance.graphics.setText(text ? text : "");
         }
     };
 
@@ -580,6 +580,7 @@ var GfxEngine = function (canvasElem) {
     messengerEngine.register("setInstanceAnimationState", this, setInstanceAnimationState);
     messengerEngine.register("setInstanceAnimationFrame", this, setInstanceAnimationFrame);
     messengerEngine.register("setInstanceText", this, setInstanceText);
+    messengerEngine.register("clearInstanceText", this, setInstanceText);
     messengerEngine.register("getGfxCompInstanceForEntityInstanceRequest", this, getGfxCompInstanceForEntityInstance);
     messengerEngine.register("removeEntityInstance", this, removeGfxCompInstanceFromMessage);
 };

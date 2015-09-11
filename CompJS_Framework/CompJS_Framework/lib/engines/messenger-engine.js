@@ -120,6 +120,8 @@ globalMessengerEngine.addMessageType("setShaderProgram");
 globalMessengerEngine.addMessageType("createdGraphicsInstance");
 globalMessengerEngine.addMessageType("setInstanceAnimationState");
 globalMessengerEngine.addMessageType("setInstanceAnimationFrame");
+globalMessengerEngine.addMessageType("setInstanceText");
+globalMessengerEngine.addMessageType("clearInstanceText");
 globalMessengerEngine.addMessageType("getGfxCompInstanceForEntityInstanceRequest");
 globalMessengerEngine.addMessageType("getGfxCompInstanceForEntityInstanceResponse");
 

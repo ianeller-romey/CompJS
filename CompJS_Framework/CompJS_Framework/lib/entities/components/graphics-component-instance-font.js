@@ -514,6 +514,7 @@ var GraphicsComponentFont = function (gfxCompId, startT, startL, characterWidth,
             }
             while (translatedVertices.length > text.length) {
                 translatedVertices.pop();
+                that.textureCoords.pop();
             }
             updateTranslatedVertices(text, transformation.position);
             updateTextureCoords(text);

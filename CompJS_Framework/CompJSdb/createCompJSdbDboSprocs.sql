@@ -622,7 +622,7 @@ BEGIN
 	INSERT INTO [game].[HighScores] ([PlayerName], [Score], [GameId])
 	VALUES(@playerName, @score, @gameId)
 	
-	RETURN SCOPE_IDENTITY()
+	SELECT SCOPE_IDENTITY()
 
 END
 GO

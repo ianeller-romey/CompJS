@@ -194,32 +194,26 @@
                     activeEntities.push(id);
                     messengerEngine.queueForPosting("setInstanceText", id, "High Scores");
                 });
-                var getGameIdRetrieveHighScores = function (gId) {
-                    messengerEngine.unregister("getGameIdResponse", getGameIdRetrieveHighScores);
-                    gameId = gId;
-                    servicesEngine.retrieveHighScoresForGame(gameId, 10).then(function (data) {
-                        var yStart = 100;
-                        var characterHeight = 16;
-                        var s = 1;
-                        for (var i = 0, j = data.length; i < j; ++i) {
-                            messengerEngine.postImmediate("createEntityInstance", "Text_LargeRedFont", {
-                                position: {
-                                    x: 91,
-                                    y: yStart + (i * characterHeight * s) + 10
-                                },
-                                scale: {
-                                    x: s,
-                                    y: s
-                                }
-                            }, function (id) {
-                                activeEntities.push(id);
-                                messengerEngine.queueForPosting("setInstanceText", id, data[i].playerName + ": " + data[i].score);
-                            });
-                        }
-                    });
-                };
-                messengerEngine.register("getGameIdResponse", this, getGameIdRetrieveHighScores);
-                messengerEngine.postImmediate("getGameIdRequest", true);
+                servicesEngine.retrieveHighScoresForGame(gameId, 10).then(function (data) {
+                    var yStart = 100;
+                    var characterHeight = 16;
+                    var s = 1;
+                    for (var i = 0, j = data.length; i < j; ++i) {
+                        messengerEngine.postImmediate("createEntityInstance", "Text_LargeRedFont", {
+                            position: {
+                                x: 91,
+                                y: yStart + (i * characterHeight * s) + 10
+                            },
+                            scale: {
+                                x: s,
+                                y: s
+                            }
+                        }, function (id) {
+                            activeEntities.push(id);
+                            messengerEngine.queueForPosting("setInstanceText", id, data[i].playerName + ": " + data[i].score);
+                        });
+                    }
+                });
             };
 
             var updateDisplayHighScores = function () {
@@ -299,7 +293,7 @@
                     }
                 }, function (id) {
                     entityPlayerNameIndex = activeEntities.push(id) - 1;
-                    messengerEngine.queueForPosting("setInstanceText", id, playerNameAtGameOver);
+                    messengerEngine.queueForPosting("clearInstanceText", id);
                 });
             };
 
@@ -310,13 +304,19 @@
                     });
                 } else if (playerNameAtGameOver.length > 0 && inputManager.isTriggered(inputManager.keys.backspace)) {
                     playerNameAtGameOver = playerNameAtGameOver.slice(0, -1);
-                    messengerEngine.queueForPosting("setInstanceText", activeEntities[entityPlayerNameIndex], playerNameAtGameOver);
+                    if (playerNameAtGameOver.length > 0) {
+                        messengerEngine.queueForPosting("setInstanceText", activeEntities[entityPlayerNameIndex], playerNameAtGameOver);
+                    } else {
+                        messengerEngine.queueForPosting("clearInstanceText", activeEntities[entityPlayerNameIndex]);
+                    }
                 } else {
                     if (playerNameAtGameOver.length < maxNameLength && inputManager.isAnyTriggered()) {
                         var kc = inputManager.getFirstTriggered();
-                        var char = (inputManager.isPressed(inputManager.keys.shift)) ? inputManager.toShiftedCharacter(kc) : inputManager.toCharacter(kc);
-                        playerNameAtGameOver += char;
-                        messengerEngine.queueForPosting("setInstanceText", activeEntities[entityPlayerNameIndex], playerNameAtGameOver);
+                        if (inputManager.isCharacter(kc)) {
+                            var char = (inputManager.isPressed(inputManager.keys.shift)) ? inputManager.toShiftedCharacter(kc) : inputManager.toCharacter(kc);
+                            playerNameAtGameOver += char;
+                            messengerEngine.queueForPosting("setInstanceText", activeEntities[entityPlayerNameIndex], playerNameAtGameOver);
+                        }
                     }
                 }
             };
@@ -373,6 +373,13 @@
             messengerEngine.register("halftimeStart", this, halftimeStart);
             messengerEngine.register("halftimeEnd", this, halftimeEnd);
             messengerEngine.register("nextWave", this, nextWave);
+
+            var getGameId = function (gId) {
+                messengerEngine.unregister("getGameIdResponse", getGameId);
+                gameId = gId;
+            };
+            messengerEngine.register("getGameIdResponse", this, getGameId);
+            messengerEngine.postImmediate("getGameIdRequest");
 
             initMainMenu();
         };
