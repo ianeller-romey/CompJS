@@ -22,8 +22,6 @@
         document.body.appendChild(cheatsElem);
 
         var ConsoleInputManager = function () {
-            var that = this;
-
             this.resetConsoleInput = function () {
                 return this.addCharToConsoleInput("", "");
             };
@@ -41,16 +39,15 @@
             };
         };
 
-        var deleteKey = 8;
-        var enterKey = 13;
-        var upKey = 38;
         var lastActiveCommand = "";
+        var inputManager = globalInputManager;
         var consoleInputManager = new ConsoleInputManager();
         cheatsElem.innerHTML = consoleInputManager.resetConsoleInput();
-        function updateConsoleInput(event) {
-            if (event.keyCode == deleteKey) { // delete characters if the delete key is pressed
+
+        function updateConsoleInput(keyCode) {
+            if (keyCode === inputManager.keys.backspace) { // delete characters if the delete key is pressed
                 cheatsElem.innerHTML = consoleInputManager.deleteCharFromConsoleInput(cheatsElem.innerHTML);
-            } else if (event.keyCode == enterKey) { // parse characters if the enter key is pressed
+            } else if (event.keyCode === inputManager.keys.enter) { // parse characters if the enter key is pressed
                 var str = cheatsElem.innerHTML.substring(0, cheatsElem.innerHTML.length - 1);
                 try {
                     eval(str);
@@ -61,31 +58,31 @@
                 lastActiveCommand = str;
                 cheatsElem.innerHTML = consoleInputManager.resetConsoleInput();
             } else { // otherwise, add characters
-                cheatsElem.innerHTML = consoleInputManager.addCharToConsoleInput(String.fromCharCode(event.keyCode), cheatsElem.innerHTML);
+                if (inputManager.isCharacter(keyCode)) {
+                    var char = (inputManager.isPressed(inputManager.keys.shift)) ? inputManager.toShiftedCharacter(keyCode) : inputManager.toCharacter(keyCode);
+                    cheatsElem.innerHTML = consoleInputManager.addCharToConsoleInput(char, cheatsElem.innerHTML);
+                }
             }
         };
-        window.addEventListener("keypress", function (event) {
-            if (event.keyCode == 96) { // tilde
+        window.addEventListener("keydown", function (event) {
+            if (event.keyCode === inputManager.keys.arrowUp) {
+                cheatsElem.innerHTML = consoleInputManager.setConsoleInput(lastActiveCommand);
+            } else if (event.keyCode === inputManager.keys.tilde) { // tilde
                 if (cheatsElem.style.height != cheatsElemHeight) {
                     cheatsElem.style.height = cheatsElemHeight;
                     cheatsElem.style.padding = "8px";
                     acceptInput = true;
-                    globalInputManager.disable();
+                    //globalInputManager.disable();
                 } else {
                     cheatsElem.style.height = 0;
                     cheatsElem.style.padding = "0px";
                     acceptInput = false;
-                    globalInputManager.enable();
+                    //globalInputManager.enable();
                 }
             } else {
                 if (acceptInput) {
-                    updateConsoleInput(event);
+                    updateConsoleInput(event.keyCode);
                 }
-            }
-        });
-        window.addEventListener("keydown", function (event) {
-            if (event.keyCode == upKey) {
-                cheatsElem.innerHTML = consoleInputManager.setConsoleInput(lastActiveCommand);
             }
         });
     };

@@ -7,11 +7,12 @@ var InputManager = function () {
         arrowUp: 38,
         arrowRight: 39,
         arrowDown: 40,
-        space: 32,
+        backspace: 8,
         enter: 13,
         escape: 27,
         shift: 16,
-        backspace: 8,
+        space: 32,
+        tilde: 192,
 
         a: 65,
         d: 68,
@@ -68,6 +69,9 @@ var InputManager = function () {
     this.characters[221] = ']';
     this.characters[220] = '\\';
     this.characters[192] = '`';
+    this.characters[189] = '-';
+    this.characters[187] = '=';
+    this.characters[32] = ' ';
     
     this.shiftedCharacters = [];
     this.shiftedCharacters[65] = 'A';
@@ -115,6 +119,9 @@ var InputManager = function () {
     this.shiftedCharacters[221] = '}';
     this.shiftedCharacters[220] = '|';
     this.shiftedCharacters[192] = '~';
+    this.shiftedCharacters[189] = '_';
+    this.shiftedCharacters[187] = '+';
+    this.shiftedCharacters[32] = ' ';
 
     var pressedArrayTemp = {};
     var triggeredArrayTemp = {};
@@ -183,11 +190,11 @@ var InputManager = function () {
         return this.characters[keyCode] != null;
     };
 
-    this.toCharcter = function (keyCode) {
+    this.toCharacter = function (keyCode) {
         return this.characters[keyCode];
     };
 
-    this.toShiftedCharcter = function (keyCode) {
+    this.toShiftedCharacter = function (keyCode) {
         return this.shiftedCharacters[keyCode];
     };
 

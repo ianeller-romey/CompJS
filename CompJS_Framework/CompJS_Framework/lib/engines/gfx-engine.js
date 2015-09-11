@@ -421,10 +421,10 @@ var GfxEngine = function (canvasElem) {
             var gfxFontDefinitions = [];
             while (renderPasses.length > 0) {
                 var renderPass = renderPasses[0];
-                for (var i = 0; i < gfx2DAnimationInstances.length; ++i) {
+                for (var i = 0; i < gfx2DAnimationInstances[renderPass].length; ++i) {
                     gfx2DAnimationInstances[renderPass][i].destroy();
                 }
-                for (var i = 0; i < gfxFontInstances.length; ++i) {
+                for (var i = 0; i < gfxFontInstances[renderPass].length; ++i) {
                     gfxFontInstances[renderPass][i].destroy();
                 }
                 renderPasses.shift();

@@ -309,7 +309,7 @@
                         initDisplayHighScores();
                     });
                 } else if (playerNameAtGameOver.length > 0 && inputManager.isTriggered(inputManager.keys.backspace)) {
-                    playerNameAtGameOver.slice(0, -1);
+                    playerNameAtGameOver = playerNameAtGameOver.slice(0, -1);
                     messengerEngine.queueForPosting("setInstanceText", activeEntities[entityPlayerNameIndex], playerNameAtGameOver);
                 } else {
                     if (playerNameAtGameOver.length < maxNameLength && inputManager.isAnyTriggered()) {
