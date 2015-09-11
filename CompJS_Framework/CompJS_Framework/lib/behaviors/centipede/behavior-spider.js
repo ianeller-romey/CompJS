@@ -87,6 +87,7 @@
                     }
                 }
                 messengerEngine.queueForPosting("removeEntityInstance", this.instanceId);
+                messengerEngine.postImmediate("stopAudio", "Spider");
                 messengerEngine.postImmediate("playAudio", "EnemyDeath");
             };
 
@@ -116,6 +117,7 @@
             messengerEngine.register("getTransformationForEntityInstanceResponse", this, getPlayerTransformation);
 
             messengerEngine.queueForPosting("getPlayerInstanceIdRequest", true);
+            messengerEngine.postImmediate("playAudio", "Spider");
         };
 
         globalMessengerEngine.postImmediate("setBehaviorConstructor", "BehaviorSpider", BehaviorSpider);

@@ -29,11 +29,13 @@
                         totalSegments: totalSegments
                     }
                 });
+                messengerEngine.postImmediate("playAudio", "Centipede");
             };
 
             var centipedeSegmentDestroyed = function () {
                 if (--activeSegments == 0) {
                     globalMessengerEngine.queueForPosting("nextWave", true);
+                    messengerEngine.postImmediate("stopAudio", "Centipede");
                 }
             };
 

@@ -45,6 +45,7 @@
             this.playerBulletDamage = function () {
                 messengerEngine.queueForPosting("incrementPlayerScore", 1000);
                 messengerEngine.queueForPosting("removeEntityInstance", this.instanceId);
+                messengerEngine.postImmediate("stopAudio", "Scorpion");
                 messengerEngine.postImmediate("playAudio", "EnemyDeath");
             };
 
@@ -57,6 +58,8 @@
 
             messengerEngine.register("playerBulletDamage", this, this.playerBulletDamage);
             messengerEngine.register("createdPhysicsInstance", this, this.capturePhysicsInstance);
+
+            messengerEngine.postImmediate("startAudio", "Scorpion");
         };
 
         globalMessengerEngine.postImmediate("setBehaviorConstructor", "BehaviorScorpion", BehaviorScorpion);

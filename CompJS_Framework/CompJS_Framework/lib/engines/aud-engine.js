@@ -5,7 +5,7 @@ var AudEngine = function () {
 
     var audioTypeDefinitions = [];
     var audioDefinitions = {};
-    var numDesiredSources = 20;
+    var playingLoopedAudio = {};
 
     var audioContext;
 
@@ -124,17 +124,31 @@ var AudEngine = function () {
     var playAudio = function (audioName) {
         var audioDefinition = audioDefinitions[audioName];
         if (audioDefinition != null) {
+            var audioType = audioTypeDefinitions[audioDefinition.audioTypeId];
+            if (audioType === "Looped" && playingLoopedAudio[audioName] != null) {
+                // don't play more than one of the same looped audio
+                return;
+            }
             setTimeout(function(){
                 var source = audioContext.createBufferSource();
                 source.connect(audioContext.destination);
                 source.buffer = audioDefinition.buffer;
-                if(audioTypeDefinitions[audioDefinition.audioTypeId] === "Looped") {
+                if (audioType === "Looped") {
                     source.loop = true;
+                    playingLoopedAudio[audioName] = source;
                 }
                 source.start(0);
             }, 0);
         }
     };
+
+    var stopAudio = function (audioName) {
+        if (playingLoopedAudio[audioName] != null) {
+            playingLoopedAudio[audioName].stop(0);
+            playingLoopedAudio[audioName] = null;
+        }
+    };
     
     messengerEngine.register("playAudio", this, playAudio);
+    messengerEngine.register("stopAudio", this, stopAudio);
 };

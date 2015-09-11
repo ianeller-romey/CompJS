@@ -381,6 +381,7 @@
             };
             messengerEngine.register("getGameIdResponse", this, getGameId);
             messengerEngine.postImmediate("getGameIdRequest");
+            messengerEngine.postImmediate("setShaderProgram", "TextureColorChange", 0);
 
             initMainMenu();
         };
