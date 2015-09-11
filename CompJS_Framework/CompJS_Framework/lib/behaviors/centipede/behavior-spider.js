@@ -87,6 +87,7 @@
                     }
                 }
                 messengerEngine.queueForPosting("removeEntityInstance", this.instanceId);
+                messengerEngine.postImmediate("playAudio", "EnemyDeath");
             };
 
             this.capturePhysicsInstance = function (physComp, instanceId) {

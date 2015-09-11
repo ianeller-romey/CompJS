@@ -140,13 +140,17 @@
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
-    <PostBuildEvent>echo D|xcopy "$(ProjectDir)*.html" C:\inetpub\arcade\cabinet\compjs /R /Y
+    <PostBuildEvent>echo D|xcopy "$(ProjectDir)Web.config" C:\inetpub\arcade\cabinet\compjs /R /Y
+
+echo D|xcopy "$(ProjectDir)*.html" C:\inetpub\arcade\cabinet\compjs /R /Y
 
 echo D|xcopy "$(ProjectDir)lib" C:\inetpub\arcade\cabinet\compjs\lib /R /Y /S
 
 echo D|xcopy "$(ProjectDir)css" C:\inetpub\arcade\cabinet\compjs\css /R /Y
 
 echo D|xcopy "$(ProjectDir)images" C:\inetpub\arcade\cabinet\compjs\images /R /Y /S
+
+echo D|xcopy "$(ProjectDir)audio" C:\inetpub\arcade\cabinet\compjs\audio /R /Y /S
 
 </PostBuildEvent>
   </PropertyGroup>

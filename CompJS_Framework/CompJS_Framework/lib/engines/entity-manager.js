@@ -44,10 +44,12 @@ var EntityManager = function (gameId) {
     };
 
     this.shutdown = function (gameId) {
+        var that = this;
         return new Promise(function (resolve, reject) {
             entityTypeDefinitions = [];
             entityTypeNamedIds = [];
             entityInstances = [];
+            messengerEngine.unregisterAll(that);
             resolve();
         });
     };

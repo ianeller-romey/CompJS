@@ -53,12 +53,13 @@
             };
 
             this.playerBulletDamage = function () {
-                messengerEngine.queueForPosting("incrementPlayerScore", 200);
                 if (hitState == 0) {
                     hitState = 1;
                     this.transformation.setVelocity(0, this.transformation.velocity.y * 1.5);
                 } else {
+                    messengerEngine.queueForPosting("incrementPlayerScore", 200);
                     messengerEngine.queueForPosting("removeEntityInstance", this.instanceId);
+                    messengerEngine.postImmediate("playAudio", "EnemyDeath");
                 }
             };
 
@@ -71,6 +72,8 @@
 
             messengerEngine.register("playerBulletDamage", this, this.playerBulletDamage);
             messengerEngine.register("createdPhysicsInstance", this, this.capturePhysicsInstance);
+
+            messengerEngine.postImmediate("playAudio", "Flea");
         };
 
         globalMessengerEngine.postImmediate("setBehaviorConstructor", "BehaviorFlea", BehaviorFlea);

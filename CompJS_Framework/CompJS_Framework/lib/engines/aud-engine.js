@@ -3,8 +3,8 @@ var AudEngine = function () {
     var servicesEngine = globalServicesEngine;
     var messengerEngine = globalMessengerEngine;
 
+    var audioTypeDefinitions = [];
     var audioDefinitions = {};
-    var audioSources = [];
     var numDesiredSources = 20;
 
     var audioContext;
@@ -24,58 +24,62 @@ var AudEngine = function () {
         return (audioContext) ? true : false;
     };
 
-    var buildAudioDefinitions = function (data) {
-        var loadAudioPromises = [];
-        for (var i = 0; i < data.length; ++i) {
-            var audio = data[i];
-            if (audioDefinitions[audio.name] === undefined) {
-                var promise = new Promise(function (resolve, reject) {
-                    servicesEngine.loadAudio(audio.audioFile).then(function (data) {
-                        audioContext.decodeAudioData(data, function (buffer) {
-                            audioDefinitions[audio.name] = {
-                                audioTypeId: audio.audioTypeId,
-                                buffer: buffer
-                            };
-                        });
-                    }, function (reason) {
-                        var reasonPlus = "Failed to load audio files";
-                        if (reason != null) {
-                            reasonPlus = reasonPlus + "\r\n" + reason;
-                        }
-                        reject(reasonPlus);
-                    });
-                });
-                loadAudioPromises.push(promise);
-            }
-        }
-        return Promise.all(loadAudioPromises);
+    var buildAudioTypeDefinitions = function (data) {
+        data.forEach(function (x) {
+            audioTypeDefinitions[x.id] = x.name;
+        });
     };
 
-    var buildAudioSoures = function () {
-        var createSourceEndedEvent = function (i) {
-            return function () {
-                audioSources[i].available = true;
-            };
-        };
-
+    var buildAudioDefinitions = function (data) {
+        // only decode one piece of audio at a time
         return new Promise(function (resolve, reject) {
-            for (var i = 0; i < numDesiredSources; ++i) {
-                var source = audioContext.createBufferSource();
-                source.connect(audioContext.destination);
-                source.onended = createSourceEndedEvent(i);
-                audioSources.push({
-                    source: source,
-                    available: true
-                });
+            var loadAudioRecursively = function (index) {
+                if (index >= data.length) {
+                    resolve();
+                } else {
+                    var audio = data[index];
+                    if (audioDefinitions[audio.name] === undefined) {
+                        servicesEngine.loadAudio(audio.audioFile).then(function (data) {
+                            audioContext.decodeAudioData(data, function (buffer) {
+                                audioDefinitions[audio.name] = {
+                                    audioTypeId: audio.audioTypeId,
+                                    buffer: buffer
+                                };
+                                loadAudioRecursively(index + 1);
+                            });
+                        }, function (reason) {
+                            var reasonPlus = "Failed to load audio files";
+                            if (reason != null) {
+                                reasonPlus = reasonPlus + "\r\n" + reason;
+                            }
+                            reject(reasonPlus);
+                        });
+                    } else {
+                        loadAudioRecursively(index + 1);
+                    }
+                }
             }
+            loadAudioRecursively(0);
         });
     };
 
     this.init = function (gameId) {
-        var promise = new Promise(function (resolve, reject) {
-            if (initAudioContext()) {
+        if (initAudioContext()) {
+            var audioTypePromise = new Promise(function (resolve, reject) {
+                servicesEngine.retrieveAudioTypes().then(function (data) {
+                    buildAudioTypeDefinitions(data);
+                    resolve();
+                }, function (reason) {
+                    var reasonPlus = "Failed to load audio types";
+                    if (reason != null) {
+                        reasonPlus = reasonPlus + "\r\n" + reason;
+                    }
+                    reject(reasonPlus);
+                });
+            });
+            var audioDefinitionPromise = new Promise(function(resolve, reject){
                 servicesEngine.retrieveAllAudioForGame(gameId).then(function (data) {
-                    buildAudioDefinitions(data).then(function () {
+                    buildAudioDefinitions(data).then(function(){
                         resolve();
                     }, function (reason) {
                         var reasonPlus = "Failed to build audio definitions";
@@ -91,24 +95,22 @@ var AudEngine = function () {
                     }
                     reject(reasonPlus);
                 });
-            } else {
-                reject("Failed to initialize WebAudio API");
-            }
-        });
-        return promise;
+            });
+            return Promise.all([audioTypePromise, audioDefinitionPromise]);
+        } else {
+            return Promise.reject("Failed to initialize WebAudio API");
+        }
     };
 
     this.update = function (delta) {
     };
 
     this.shutdown = function (gameId) {
+        var that = this;
         return new Promise(function (resolve, reject) {
             audioDefinitions = {};
-            while (audioSources.length > 0) {
-                audioSources[0].stop(0);
-                audioSources.shift();
-            }
             audioContext.close();
+            messengerEngine.unregisterAll(that);
             resolve();
         });
     };
@@ -122,12 +124,15 @@ var AudEngine = function () {
     var playAudio = function (audioName) {
         var audioDefinition = audioDefinitions[audioName];
         if (audioDefinition != null) {
-            var audioSource = getFirstAvailableSource();
-            if (audioSource != null) {
-                audioSource.available = false;
-                audioSource.buffer = audioDefinition.buffer;
-                audioSource.start(0);
-            }
+            setTimeout(function(){
+                var source = audioContext.createBufferSource();
+                source.connect(audioContext.destination);
+                source.buffer = audioDefinition.buffer;
+                if(audioTypeDefinitions[audioDefinition.audioTypeId] === "Looped") {
+                    source.loop = true;
+                }
+                source.start(0);
+            }, 0);
         }
     };
     

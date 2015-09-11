@@ -45,8 +45,7 @@
             this.playerBulletDamage = function () {
                 messengerEngine.queueForPosting("incrementPlayerScore", 1000);
                 messengerEngine.queueForPosting("removeEntityInstance", this.instanceId);
-
-                messengerEngine.unregisterAll(this);
+                messengerEngine.postImmediate("playAudio", "EnemyDeath");
             };
 
             this.capturePhysicsInstance = function (physComp, instanceId) {

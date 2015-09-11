@@ -145,6 +145,7 @@ var PhysEngine = function () {
     };
 
     this.shutdown = function (gameId) {
+        var that = this;
         return new Promise(function (resolve, reject) {
             var physTypeDefinitions = [];
             var collisionTypeDefinitions = [];
@@ -153,6 +154,8 @@ var PhysEngine = function () {
                 physCompInstances[0].destroy();
                 physCompInstances.shift();
             }
+            messengerEngine.unregisterAll(that);
+            resolve();
         });
     };
 

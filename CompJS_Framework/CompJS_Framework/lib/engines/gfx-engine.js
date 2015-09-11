@@ -410,6 +410,7 @@ var GfxEngine = function (canvasElem) {
     };
 
     this.shutdown = function (gameId) {
+        var that = this;
         return new Promise(function (resolve, reject) {
             for (var texture in textureDefinitions) {
                 if (textureDefinitions.hasOwnProperty(texture)) {
@@ -439,6 +440,7 @@ var GfxEngine = function (canvasElem) {
             webGLFragmentShaderExtraSteps = [];
             webGLSquareVerticesBuffer = null;
             webGLTexCoordBuffer = null;
+            messengerEngine.unregisterAll(that);
             resolve();
         });
     };

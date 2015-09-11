@@ -36,6 +36,8 @@
             };
 
             messengerEngine.register("createdPhysicsInstance", this, this.capturePhysicsInstance);
+
+            messengerEngine.postImmediate("playAudio", "PlayerBullet");
         };
 
         globalMessengerEngine.postImmediate("setBehaviorConstructor", "BehaviorPlayerBullet", BehaviorPlayerBullet);

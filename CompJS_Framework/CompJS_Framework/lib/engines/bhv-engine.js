@@ -39,12 +39,14 @@ var BhvEngine = function (headElem) {
     };
 
     this.shutdown = function (gameId) {
+        var that = this;
         return new Promise(function (resolve, reject) {
             bhvCompDefinitions = [];
             while (bhvCompInstances.length > 0) {
                 bhvCompInstances[0].destroy();
                 bhvCompInstances.shift();
             }
+            messengerEngine.unregisterAll(that);
             resolve();
         });
     };

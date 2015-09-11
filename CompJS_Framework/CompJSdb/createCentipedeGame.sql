@@ -81,6 +81,85 @@ DECLARE @altAltId int
 DECLARE @levelLayoutId int
 DECLARE @name varchar(256)
 
+DECLARE @audioTypeId int
+SELECT @audioTypeId = [Id] FROM [compjs].[AudioTypes] WHERE [Name] = 'Sfx'
+
+IF NOT EXISTS (SELECT [Id] FROM [game].[Audio] WHERE [GameId] = @gameId AND [Name] = 'EnemyDeath')
+BEGIN
+	EXEC [dev].[dev_CreateAudio]
+	@audioTypeId = @audioTypeId,
+	@audioFile = 'audio/centipede/enemy_death.ogg',
+	@name = 'EnemyDeath',
+	@gameId = @gameId
+END
+IF NOT EXISTS (SELECT [Id] FROM [game].[Audio] WHERE [GameId] = @gameId AND [Name] = 'Flea')
+BEGIN
+	EXEC [dev].[dev_CreateAudio]
+	@audioTypeId = @audioTypeId,
+	@audioFile = 'audio/centipede/flea.ogg',
+	@name = 'Flea',
+	@gameId = @gameId
+END
+IF NOT EXISTS (SELECT [Id] FROM [game].[Audio] WHERE [GameId] = @gameId AND [Name] = 'GameLife')
+BEGIN
+	EXEC [dev].[dev_CreateAudio]
+	@audioTypeId = @audioTypeId,
+	@audioFile = 'audio/centipede/game_life.ogg',
+	@name = 'GameLife',
+	@gameId = @gameId
+END
+IF NOT EXISTS (SELECT [Id] FROM [game].[Audio] WHERE [GameId] = @gameId AND [Name] = 'MushroomTick')
+BEGIN
+	EXEC [dev].[dev_CreateAudio]
+	@audioTypeId = @audioTypeId,
+	@audioFile = 'audio/centipede/mushroom_tick.ogg',
+	@name = 'MushroomTick',
+	@gameId = @gameId
+END
+IF NOT EXISTS (SELECT [Id] FROM [game].[Audio] WHERE [GameId] = @gameId AND [Name] = 'PlayerBullet')
+BEGIN
+	EXEC [dev].[dev_CreateAudio]
+	@audioTypeId = @audioTypeId,
+	@audioFile = 'audio/centipede/player_bullet.ogg',
+	@name = 'PlayerBullet',
+	@gameId = @gameId
+END
+IF NOT EXISTS (SELECT [Id] FROM [game].[Audio] WHERE [GameId] = @gameId AND [Name] = 'PlayerDeath')
+BEGIN
+	EXEC [dev].[dev_CreateAudio]
+	@audioTypeId = @audioTypeId,
+	@audioFile = 'audio/centipede/player_death.ogg',
+	@name = 'PlayerDeath',
+	@gameId = @gameId
+END
+
+SELECT @audioTypeId = [Id] FROM [compjs].[AudioTypes] WHERE [Name] = 'Looped'
+
+IF NOT EXISTS (SELECT [Id] FROM [game].[Audio] WHERE [GameId] = @gameId AND [Name] = 'Centipede')
+BEGIN
+	EXEC [dev].[dev_CreateAudio]
+	@audioTypeId = @audioTypeId,
+	@audioFile = 'audio/centipede/centipede.ogg',
+	@name = 'Centipede',
+	@gameId = @gameId
+END
+IF NOT EXISTS (SELECT [Id] FROM [game].[Audio] WHERE [GameId] = @gameId AND [Name] = 'Scorpion')
+BEGIN
+	EXEC [dev].[dev_CreateAudio]
+	@audioTypeId = @audioTypeId,
+	@audioFile = 'audio/centipede/scorpion.ogg',
+	@name = 'Scorpion',
+	@gameId = @gameId
+END
+IF NOT EXISTS (SELECT [Id] FROM [game].[Audio] WHERE [GameId] = @gameId AND [Name] = 'Spider')
+BEGIN
+	EXEC [dev].[dev_CreateAudio]
+	@audioTypeId = @audioTypeId,
+	@audioFile = 'audio/centipede/spider.ogg',
+	@name = 'Spider',
+	@gameId = @gameId
+END
+
 IF NOT EXISTS (SELECT [Id] FROM [game].[EntityTypes] WHERE [GameId] = @gameId AND [Name] = 'Mushroom')
 BEGIN
 	EXEC @id = [dev].[dev_CreateEntityType]
@@ -743,7 +822,7 @@ BEGIN
 			@texture = 'images/centipede/textures.png',
 			@width = 32.0,
 			@height = 16.0,
-			@pixCoordTL = 61.0,
+			@pixCoordTL = 0.0,
 			@pixCoordTR = 223.0,
 			@pixCoordBR = 16.0,
 			@pixCoordBL = 191.0,

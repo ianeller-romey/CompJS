@@ -157,6 +157,7 @@
                 });
 
                 moveMainMenuCursor(true);
+                messengerEngine.queueForPosting("playAudio", "GameLife");
             };
 
             var updateMainMenu = function () {

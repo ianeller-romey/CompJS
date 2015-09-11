@@ -227,6 +227,7 @@
                 });
 
                 messengerEngine.postImmediate("centipedeSegmentDestroyed", segmentId, this.instanceId, turnaroundStarts, turnaroundEnds);
+                messengerEngine.postImmediate("playAudio", "EnemyDeath");
             };
 
             this.isMovingLeft = function (xVelocity) {

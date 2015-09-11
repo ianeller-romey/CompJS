@@ -211,10 +211,12 @@ var InputManager = function () {
     };
 
     this.shutdown = function () {
+        var that = this;
         return new Promise(function (resolve, reject) {
             if (window.removeEventListener != null) {
                 window.removeEventListener("keydown", keydownEvent);
                 window.removeEventListener("keyup", keyupEvent);
+                messengerEngine.unregisterAll(that);
                 resolve();
             } else {
                 reject("Browser does not support window.removeEventListener");
