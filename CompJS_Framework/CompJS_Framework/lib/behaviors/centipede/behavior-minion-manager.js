@@ -16,6 +16,9 @@
             var columnStartPoint = 0 + (mushroomWidth / 2);
             var columnEndPoint = viewportWidth - (mushroomWidth / 2);
 
+            var playerScore = 0;
+            var superPlayerScore = 60000;
+
             var messengerEngine = globalMessengerEngine;
 
             var calculateFleaRelease = function () {
@@ -24,24 +27,25 @@
             };
 
             this.update = function (delta) {
-                if (currentWave >= 0 && !halftime) {
+                if (currentWave >= 1 && !halftime) {
                     if (!spiderActive) {
                         spiderCounter += delta;
                         if (spiderCounter >= spiderRelease) {
                             createSpider();
                         }
                     }
-                    if (currentWave >= 1) {
-                        fleaCounter += delta;
-                        if (fleaCounter >= fleaRelease) {
-                            messengerEngine.queueForPosting("createEntityInstance", "Flea", {
-                                position: {
-                                    x: columnStartPoint + (Math.floor(Math.random() * numColumns) * mushroomWidth),
-                                    y: 0
-                                }
-                            });
-                            calculateFleaRelease();
-                        }
+                    fleaCounter += delta;
+                    if (fleaCounter >= fleaRelease) {
+                        messengerEngine.queueForPosting("createEntityInstance", "Flea", {
+                            position: {
+                                x: columnStartPoint + (Math.floor(Math.random() * numColumns) * mushroomWidth),
+                                y: 0
+                            },
+                            data: {
+                                velocity: (playerScore >= superPlayerScore) ? .4 : .3
+                            }
+                        });
+                        calculateFleaRelease();
                     }
                 }
             };
@@ -52,6 +56,9 @@
                     position: {
                         x: (Math.random() <= .5) ? 0 : 512,
                         y: 256
+                    },
+                    data: {
+                        ceiling: (playerScore >= superPlayerScore) ? 300 : 200
                     }
                 });
             };
@@ -97,10 +104,15 @@
                 halftime = false;
             };
 
+            var incrementPlayerScore = function (scoreIncr) {
+                playerScore += scoreIncr;
+            };
+
             messengerEngine.register("nextWave", this, nextWave);
             messengerEngine.register("spiderDestroyed", this, calculateSpiderRelease);
             messengerEngine.register("halftimeStart", this, halftimeStart);
             messengerEngine.register("halftimeEnd", this, halftimeEnd);
+            messengerEngine.register("incrementPlayerScore", this, incrementPlayerScore);
         };
 
         globalMessengerEngine.postImmediate("setBehaviorConstructor", "BehaviorMinionManager", BehaviorMinionManager);

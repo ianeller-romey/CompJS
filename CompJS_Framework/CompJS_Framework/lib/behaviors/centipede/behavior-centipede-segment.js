@@ -6,10 +6,12 @@
 
             this.physComp = null;
 
+            var currentAnimationState = -1;
+
             var nextSegment = null;
             var prevSegment = null;
             var segmentId = null;
-            var totalSegments = null;
+            var sequentialSegments = null;
             var positionDataArray = [];
             var positionDataArrayQueue = [];
 
@@ -45,20 +47,20 @@
             this.init = function () {
                 nextSegment = this.data["nextSegment"];
                 segmentId = this.data["segmentId"];
-                totalSegments = this.data["totalSegments"];
+                sequentialSegments = this.data["sequentialSegments"];
 
                 if (nextSegment === null) {
                     isHead = true;
                 }
 
                 var nextSegmentId = segmentId + 1;
-                if (nextSegmentId < totalSegments) {
+                if (nextSegmentId < sequentialSegments) {
                     messengerEngine.queueForPosting("createEntityInstance", "CentipedeSegment", {
                         position: new Vector2D(this.transformation.position.x, this.transformation.position.y),
                         data: {
                             nextSegment: segmentId,
                             segmentId: nextSegmentId,
-                            totalSegments: totalSegments
+                            sequentialSegments: sequentialSegments
                         }
                     });
                 }
@@ -259,7 +261,10 @@
                 } else {
                     animationState = (xVelocity > 0) ? 2 : 3;
                 }
-                messengerEngine.queueForPosting("setInstanceAnimationState", this.instanceId, animationState);
+                if (animationState !== currentAnimationState) {
+                    currentAnimationState = animationState;
+                    messengerEngine.queueForPosting("setInstanceAnimationState", this.instanceId, currentAnimationState);
+                }
             };
 
             this.setMovingHorizontal = function () {

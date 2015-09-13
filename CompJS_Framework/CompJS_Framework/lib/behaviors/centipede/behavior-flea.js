@@ -19,9 +19,11 @@
 
             var messengerEngine = globalMessengerEngine;
 
-            this.transformation.setVelocity(0.0, 0.30);
-
             this.update = function (delta) {
+                if (this.data["velocity"] !== undefined) {
+                    var vel = this.data["velocity"];
+                    this.transformation.setVelocity(0.0, vel);
+                }
                 if (this.data["playerBulletDamage"] !== undefined) {
                     this.playerBulletDamage();
                 } else if (this.physComp != null) {

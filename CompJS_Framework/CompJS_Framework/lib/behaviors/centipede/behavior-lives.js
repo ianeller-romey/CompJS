@@ -20,7 +20,8 @@
                         position: {
                             x: lifeWidth * (lives - 1),
                             y: scoreHeight
-                        }, data: {
+                        },
+                        data: {
                             life: lives
                         }
                     });

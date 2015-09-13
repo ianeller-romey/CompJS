@@ -9,6 +9,7 @@
             var playerInstanceId = null;
             var playerPosition = null;
 
+            var ceiling = 0;
             var durationSwitchDirection = 750;
             var durationCurrent = durationSwitchDirection;
             var velocityAmount = .15;
@@ -24,6 +25,11 @@
                         }
                     };
                 }
+
+                if (this.data["ceiling"] !== undefined) {
+                    ceiling = this.data["ceiling"];
+                }
+
                 if (this.data["playerBulletDamage"] !== undefined) {
                     this.playerBulletDamage();
                 } else {
@@ -38,7 +44,7 @@
                     if (this.transformation.position.y >= 512) {
                         this.transformation.setVelocity(this.switchDirectionX(), this.switchDirectionY(-velocityAmount));
                         durationCurrent = 0;
-                    } else if (this.transformation.position.y <= 0) {
+                    } else if (this.transformation.position.y <= ceiling) {
                         this.transformation.setVelocity(this.switchDirectionX(), this.switchDirectionY(velocityAmount));
                         durationCurrent = 0;
                     } else {

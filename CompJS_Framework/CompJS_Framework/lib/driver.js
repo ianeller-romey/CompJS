@@ -191,6 +191,9 @@
                                         var newN = d.getTime();
                                         var delta = (newN - n);
                                         n = newN;
+                                        if (delta > 100) {
+                                            delta = 10;
+                                        }
                                         inputManager.update(delta);
                                         messengerEngine.update(delta);
                                         audEngine.update(delta);
