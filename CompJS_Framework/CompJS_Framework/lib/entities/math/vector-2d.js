@@ -4,10 +4,10 @@ var Vector2D = function (x, y) {
     this.y = new Number(y);
 };
 
-Vector2D.prototype.toXYObject = function () {
+Vector2D.prototype.toXYObject = function (x, y) {
     return {
-        x: new Number(this.x),
-        y: new Number(this.y)
+        x: (x) ? new Number(this.x + x) : new Number(this.x),
+        y: (y) ? new Number(this.y + y) : new Number(this.y)
     };
 };
 

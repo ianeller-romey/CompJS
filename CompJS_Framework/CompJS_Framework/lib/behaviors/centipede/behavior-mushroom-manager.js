@@ -8,13 +8,13 @@
             var resumeAfterHalftime = true;
             var inspectingDamagedMushrooms = false;
             var damagedMushrooms = [];
-            var updateInterval = 300;
+            var updateInterval = 150;
             var currentInterval = 0;
 
             this.update = function (delta) {
                 if (inspectingDamagedMushrooms) {
                     if (damagedMushrooms.length > 0) {
-                        currentInterval != delta;
+                        currentInterval += delta;
                         if (currentInterval >= updateInterval) {
                             currentInterval = 0;
 
@@ -22,8 +22,11 @@
                             messengerEngine.queueForPosting("setBehaviorInstanceData", mushroomInstanceId, {
                                 reset: true
                             });
+                            messengerEngine.queueForPosting("playerModifyScore", 5);
+                            messengerEngine.postImmediate("playAudio", "MushroomTick");
                         }
                     } else {
+                        inspectingDamagedMushrooms = false;
                         messengerEngine.queueForPosting("halftimeEnd", true);
                     }
                 }
@@ -61,20 +64,16 @@
                 }
             };
 
-            var halftime = function (start) {
-                if(start){
-                    inspectingDamagedMushrooms = true;
-                    messengerEngine.postImmediate("getAllDamagedMushroomsRequest", true);
-                } else {
-                    inspectingDamagedMushrooms = false;
-                }
+            var halftimeStart = function () {
+                inspectingDamagedMushrooms = true;
+                messengerEngine.postImmediate("getAllDamagedMushroomsRequest", true);
             };
 
             var getAllDamagedMushrooms = function (instanceId) {
                 damagedMushrooms.push(instanceId);
             };
 
-            messengerEngine.register("halftimeStart", this, halftime);
+            messengerEngine.register("halftimeStart", this, halftimeStart);
             messengerEngine.register("getAllDamagedMushroomsResponse", this, getAllDamagedMushrooms);
 
             createMushrooms();

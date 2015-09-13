@@ -20,6 +20,8 @@
                         position: {
                             x: lifeWidth * (lives - 1),
                             y: scoreHeight
+                        }, data: {
+                            life: lives
                         }
                     });
                 }
@@ -51,7 +53,7 @@
             messengerEngine.register("playerModifyLives", this, playerModifyLives);
             messengerEngine.register("playerDeath", this, checkForGameOver);
 
-            messengerEngine.queueForPosting("playerModifyLives", 2);
+            messengerEngine.postImmediate("playerModifyLives", 2);
         };
 
         globalMessengerEngine.postImmediate("setBehaviorConstructor", "BehaviorLives", BehaviorLives);

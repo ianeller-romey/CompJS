@@ -7,7 +7,7 @@
             this.physComp = null;
 
             this.xDirection = null;
-            var velocityAmount = .15;
+            var velocityAmount = .25;
 
             var messengerEngine = globalMessengerEngine;
 
@@ -43,10 +43,21 @@
             };
 
             this.playerBulletDamage = function () {
-                messengerEngine.queueForPosting("incrementPlayerScore", 1000);
+                var score = 1000;
+                messengerEngine.queueForPosting("incrementPlayerScore", score);
+                messengerEngine.queueForPosting("createEntityInstance", "Kaboom", {
+                    position: this.transformation.position.toXYObject(16, 0), data: {
+                        score: score
+                    }
+                });
                 messengerEngine.queueForPosting("removeEntityInstance", this.instanceId);
                 messengerEngine.postImmediate("stopAudio", "Scorpion");
                 messengerEngine.postImmediate("playAudio", "EnemyDeath");
+            };
+
+            this.playerDeath = function () {
+                messengerEngine.queueForPosting("removeEntityInstance", this.instanceId);
+                messengerEngine.postImmediate("stopAudio", "Scorpion");
             };
 
             this.capturePhysicsInstance = function (physComp, instanceId) {
@@ -56,6 +67,7 @@
                 }
             };
 
+            messengerEngine.register("playerDeath", this, this.playerDeath);
             messengerEngine.register("playerBulletDamage", this, this.playerBulletDamage);
             messengerEngine.register("createdPhysicsInstance", this, this.capturePhysicsInstance);
 

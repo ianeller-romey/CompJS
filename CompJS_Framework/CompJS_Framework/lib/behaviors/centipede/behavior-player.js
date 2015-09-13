@@ -7,7 +7,7 @@
             var messengerEngine = globalMessengerEngine;
             var inputManager = globalInputManager;
 
-            var godMode = true;
+            var godMode = false;
 
             var controllerLeft = function () {
                 return inputManager.isPressed(inputManager.keys.arrowLeft) || inputManager.isPressed(inputManager.keys.a);
@@ -29,16 +29,23 @@
                 return inputManager.isTriggered(inputManager.keys.space) || inputManager.isTriggered(inputManager.keys.enter)
             };
 
-            var playerDeath = function () {
+            this.playerDeath = function () {
                 if (!godMode) {
+                    messengerEngine.queueForPosting("createEntityInstance", "Kaboom", {
+                        position: this.transformation.position.toXYObject(), data: {
+                            score: "OUCH"
+                        }
+                    });
+                    messengerEngine.postImmediate("removeEntityInstance", this.instanceId);
                     messengerEngine.queueForPosting("playerModifyLives", -1);
                     messengerEngine.queueForPosting("playerDeath", true);
+                    messengerEngine.postImmediate("playAudio", "PlayerDeath");
                 }
             };
 
             this.update = function () {
                 if (this.data["spiderDamage"] !== undefined || this.data["scorpionDamage"] !== undefined || this.data["fleaDamage"] !== undefined || this.data["centipedeDamage"] !== undefined) {
-                    playerDeath();
+                    this.playerDeath();
                 }
 
                 var xVel = 0.0;

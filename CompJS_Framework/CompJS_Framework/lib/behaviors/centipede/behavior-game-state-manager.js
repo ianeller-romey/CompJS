@@ -25,7 +25,7 @@
             var maxNameLength = 16;
 
             var resumeAfterHalftime = true;
-            var currentWave = -1;
+            var currentWave = 0;
             var waveColors = [{
                 r: 0,
                 g: 0,
@@ -348,7 +348,7 @@
 
             var halftimeEnd = function () {
                 if (resumeAfterHalftime) {
-                    messengerEngine.queueForPosting("nextWave", true);
+                    messengerEngine.queueForPosting("nextWave", false);
                     messengerEngine.queueForPosting("createEntityInstance", "Player", {
                         position: {
                             x: 256,
@@ -361,8 +361,10 @@
                 }
             };
 
-            var nextWave = function () {
-                ++currentWave;
+            var nextWave = function (incrementWave) {
+                if (incrementWave) {
+                    ++currentWave;
+                }
                 var currentColor = currentWave % waveColors.length;
                 messengerEngine.queueForPosting("setColorInversion", {
                     r: waveColors[currentColor].r,

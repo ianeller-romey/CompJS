@@ -197,6 +197,15 @@
                         state = statePreparing;
                     }
                 } else {
+                    if (this.physComp != null) {
+                        for (var i = 0; i < this.physComp.colliders.length; ++i) {
+                            var c = this.physComp.colliders[i];
+                            if (c.entityTypeName === "Player") {
+                                messengerEngine.queueForPosting("setBehaviorInstanceData", c.instanceId, { centipedeDamage: 1 });
+                            }
+                        };
+                    }
+
                     if (this.data["playerBulletDamage"] !== undefined || this.transformation.position.x > (512 + segmentWidth) || this.transformation.position.x < -segmentWidth) {
                         this.playerBulletDamage();
                     } else {
@@ -210,8 +219,11 @@
             };
 
             this.playerBulletDamage = function () {
-                messengerEngine.queueForPosting("incrementPlayerScore", 10);
-                messengerEngine.queueForPosting("removeEntityInstance", this.instanceId);
+                var score = 10;
+                messengerEngine.queueForPosting("incrementPlayerScore", score);
+                messengerEngine.queueForPosting("createEntityInstance", "Kaboom", {
+                    position: this.transformation.position.toXYObject()
+                });
 
                 var mushroomOffsetX = (this.transformation.velocity.x > 0)
                     ? (this.transformation.position.x - (this.transformation.position.x % segmentWidth)) + segmentWidth
@@ -228,6 +240,12 @@
 
                 messengerEngine.postImmediate("centipedeSegmentDestroyed", segmentId, this.instanceId, turnaroundStarts, turnaroundEnds);
                 messengerEngine.postImmediate("playAudio", "EnemyDeath");
+
+                this.removeCentipedeSegment();
+            };
+
+            this.removeCentipedeSegment = function () {
+                messengerEngine.queueForPosting("removeEntityInstance", this.instanceId);
             };
 
             this.isMovingLeft = function (xVelocity) {
@@ -303,6 +321,10 @@
                     nextSegment = null;
 
                     isHead = true;
+                    if (prevSegment === null) {
+                        velocityAmountX *= 1.25;
+                        velocityAmountY *= 1.25;
+                    }
 
                     turnaroundStarts = [];
                     ts.forEach(function (x) {
@@ -318,6 +340,10 @@
                     prevSegment = null;
                     prevSegmentInstanceId = null;
                     prevSegmentBehavior = null;
+                    if (isHead) {
+                        velocityAmountX *= 1.25;
+                        velocityAmountY *= 1.25;
+                    }
                 }
             };
 
@@ -344,6 +370,7 @@
                 }
             };
 
+            messengerEngine.register("playerDeath", this, this.removeCentipedeSegment);
             messengerEngine.register("centipedeClearTurnaround", this, this.clearTurnaround);
             messengerEngine.register("centipedeSegmentCreated", this, this.centipedeSegmentCreated);
             messengerEngine.register("centipedeSegmentDestroyed", this, this.centipedeSegmentDestroyed);

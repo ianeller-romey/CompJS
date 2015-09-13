@@ -946,6 +946,100 @@ BEGIN
 	
 END
 
+IF NOT EXISTS (SELECT [Id] FROM [game].[EntityTypes] WHERE [GameId] = @gameId AND [Name] = 'Kaboom')
+BEGIN
+	EXEC @id = [dev].[dev_CreateEntityType]
+		@name = 'Kaboom',
+		@gameId = @gameId
+		
+	IF NOT EXISTS (SELECT [Id] FROM [game].[BhvCompDefinitions] WHERE [EntityTypeId] = @id)
+	BEGIN
+		EXEC @compDefinitionId = [dev].[dev_CreateBhvCompDefinition]
+			@entityTypeId = @id,
+			@stateFile = 'lib/behaviors/centipede/behavior-kaboom.js',
+			@behaviorConstructor = 'BehaviorKaboom'
+			
+	END
+		
+	IF NOT EXISTS (SELECT [Id] FROM [game].[GfxCompDefinitions] WHERE [EntityTypeId] = @id)
+	BEGIN
+		EXEC @compDefinitionId = [dev].[dev_CreateGfxCompDefinition]
+			@entityTypeId = @id,
+			@renderPass = 0
+	
+		EXEC @altId = [dev].[dev_CreateAnimationStateDefinition]
+			@gfxCompDefinitionId = @compDefinitionId,
+			@state = 0
+			
+		EXEC @altAltId = [dev].[dev_CreateAnimationFrameDefinitionFromPixels]
+			@animationStateDefinitionId = @altId,
+			@frame = 0,
+			@duration = 50,
+			@texture = 'images/centipede/textures.png',
+			@width = 16.0,
+			@height = 16.0,
+			@pixCoordTL = 68.0,
+			@pixCoordTR = 16.0,
+			@pixCoordBR = 84.0,
+			@pixCoordBL = 0.0,
+			@textureWidth = 256.0
+			
+		EXEC @altAltId = [dev].[dev_CreateAnimationFrameDefinitionFromPixels]
+			@animationStateDefinitionId = @altId,
+			@frame = 1,
+			@duration = 50,
+			@texture = 'images/centipede/textures.png',
+			@width = 16.0,
+			@height = 16.0,
+			@pixCoordTL = 68.0,
+			@pixCoordTR = 33.0,
+			@pixCoordBR = 84.0,
+			@pixCoordBL = 17.0,
+			@textureWidth = 256.0
+			
+		EXEC @altAltId = [dev].[dev_CreateAnimationFrameDefinitionFromPixels]
+			@animationStateDefinitionId = @altId,
+			@frame = 2,
+			@duration = 50,
+			@texture = 'images/centipede/textures.png',
+			@width = 16.0,
+			@height = 16.0,
+			@pixCoordTL = 68.0,
+			@pixCoordTR = 50.0,
+			@pixCoordBR = 84.0,
+			@pixCoordBL = 34.0,
+			@textureWidth = 256.0
+			
+		EXEC @altAltId = [dev].[dev_CreateAnimationFrameDefinitionFromPixels]
+			@animationStateDefinitionId = @altId,
+			@frame = 3,
+			@duration = 50,
+			@texture = 'images/centipede/textures.png',
+			@width = 16.0,
+			@height = 16.0,
+			@pixCoordTL = 68.0,
+			@pixCoordTR = 67.0,
+			@pixCoordBR = 84.0,
+			@pixCoordBL = 51.0,
+			@textureWidth = 256.0
+			
+		EXEC @altAltId = [dev].[dev_CreateAnimationFrameDefinitionFromPixels]
+			@animationStateDefinitionId = @altId,
+			@frame = 4,
+			@duration = NULL,
+			@texture = 'images/centipede/textures.png',
+			@width = 16.0,
+			@height = 16.0,
+			@pixCoordTL = 68.0,
+			@pixCoordTR = 84.0,
+			@pixCoordBR = 84.0,
+			@pixCoordBL = 67.0,
+			@textureWidth = 256.0
+			
+	END
+	
+END
+
 IF NOT EXISTS (SELECT [Id] FROM [game].[EntityTypes] WHERE [GameId] = @gameId AND [Name] = 'Lives')
 BEGIN
 	EXEC @id = [dev].[dev_CreateEntityType]
@@ -1099,7 +1193,7 @@ BEGIN
 			@startT = 64.0,
 			@startL = 0.0,
 			@characterWidth = 6.0,
-			@characterHeight = 8.0
+			@characterHeight = 9.0
 			
 	END
 	

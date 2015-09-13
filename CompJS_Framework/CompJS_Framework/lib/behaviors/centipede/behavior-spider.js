@@ -16,6 +16,14 @@
             var messengerEngine = globalMessengerEngine;
 
             this.update = function (delta) {
+                if (this.physComp != null) {
+                    for (var i = 0; i < this.physComp.colliders.length; ++i) {
+                        var c = this.physComp.colliders[i];
+                        if (c.entityTypeName === "Player") {
+                            messengerEngine.queueForPosting("setBehaviorInstanceData", c.instanceId, { centipedeDamage: 1 });
+                        }
+                    };
+                }
                 if (this.data["playerBulletDamage"] !== undefined) {
                     this.playerBulletDamage();
                 } else {
@@ -77,18 +85,31 @@
 
             this.playerBulletDamage = function () {
                 if (playerPosition != null) {
+                    var score = 0;
                     var dist = this.transformation.position.distance(playerPosition);
                     if (dist <= 64) {
-                        messengerEngine.queueForPosting("incrementPlayerScore", 900);
+                        score = 900;
                     } else if (dist > 64 && dist <= 256) {
-                        messengerEngine.queueForPosting("incrementPlayerScore", 600);
+                        score = 600;
                     } else {
-                        messengerEngine.queueForPosting("incrementPlayerScore", 300);
+                        score = 300;
                     }
                 }
+                messengerEngine.queueForPosting("incrementPlayerScore", score);
+                messengerEngine.queueForPosting("createEntityInstance", "Kaboom", {
+                    position: this.transformation.position.toXYObject(), data: {
+                        score: score
+                    }
+                });
                 messengerEngine.queueForPosting("removeEntityInstance", this.instanceId);
+                messengerEngine.postImmediate("spiderDestroyed", true);
                 messengerEngine.postImmediate("stopAudio", "Spider");
                 messengerEngine.postImmediate("playAudio", "EnemyDeath");
+            };
+
+            this.playerDeath = function () {
+                messengerEngine.queueForPosting("removeEntityInstance", this.instanceId);
+                messengerEngine.postImmediate("stopAudio", "Spider");
             };
 
             this.capturePhysicsInstance = function (physComp, instanceId) {
@@ -111,7 +132,7 @@
                 }
             };
 
-            messengerEngine.register("playerBulletDamage", this, this.playerBulletDamage);
+            messengerEngine.register("playerDeath", this, this.playerDeath);
             messengerEngine.register("createdPhysicsInstance", this, this.capturePhysicsInstance);
             messengerEngine.register("getPlayerInstanceIdResponse", this, getPlayerInstanceId);
             messengerEngine.register("getTransformationForEntityInstanceResponse", this, getPlayerTransformation);

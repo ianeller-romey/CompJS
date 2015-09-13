@@ -39,8 +39,14 @@
                 }
             };
 
+            var playerDeath = function () {
+                activeSegments = 0;
+                messengerEngine.postImmediate("stopAudio", "Centipede");
+            };
+
             messengerEngine.register("nextWave", this, nextWave);
             messengerEngine.register("centipedeSegmentDestroyed", this, centipedeSegmentDestroyed);
+            messengerEngine.register("playerDeath", this, playerDeath);
         };
 
         globalMessengerEngine.postImmediate("setBehaviorConstructor", "BehaviorCentipedeManager", BehaviorCentipedeManager);
