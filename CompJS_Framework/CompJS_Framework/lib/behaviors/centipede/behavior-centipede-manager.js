@@ -35,7 +35,7 @@
                         sequentialSegments: totalSegments
                     }
                 });
-                for (var i = 0, j = currentWave / 2; i < j; ++i, ++totalSegments) {
+                for (var i = 0, j = currentWave / 3; i < j; ++i, ++totalSegments) {
                     var segmentId = sequentialSegments + 2 + (i * 2);
                     messengerEngine.queueForPosting("createEntityInstance", "CentipedeSegment", {
                         position: {

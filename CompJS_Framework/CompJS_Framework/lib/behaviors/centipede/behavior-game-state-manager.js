@@ -36,78 +36,34 @@
                 b: .75
             }, {
                 r: 0,
-                g: 1,
-                b: .25
+                g: .75,
+                b: 1
             }, {
-                r: .85,
+                r: .75,
                 g: -.45,
                 b: -1
             }, {
-                r: -.25,
+                r: -.5,
+                g: -.5,
+                b: .5
+            }, {
+                r: -1,
                 g: 0,
-                b: .6
-            }, {
-                r: 1,
-                g: -.5,
                 b: -1
             }, {
-                r: 1,
-                g: -.5,
+                r: .35,
+                g: -1,
                 b: -1
             }, {
-                r: 1,
-                g: -.5,
-                b: -1
+                r: 0,
+                g: 1,
+                b: .25
             }, {
-                r: 1,
-                g: -.5,
-                b: -1
+                r: -.25,
+                g: .75,
+                b: -.25
             }, {
-                r: 1,
-                g: -.5,
-                b: -1
-            }, {
-                r: 1,
-                g: -.5,
-                b: -1
-            }, {
-                r: 1,
-                g: -.5,
-                b: -1
-            }, {
-                r: 1,
-                g: -.5,
-                b: -1
-            }, {
-                r: 1,
-                g: -.5,
-                b: -1
-            }, {
-                r: 1,
-                g: -.5,
-                b: -1
-            }, {
-                r: 1,
-                g: -.5,
-                b: -1
-            }, {
-                r: 1,
-                g: -.5,
-                b: -1
-            }, {
-                r: 1,
-                g: -.5,
-                b: -1
-            }, {
-                r: 1,
-                g: -.5,
-                b: -1
-            }, {
-                r: 1,
-                g: -.5,
-                b: -1
-            }, {
-                r: 1,
+                r: -.5,
                 g: -.5,
                 b: -1
             }];
@@ -308,6 +264,20 @@
                     messengerEngine.postImmediate("getBhvCompInstanceForEntityInstanceRequest", id);
                 });
                 messengerEngine.postImmediate("createEntityInstance", "Lives", null, addToActiveEntities);
+                messengerEngine.postImmediate("createEntityInstance", "Text_LargeRedFont", {
+                    position: {
+                        x: 380,
+                        y: 0
+                    }
+                }, function (id) {
+                    activeEntities.push(id);
+                    servicesEngine.retrieveHighScoresForGame(gameId, 1).then(function (data) {
+                        if (data.length === 1) {
+                            messengerEngine.postImmediate("setInstanceText", id, "HIGH SCORE:\n" + data[0].score);
+                        }
+                    });
+                });
+
                 resumeAfterHalftime = true;
                 halftimeEnd();
             };

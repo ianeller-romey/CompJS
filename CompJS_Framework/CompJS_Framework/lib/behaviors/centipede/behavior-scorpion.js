@@ -61,7 +61,7 @@
             };
 
             this.capturePhysicsInstance = function (physComp, instanceId) {
-                if (instanceId == this.instanceId) {
+                if (instanceId === this.instanceId) {
                     this.physComp = physComp;
                     messengerEngine.unregister("createdPhysicsInstance", this.capturePhysicsInstance);
                 }

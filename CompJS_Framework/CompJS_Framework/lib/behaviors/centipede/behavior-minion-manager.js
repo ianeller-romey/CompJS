@@ -27,25 +27,27 @@
             };
 
             this.update = function (delta) {
-                if (currentWave >= 1 && !halftime) {
+                if (currentWave >= 0 && !halftime) {
                     if (!spiderActive) {
                         spiderCounter += delta;
                         if (spiderCounter >= spiderRelease) {
                             createSpider();
                         }
                     }
-                    fleaCounter += delta;
-                    if (fleaCounter >= fleaRelease) {
-                        messengerEngine.queueForPosting("createEntityInstance", "Flea", {
-                            position: {
-                                x: columnStartPoint + (Math.floor(Math.random() * numColumns) * mushroomWidth),
-                                y: 0
-                            },
-                            data: {
-                                velocity: (playerScore >= superPlayerScore) ? .4 : .3
-                            }
-                        });
-                        calculateFleaRelease();
+                    if (currentWave >= 1) {
+                        fleaCounter += delta;
+                        if (fleaCounter >= fleaRelease) {
+                            messengerEngine.queueForPosting("createEntityInstance", "Flea", {
+                                position: {
+                                    x: columnStartPoint + (Math.floor(Math.random() * numColumns) * mushroomWidth),
+                                    y: 0
+                                },
+                                data: {
+                                    velocity: (playerScore >= superPlayerScore) ? .4 : .3
+                                }
+                            });
+                            calculateFleaRelease();
+                        }
                     }
                 }
             };
@@ -67,7 +69,7 @@
                 messengerEngine.queueForPosting("createEntityInstance", "Scorpion", {
                     position: {
                         x: (Math.random() <= .5) ? 0 : 512,
-                        y: 256 - 8
+                        y: 256 - 8 - (16 * Math.floor(Math.random() * 10))
                     }
                 });
             };
@@ -78,7 +80,9 @@
                 }
 
                 if (currentWave >= 0) {
-                    calculateSpiderRelease();
+                    if (!spiderActive) {
+                        calculateSpiderRelease();
+                    }
 
                     if (currentWave >= 1) {
                         calculateFleaRelease();
@@ -113,6 +117,8 @@
             messengerEngine.register("halftimeStart", this, halftimeStart);
             messengerEngine.register("halftimeEnd", this, halftimeEnd);
             messengerEngine.register("incrementPlayerScore", this, incrementPlayerScore);
+
+            calculateSpiderRelease();
         };
 
         globalMessengerEngine.postImmediate("setBehaviorConstructor", "BehaviorMinionManager", BehaviorMinionManager);

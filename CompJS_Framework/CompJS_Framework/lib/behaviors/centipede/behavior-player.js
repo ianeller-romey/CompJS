@@ -4,6 +4,8 @@
             this.instanceId = entity.instanceId;
             this.transformation = entity.transformation;
 
+            var deathMessages = ["OUCH", "RATS", "UGH", "DEAD", "OH NO!", "SPLAT", "OOPS!"];
+
             var messengerEngine = globalMessengerEngine;
             var inputManager = globalInputManager;
 
@@ -32,8 +34,8 @@
             this.playerDeath = function () {
                 if (!godMode) {
                     messengerEngine.queueForPosting("createEntityInstance", "Kaboom", {
-                        position: this.transformation.position.toXYObject(), data: {
-                            score: "OUCH"
+                        position: this.transformation.position.toXYObject(0, -16), data: {
+                            score: deathMessages[Math.floor(Math.random() * 10) % deathMessages.length]
                         }
                     });
                     messengerEngine.postImmediate("removeEntityInstance", this.instanceId);

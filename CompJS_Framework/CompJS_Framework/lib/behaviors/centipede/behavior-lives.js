@@ -14,25 +14,21 @@
             };
 
             var addLife = function () {
-                if (lives < 5) {
-                    ++lives;
-                    messengerEngine.queueForPosting("createEntityInstance", "Life", {
-                        position: {
-                            x: lifeWidth * (lives - 1),
-                            y: scoreHeight
-                        },
-                        data: {
-                            life: lives
-                        }
-                    });
-                }
+                ++lives;
+                messengerEngine.queueForPosting("createEntityInstance", "Life", {
+                    position: {
+                        x: lifeWidth * (lives - 1),
+                        y: scoreHeight
+                    },
+                    data: {
+                        life: lives
+                    }
+                });
             };
 
             var removeLife = function () {
-                if (lives > 0) {
-                    messengerEngine.queueForPosting("removeLife", lives);
-                    --lives;
-                }
+                messengerEngine.queueForPosting("removeLife", lives);
+                --lives;
             };
             
             var playerModifyLives = function (lives) {
@@ -48,7 +44,7 @@
             };
 
             var checkForGameOver = function () {
-                messengerEngine.queueForPosting("halftimeStart", lives !== 0);
+                messengerEngine.queueForPosting("halftimeStart", lives >= 0);
             };
 
             messengerEngine.register("playerModifyLives", this, playerModifyLives);

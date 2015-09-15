@@ -13,7 +13,7 @@
             var rowEndPoint = rowStartPoint + (numRows * mushroomHeight) - mushroomHeight * 2;
 
             var canDrop = false;
-            var dropChance = .75;
+            var dropChance = .85;
 
             var hitState = 0;
 
@@ -33,7 +33,7 @@
                     } else {
                         var distance = (this.transformation.position.y - rowStartPoint) % 16;
                         if (distance <= .1) {
-                            if (canDrop && Math.random() <= dropChance) {
+                            if (canDrop && Math.random() <= dropChance && this.physComp != null && this.physComp.colliders.length > 0) {
                                 messengerEngine.queueForPosting("createEntityInstance", "Mushroom", {
                                     position: {
                                         x: this.transformation.position.x,
@@ -55,7 +55,7 @@
             };
 
             this.playerBulletDamage = function () {
-                if (hitState == 0) {
+                if (hitState === 0) {
                     hitState = 1;
                     this.transformation.setVelocity(0, this.transformation.velocity.y * 1.5);
                 } else {
@@ -76,7 +76,7 @@
             };
 
             this.capturePhysicsInstance = function (physComp, instanceId) {
-                if (instanceId == this.instanceId) {
+                if (instanceId === this.instanceId) {
                     this.physComp = physComp;
                     messengerEngine.unregister("createdPhysicsInstance", this.capturePhysicsInstance);
                 }

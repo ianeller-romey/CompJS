@@ -8,6 +8,8 @@
 
             var currentAnimationState = -1;
 
+            var isPoisoned = false;
+
             var nextSegment = null;
             var prevSegment = null;
             var segmentId = null;
@@ -117,6 +119,18 @@
                             for (var i = 0; i < this.physComp.colliders.length; ++i) {
                                 var c = this.physComp.colliders[i];
                                 if (c.entityTypeName === "Mushroom") {
+                                    var checkForPoisonedMushroom = function(bhv){
+                                        messengerEngine.unregister("getBhvCompInstanceForEntityInstanceResponse", checkForPoisonedMushroom);
+                                        if(bhv.instanceId === c.instanceId){
+                                            if(bhv.behavior.isPoisoned){
+                                                isPoisoned = true;
+                                            }
+                                        }
+                                    };
+                                    
+                                    messengerEngine.register("getBhvCompInstanceForEntityInstanceResponse", this, checkForPoisonedMushroom);
+                                    messengerEngine.postImmediate("getBhvCompInstanceForEntityInstanceRequest", c.instanceId);
+
                                     this.headSetTurnaround();
                                     break;
                                 }
@@ -138,21 +152,29 @@
                             var turnaroundPosition = turnaroundStarts[0];
                             var turnaroundFinal = turnaroundEnds[0];
 
+                            var wereDoneHere = false;
                             if (currentVelocityY > 0) {
                                 if (this.transformation.position.y >= turnaroundFinal.y) {
-                                    this.transformation.setPosition(this.transformation.position.x, turnaroundFinal.y);
-
-                                    this.setMovingHorizontal();
-
-                                    this.removeTurnaround();
+                                    wereDoneHere = true;
                                 }
                             } else {
                                 if (this.transformation.position.y <= turnaroundFinal.y) {
-                                    this.transformation.setPosition(this.transformation.position.x, turnaroundFinal.y);
+                                    wereDoneHere = true;
+                                }
+                            }
 
+                            if (wereDoneHere) {
+                                this.transformation.setPosition(this.transformation.position.x, turnaroundFinal.y);
+
+                                this.removeTurnaround();
+
+                                if (!isPoisoned || (this.transformation.position.y >= 488 && this.isMovingDown(velocityAmountY))) {
                                     this.setMovingHorizontal();
-
-                                    this.removeTurnaround();
+                                    if (isPoisoned) {
+                                        isPoisoned = false;
+                                    }
+                                } else {
+                                    this.headSetTurnaround();
                                 }
                             }
                             break;
@@ -254,6 +276,10 @@
                 return (xVelocity != null) ? xVelocity < 0 : this.transformation.velocity.x < 0;
             };
 
+            this.isMovingDown = function (yVelocity) {
+                return (yVelocity != null) ? yVelocity > 0 : this.transformation.velocity.y > 0;
+            };
+
             this.setAnimationState = function (xVelocity) {
                 var animationState;
                 if (isHead) {
@@ -282,8 +308,8 @@
             };
 
             this.setMovingVertical = function () {
-                if ((this.transformation.position.y >= 488 && velocityAmountY > 0) ||
-                    (this.transformation.position.y <= 8 && velocityAmountY < 0)) {
+                if ((this.transformation.position.y >= 488 && this.isMovingDown(velocityAmountY)) ||
+                    (this.transformation.position.y <= 8 && !this.isMovingDown(velocityAmountY))) {
                     velocityAmountY = -velocityAmountY;
                 }
                 this.transformation.setVelocity(0.0, velocityAmountY);

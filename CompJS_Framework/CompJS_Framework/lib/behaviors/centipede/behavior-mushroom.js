@@ -5,7 +5,8 @@
             this.transformation = entity.transformation;
 
             var currentAnimationFrame = 0;
-            var isPoisoned = false;
+
+            this.isPoisoned = false;
 
             var messengerEngine = globalMessengerEngine;
 
@@ -21,19 +22,19 @@
             this.update = function () {
                 if (this.data["playerBulletDamage"] !== undefined) {
                     this.playerBulletDamage();
-                } else if (!isPoisoned && this.data["scorpionDamage"] !== undefined) {
-                    isPoisoned = true;
+                } else if (!this.isPoisoned && this.data["scorpionDamage"] !== undefined) {
+                    this.isPoisoned = true;
                     messengerEngine.queueForPosting("setInstanceAnimationState", this.instanceId, 1);
                 } else if (this.data["reset"] !== undefined) {
                     messengerEngine.queueForPosting("setInstanceAnimationState", this.instanceId, 0);
                     messengerEngine.queueForPosting("setInstanceAnimationFrame", this.instanceId, 0);
                     currentAnimationFrame = 0;
-                    isPoisoned = false;
+                    this.isPoisoned = false;
                 }
             };
 
             this.getAllDamagedMushrooms = function () {
-                if (currentAnimationFrame > 0 || isPoisoned) {
+                if (currentAnimationFrame > 0 || this.isPoisoned) {
                     messengerEngine.postImmediate("getAllDamagedMushroomsResponse", this.instanceId);
                 }
             }

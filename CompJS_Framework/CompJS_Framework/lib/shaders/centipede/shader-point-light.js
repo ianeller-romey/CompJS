@@ -26,6 +26,7 @@
             "uniform vec2 u_lightPosition;" + "\r\n" +
             "uniform float u_lightRadius;" + "\r\n" +
             "uniform vec3 u_lightColor;" + "\r\n" +
+            "uniform vec3 u_colorInversion;" + "\r\n" +
             "" + "\r\n" +
             "varying vec2 v_texCoord;" + "\r\n" +
             "varying vec2 v_worldCoord;" + "\r\n" +
@@ -38,7 +39,7 @@
             "" + "\r\n" +
             "    float alph = clamp(u_lightRadius - dist + .15, 0.0, 1.0);" + "\r\n" +
             "" + "\r\n" +
-            "    gl_FragColor = vec4(texture2D(u_image, v_texCoord).rgb * u_lightColor.rgb, alph);" + "\r\n" +
+            "    gl_FragColor = vec4((texture2D(u_image, v_texCoord).rgb - u_colorInversion) * u_lightColor.rgb, alph);" + "\r\n" +
             "}";
             headElem.appendChild(fragmentShader);
 
@@ -54,6 +55,11 @@
                     r: 1.0,
                     g: 1.0,
                     b: 1.0
+                };
+                var colorInversion = {
+                    r: 0.0,
+                    g: 0.0,
+                    b: 0.0
                 };
 
                 var setPointLightTransform = function (transformation) {
@@ -76,6 +82,18 @@
                     }
                 };
 
+                var setColorInversion = function (color) {
+                    if (color.r !== undefined && color.r !== null) {
+                        colorInversion.r = color.r;
+                    }
+                    if (color.g !== undefined && color.g !== null) {
+                        colorInversion.g = color.g;
+                    }
+                    if (color.b !== undefined && color.b !== null) {
+                        colorInversion.b = color.b;
+                    }
+                };
+
                 this.extraSteps = function (gl, prgrm) {
                     var lightPositionLocation = gl.getUniformLocation(prgrm, "u_lightPosition");
                     if (lightPositionLocation != null) {
@@ -89,11 +107,16 @@
                     if (lightColorLocation != null) {
                         gl.uniform3f(lightColorLocation, lightColor.r, lightColor.g, lightColor.b);
                     }
+                    var lightColorLocation = gl.getUniformLocation(prgrm, "u_colorInversion");
+                    if (lightColorLocation != null) {
+                        gl.uniform3f(lightColorLocation, colorInversion.r, colorInversion.g, colorInversion.b);
+                    }
                 };
 
                 globalMessengerEngine.register("setPointLightTransform", this, setPointLightTransform);
                 globalMessengerEngine.register("setPointLightRadius", this, setPointLightRadius);
                 globalMessengerEngine.register("setPointLightColor", this, setPointLightColor);
+                globalMessengerEngine.register("setColorInversion", this, setColorInversion);
             };
             /****************/
             /* FRAGMENT SHADER */
